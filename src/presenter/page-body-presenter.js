@@ -1,12 +1,12 @@
 import SortView from '../view/sort-view.js';
-import TripEventsView from '../view/trip-event-view.js';
+import TripEventView from '../view/trip-event-section-view.js';
 import CreatePointView from '../view/create-point-view.js';
-import TripEventListView from '../view/trip-event-list.js';
+import TripEventListView from '../view/trip-event-list-view.js';
 import PointListView from '../view/point-list-view.js';
 import { render } from '../render.js';
 
-export default class TripEventsPresenter {
-  tripEventsComponent = new TripEventsView(); // это секция
+export default class TripEventPresenter {
+  tripEventsComponent = new TripEventView(); // это секция
   tripEventListComponent = new TripEventListView(); // это список - лежит в секции
 
   //секция tripEventsComponent лежит в tripEventsContainer

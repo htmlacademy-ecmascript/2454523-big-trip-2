@@ -1,12 +1,12 @@
 import { createElement } from '../render.js';
 
-function tripEventsTemplate () {
+function tripEventTemplate () {
   return '<section class="trip-events"></section>';
 }
 
-export default class TripEventsView {
+export default class TripEventView {
   getTemplate () {
-    return tripEventsTemplate();
+    return tripEventTemplate();
   }
 
   getElement () {
