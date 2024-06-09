@@ -1,36 +1,11 @@
-// {
-//   "base_price": 1100,
-//   "date_from": "2019-07-10T22:55:56.845Z",
-//   "date_to": "2019-07-11T11:22:13.375Z",
-//   "destination": "bfa5cb75-a1fe-4b77-a83c-0e528e910e04",
-//   "is_favorite": false,
-//   "offers": [
-//     "b4c3e4e6-9053-42ce-b747-e281314baa31"
-//   ],
-//   "type": "taxi"
-// }
-
-// Для создания новой точки маршрута пользователь заполняет:
-
-// Тип точки маршрута (один из: Taxi, Bus, Train, Ship, Drive, Flight, Check-in, Sightseeing, Restaurant).
-// Пункт назначения. Выбирается из списка предложенных значений, полученных с сервера.
-//Пользователь не может ввести свой вариант для пункта назначения.
-// Дата и время начала события. Выбор времени и даты осуществляется с помощью библиотеки flatpickr.js.
-//Выбранная дата и время отображаются в поле в формате: день/месяц/год часы:минуты (например «25/12/19 16:00»).
-// Дата и время окончания события. Формат и требования аналогичны дате начала. Дата окончания не может быть меньше даты начала события.
-// Стоимость. Целое положительное число.
-// Дополнительные опции. В зависимости от типа точки маршрута пользователь может выбрать дополнительные опции (offers).
-// Дополнительные опции отображаются в блоке offers. Набор дополнительных опций, которые может выбрать пользователь при создании точки маршрута,
-// зависит от типа точки маршрута
-
 import {getRandomArrayElement} from '../utils.js';
 
 const mockPoints = [
   {
     type: 'Taxi',
     destination: 'Chamonix',
-    dateFrom: new Date('2024-01-01'),
-    dateTo: new Date('2024-01-05'),
+    dateFrom: new Date('2024-01-10T00:55:56.845Z'),
+    dateTo: new Date('2024-01-10T01:55:56.845Z'),
     basePrice: 1100,
     isFavorite: false,
     offers: [
@@ -40,8 +15,8 @@ const mockPoints = [
   {
     type: 'Bus',
     destination: 'Amsterdam',
-    dateFrom: new Date('2024-02-01'),
-    dateTo: new Date('2024-02-10'),
+    dateFrom: new Date('2024-02-10T03:55:56.845Z'),
+    dateTo: new Date('2024-02-10T04:55:56.845Z'),
     basePrice: 100,
     isFavorite: true,
     offers: [
@@ -51,8 +26,8 @@ const mockPoints = [
   {
     type: 'Train',
     destination: 'Geneva',
-    dateFrom: new Date('2024-03-01'),
-    dateTo: new Date('2024-03-05'),
+    dateFrom: new Date('2024-03-10T05:55:56.845Z'),
+    dateTo: new Date('2024-03-10T06:55:56.845Z'),
     basePrice: 350,
     isFavorite: false,
     offers: [
@@ -62,8 +37,8 @@ const mockPoints = [
   {
     type: 'Ship',
     destination: 'Chamonix',
-    dateFrom: new Date('2024-01-01'),
-    dateTo: new Date('2024-01-05'),
+    dateFrom: new Date('2024-04-10T07:55:56.845Z'),
+    dateTo: new Date('2024-04-10T08:55:56.845Z'),
     basePrice: 500,
     isFavorite: false,
     offers: [
@@ -73,8 +48,8 @@ const mockPoints = [
   {
     type: 'Drive',
     destination: 'Amsterdam',
-    dateFrom: new Date('2024-01-01'),
-    dateTo: new Date('2024-01-05'),
+    dateFrom: new Date('2024-05-10T09:55:56.845Z'),
+    dateTo: new Date('2024-05-10T10:55:56.845Z'),
     basePrice: 1000,
     isFavorite: true,
     offers: [
@@ -84,8 +59,8 @@ const mockPoints = [
   {
     type: 'Flight',
     destination: 'Geneva',
-    dateFrom: new Date('2024-01-01'),
-    dateTo: new Date('2024-01-05'),
+    dateFrom: new Date('2024-06-10T11:55:56.845Z'),
+    dateTo: new Date('2024-06-10T12:55:56.845Z'),
     basePrice: 2000,
     isFavorite: false,
     offers: [
@@ -95,8 +70,8 @@ const mockPoints = [
   {
     type: 'Check-in',
     destination: 'Chamonix',
-    dateFrom: new Date('2024-01-01'),
-    dateTo: new Date('2024-01-05'),
+    dateFrom: new Date('2024-07-10T13:55:56.845Z'),
+    dateTo: new Date('2024-07-10T14:55:56.845Z'),
     basePrice: 5000,
     isFavorite: true,
     offers: [
@@ -106,8 +81,8 @@ const mockPoints = [
   {
     type: 'Sightseeing',
     destination: 'Amsterdam',
-    dateFrom: new Date('2024-01-01'),
-    dateTo: new Date('2024-01-05'),
+    dateFrom: new Date('2024-08-10T15:55:56.845Z'),
+    dateTo: new Date('2024-08-10T16:55:56.845Z'),
     basePrice: 600,
     isFavorite: false,
     offers: [
@@ -117,8 +92,8 @@ const mockPoints = [
   {
     type: 'Restaurant',
     destination: 'Geneva',
-    dateFrom: new Date('2024-01-01'),
-    dateTo: new Date('2024-01-05'),
+    dateFrom: new Date('2024-09-10T17:55:56.845Z'),
+    dateTo: new Date('2024-09-10T18:55:56.845Z'),
     basePrice: 700,
     isFavorite: false,
     offers: [
@@ -278,4 +253,32 @@ function getRandomPoint() {
   return getRandomArrayElement(mockPoints);
 }
 
-export {getRandomPoint};
+function createPointListOfferTemplate(point) {
+
+  const pointTypeOffer = mockOffers.find((offer) => offer.type === point.type);
+
+  if (!pointTypeOffer) {
+    return '';
+  }
+
+
+  const pointOffers = point.offers.map((offerId) => {
+    const foundOffer = pointTypeOffer.offers.find((offer) => offer.id === offerId);
+    if (!foundOffer) {
+      return '';
+    }
+    const {title, price} = foundOffer;
+
+
+    return `<li class="event__offer">
+      <span class="event__offer-title">${title}</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">${price}</span>
+    </li>`;
+  });
+
+  return pointOffers.join('');
+
+}
+
+export {getRandomPoint, createPointListOfferTemplate};

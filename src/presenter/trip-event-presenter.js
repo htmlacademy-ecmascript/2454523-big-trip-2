@@ -9,19 +9,22 @@ import { render } from '../render.js';
 export default class TripEventPresenter {
   tripEventsComponent = new TripEventView();
   tripEventListComponent = new TripEventListView();
-  constructor ({tripEventsContainer}) {
+
+  constructor ({tripEventsContainer,pointsModel}) {
     this.tripEventsContainer = tripEventsContainer;
+    this.pointsModel = pointsModel;
   }
 
   init () {
+    this.boardPoints = [... this.pointsModel.getPoints()];
     render(this.tripEventsComponent, this.tripEventsContainer);
     render(new SortView(), this.tripEventsComponent.getElement());
     render(this.tripEventListComponent,this.tripEventsComponent.getElement());
-    render (new EditPointView(), this.tripEventListComponent.getElement());
+    render (new EditPointView({point: this.boardPoints[0]}), this.tripEventListComponent.getElement());
     //render (new CreatePointView(), this.tripEventListComponent.getElement()); - отрисовка формы созадния
 
-    for (let i = 0; i < 3; i++) {
-      render (new PointListView(), this.tripEventListComponent.getElement());
+    for (let i = 1; i < this.boardPoints.length; i++) {
+      render (new PointListView({point: this.boardPoints[i]}), this.tripEventListComponent.getElement());
     }
 
   }
