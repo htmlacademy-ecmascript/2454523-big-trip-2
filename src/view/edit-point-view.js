@@ -1,6 +1,9 @@
 import { createElement } from '../render.js';
 import { POINT_TYPE, DESTINATION } from '../const.js';
-import {createPointListAllOfferTemplate} from '../mock/point.js';
+import {createPointListAllOfferTemplate, getDescriptionOfDestination} from '../mock/point.js';
+import { humanizeDate } from '../utils.js';
+
+const DATETIME_FORMAT_FOR_EDIT_FORM = 'DD/MM/YY HH:mm';
 
 function createEditPointTypePointTemplate () {
   return POINT_TYPE.map((type)=> `<div class="event__type-item">
@@ -10,18 +13,26 @@ function createEditPointTypePointTemplate () {
 
 }
 
-function createEditPointDestinationTemplate () {
+function createEditPointDestinationOptionTemplate () {
   return DESTINATION.map((destination)=>`<option value="${destination}"></option>`).join('');
+}
+
+function createDescriptionOfDestinationTemplate (point) {
+  const description = getDescriptionOfDestination(point);
+  return `<section class="event__section  event__section--destination">
+          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+          <p class="event__destination-description">${description}</p>
+        </section>`;
 }
 
 
 function createEditPointTemplate (point) {
 
-  const {type, destination, dateFrom,dateTo,basePrice, offers, isFavorite} = point;
+  const {type, destination, dateFrom,dateTo,basePrice, offers} = point;
   const typeTemplate = createEditPointTypePointTemplate();
-  const destinationTemplate = createEditPointDestinationTemplate();
+  const destinationTemplate = createEditPointDestinationOptionTemplate();
   const pointListAllOfferTemplate = createPointListAllOfferTemplate(point);
-
+  const descriptionOfDestinationTemplate = createDescriptionOfDestinationTemplate(point);
 
   return (
     `<li class="trip-events__item">
@@ -55,10 +66,10 @@ function createEditPointTemplate (point) {
 
         <div class="event__field-group  event__field-group--time">
           <label class="visually-hidden" for="event-start-time-1">From</label>
-          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="18/03/19 12:25">
+          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeDate(dateFrom,DATETIME_FORMAT_FOR_EDIT_FORM)}">
           &mdash;
           <label class="visually-hidden" for="event-end-time-1">To</label>
-          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="18/03/19 13:35">
+          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeDate(dateTo, DATETIME_FORMAT_FOR_EDIT_FORM)}">
         </div>
 
         <div class="event__field-group  event__field-group--price">
@@ -84,10 +95,7 @@ function createEditPointTemplate (point) {
           </div>
         </section>
 
-        <section class="event__section  event__section--destination">
-          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">Chamonix-Mont-Blanc (usually shortened to Chamonix) is a resort area near the junction of France, Switzerland and Italy. At the base of Mont Blanc, the highest summit in the Alps, it's renowned for its skiing.</p>
-        </section>
+      ${descriptionOfDestinationTemplate}
       </section>
     </form>
   </li>`

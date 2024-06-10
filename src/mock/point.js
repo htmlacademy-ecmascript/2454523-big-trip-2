@@ -320,5 +320,22 @@ function createPointListAllOfferTemplate(point) {
   return pointAllOffers.join('');
 }
 
+// function createDescriptionOfDestinationTemplate (point) {
+//   const destinationData = mockDestinations.find((destination) => destination.name === point.destination);
+//   const {description} = destinationData;
 
-export {getRandomPoint, createPointListOfferTemplate, createPointListAllOfferTemplate};
+//   return `<section class="event__section  event__section--destination">
+//           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+//           <p class="event__destination-description">${description}</p>
+//         </section>`;
+
+// }
+
+function getDescriptionOfDestination (point) {
+  const destinationData = mockDestinations.find((destination) => destination.name === point.destination);
+  const {description} = destinationData;
+  return description;
+}
+
+
+export {getRandomPoint, createPointListOfferTemplate, createPointListAllOfferTemplate, getDescriptionOfDestination };

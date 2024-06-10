@@ -1,17 +1,15 @@
 import { createElement } from '../render.js';
-import { humanizeEventDate, humanizeEventTime, humanizeEventDatetime, } from '../utils.js';
+import { humanizeDate } from '../utils.js';
 import {createPointListOfferTemplate} from '../mock/point.js';
+
+const DATE_FORMAT = 'MMM DD';
+const TIME_FORMAT = 'HH:mm';
+const DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm';
+//const DURATION_FORMAT = 'D[D] H[H] m[m]';
 
 function createPointListTemplate (point) {
 
   const {type, destination, dateFrom,dateTo,basePrice, offers, isFavorite} = point;
-
-  const formattedDateFrom = humanizeEventDate(dateFrom);
-  const formattedDateTo = humanizeEventDate(dateTo);
-  const formattedStartTime = humanizeEventTime(dateFrom);
-  const formattedEndTime = humanizeEventTime(dateTo);
-  const formattedStartDatetime = humanizeEventDatetime(dateFrom);
-  const formattedEndDatetime = humanizeEventDatetime(dateTo);
 
   const favoriteClassName = isFavorite
     ? 'event__favorite-btn--active'
@@ -22,16 +20,16 @@ function createPointListTemplate (point) {
   return (
     `<li class="trip-events__item">
               <div class="event">
-                <time class="event__date" datetime="${dateFrom}">${formattedDateFrom}</time>
+                <time class="event__date" datetime="${dateFrom}">${humanizeDate(dateFrom,DATE_FORMAT)}</time>
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
                 </div>
                 <h3 class="event__title">${type}${' '}${destination}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
-                    <time class="event__start-time" datetime="${formattedStartDatetime}">${formattedStartTime}</time>
+                    <time class="event__start-time" datetime="${humanizeDate(dateFrom, DATETIME_FORMAT)}">${humanizeDate(dateFrom, TIME_FORMAT)}</time>
                     &mdash;
-                    <time class="event__end-time" datetime="${formattedEndDatetime}">${formattedEndTime}</time>
+                    <time class="event__end-time" datetime="${humanizeDate(dateTo,DATETIME_FORMAT)}">${humanizeDate(dateTo, TIME_FORMAT)}</time>
                   </p>
                   <p class="event__duration">01H 10M</p>
                 </div>
