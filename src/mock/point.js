@@ -9,7 +9,7 @@ const mockPoints = [
     basePrice: 1100,
     isFavorite: false,
     offers: [
-      'taxi-1', 'taxi-2'
+      'taxi-2'
     ],
   },
   {
@@ -75,7 +75,7 @@ const mockPoints = [
     basePrice: 5000,
     isFavorite: true,
     offers: [
-      'check-in-1', 'check-in-2', 'check-in-3'
+      'check-in-1', 'check-in-3'
     ],
   },
   {
@@ -166,7 +166,17 @@ const mockOffers = [
         id: 'flight-2',
         title: 'Switch to comfort',
         price: 50
-      }
+      },
+      {
+        id: 'flight-3',
+        title: 'Add meal',
+        price: 30
+      },
+      {
+        id: 'flight-4',
+        title: 'Choose seats',
+        price: 150
+      },
     ]
   },{
     type: 'Check-in',
@@ -254,15 +264,17 @@ function getRandomPoint() {
 }
 
 function createPointListOfferTemplate(point) {
-
+  //получаем объект офферов по типу точки маршрута
   const pointTypeOffer = mockOffers.find((offer) => offer.type === point.type);
 
   if (!pointTypeOffer) {
     return '';
   }
 
-
+  // pointOffers - это массив с перечисленными id офферов (отрисованными)
   const pointOffers = point.offers.map((offerId) => {
+
+    // foundOffer - это объект, описывающий конкретный оффер по соответствующему id
     const foundOffer = pointTypeOffer.offers.find((offer) => offer.id === offerId);
     if (!foundOffer) {
       return '';
@@ -278,7 +290,35 @@ function createPointListOfferTemplate(point) {
   });
 
   return pointOffers.join('');
-
 }
 
-export {getRandomPoint, createPointListOfferTemplate};
+function createPointListAllOfferTemplate(point) {
+  const pointTypeOffer = mockOffers.find((offer) => offer.type === point.type);
+
+  if (!pointTypeOffer) {
+    return '';
+  }
+
+
+  const pointAllOffers = pointTypeOffer.offers.map((offer) => {
+    const arrayOfTitle = offer.title.trim().split(' ');
+    const nameForAttribute = arrayOfTitle[arrayOfTitle.length - 1];
+
+    const checked = point.offers.includes(offer.id) ? 'checked' : '';
+    const {title, price} = offer;
+    return `<div class="event__offer-selector">
+  <input class="event__offer-checkbox  visually-hidden" id="event-offer-${nameForAttribute}-1" type="checkbox" name="event-offer-${nameForAttribute}" ${checked}>
+  <label class="event__offer-label" for="event-offer-${nameForAttribute}-1">
+    <span class="event__offer-title">${title}</span>
+    &plus;&euro;&nbsp;
+    <span class="event__offer-price">${price}</span>
+  </label>
+</div>`;
+  }
+  );
+
+  return pointAllOffers.join('');
+}
+
+
+export {getRandomPoint, createPointListOfferTemplate, createPointListAllOfferTemplate};
