@@ -1,6 +1,6 @@
 import { createElement } from '../render.js';
 import { POINT_TYPE, DESTINATION } from '../const.js';
-import {createPointListAllOfferTemplate, getDescriptionOfDestination} from '../mock/point.js';
+import {getOffersForPoint, getDescriptionOfDestination} from '../mock/point.js';
 import { humanizeDate } from '../utils.js';
 
 const DATETIME_FORMAT_FOR_EDIT_FORM = 'DD/MM/YY HH:mm';
@@ -11,6 +11,29 @@ function createEditPointTypePointTemplate () {
 <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
 </div> `).join('');
 
+}
+
+function createPointListAllOfferTemplate(point) {
+  const pointTypeOffer = getOffersForPoint(point);
+
+  const pointAllOffers = pointTypeOffer.offers.map((offer) => {
+    const arrayOfTitle = offer.title.trim().split(' ');
+    const nameForAttribute = arrayOfTitle[arrayOfTitle.length - 1];
+
+    const checked = point.offers.includes(offer.id) ? 'checked' : '';
+    const {title, price} = offer;
+    return `<div class="event__offer-selector">
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${nameForAttribute}-1" type="checkbox" name="event-offer-${nameForAttribute}" ${checked}>
+      <label class="event__offer-label" for="event-offer-${nameForAttribute}-1">
+        <span class="event__offer-title">${title}</span>
+        &plus;&euro;&nbsp;
+        <span class="event__offer-price">${price}</span>
+      </label>
+    </div>`;
+  }
+  );
+
+  return pointAllOffers.join('');
 }
 
 function createEditPointDestinationOptionTemplate () {

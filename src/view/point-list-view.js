@@ -1,11 +1,33 @@
 import { createElement } from '../render.js';
-import { humanizeDate } from '../utils.js';
-import {createPointListOfferTemplate} from '../mock/point.js';
+import { humanizeDate, calculateDuration } from '../utils.js';
+import {getOffersForPoint} from '../mock/point.js';
 
 const DATE_FORMAT = 'MMM DD';
 const TIME_FORMAT = 'HH:mm';
 const DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm';
-//const DURATION_FORMAT = 'D[D] H[H] m[m]';
+
+function createPointListOfferTemplate(point) {
+  const pointTypeOffer = getOffersForPoint(point);
+
+  const pointOffers = point.offers.map((offerId) => {
+
+    const foundOffer = pointTypeOffer.offers.find((offer) => offer.id === offerId);
+    if (!foundOffer) {
+      return '';
+    }
+    const {title, price} = foundOffer;
+
+
+    return `<li class="event__offer">
+      <span class="event__offer-title">${title}</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">${price}</span>
+    </li>`;
+  });
+
+  return pointOffers.join('');
+}
+
 
 function createPointListTemplate (point) {
 
@@ -16,6 +38,7 @@ function createPointListTemplate (point) {
     : '';
 
   const offerTemplate = createPointListOfferTemplate(point);
+  const duration = calculateDuration(point);
 
   return (
     `<li class="trip-events__item">
@@ -31,7 +54,7 @@ function createPointListTemplate (point) {
                     &mdash;
                     <time class="event__end-time" datetime="${humanizeDate(dateTo,DATETIME_FORMAT)}">${humanizeDate(dateTo, TIME_FORMAT)}</time>
                   </p>
-                  <p class="event__duration">01H 10M</p>
+                  <p class="event__duration">${duration}</p>
                 </div>
                 <p class="event__price">
                   &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
