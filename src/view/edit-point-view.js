@@ -1,16 +1,13 @@
 import { createElement } from '../render.js';
-import { POINT_TYPE, DESTINATION } from '../const.js';
+import { POINT_TYPE, DESTINATION, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
 import {getOffersForPoint, getDescriptionOfDestination} from '../mock/point.js';
 import { humanizeDate } from '../utils.js';
-
-const DATETIME_FORMAT_FOR_EDIT_FORM = 'DD/MM/YY HH:mm';
 
 function createEditPointTypePointTemplate () {
   return POINT_TYPE.map((type)=> `<div class="event__type-item">
 <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
 <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
 </div> `).join('');
-
 }
 
 function createPointListAllOfferTemplate(point) {
@@ -41,7 +38,8 @@ function createEditPointDestinationOptionTemplate () {
 }
 
 function createDescriptionOfDestinationTemplate (point) {
-  const description = getDescriptionOfDestination(point);
+  const destinationData = getDescriptionOfDestination(point);
+  const {description} = destinationData;
   return `<section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
           <p class="event__destination-description">${description}</p>
@@ -72,7 +70,6 @@ function createEditPointTemplate (point) {
             <fieldset class="event__type-group">
               <legend class="visually-hidden">Event type</legend>
               ${typeTemplate}
-
             </fieldset>
           </div>
         </div>

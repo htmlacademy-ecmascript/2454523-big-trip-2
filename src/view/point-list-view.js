@@ -1,10 +1,7 @@
 import { createElement } from '../render.js';
 import { humanizeDate, calculateDuration } from '../utils.js';
 import {getOffersForPoint} from '../mock/point.js';
-
-const DATE_FORMAT = 'MMM DD';
-const TIME_FORMAT = 'HH:mm';
-const DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm';
+import {DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT} from '../const.js';
 
 function createPointListOfferTemplate(point) {
   const pointTypeOffer = getOffersForPoint(point);

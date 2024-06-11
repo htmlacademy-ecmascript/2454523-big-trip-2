@@ -232,6 +232,14 @@ const mockDestinations = [
       {
         src: 'https://loremflickr.com/248/152?random=5',
         description: 'Chamonix parliament building'
+      },
+      {
+        src: 'https://loremflickr.com/248/152?random=18',
+        description: 'Chamonix 2'
+      },
+      {
+        src: 'https://loremflickr.com/248/152?random=21',
+        description: 'Chamonix 3'
       }
     ]
   },
@@ -243,7 +251,11 @@ const mockDestinations = [
       {
         src: 'https://loremflickr.com/248/152?random=6',
         description: 'van gogh museum'
-      }
+      },
+      {
+        src: 'https://loremflickr.com/248/152?random=555',
+        description: 'Amsterdam 2'
+      },
     ]
   },
   {
@@ -254,6 +266,18 @@ const mockDestinations = [
       {
         src: 'https://loremflickr.com/248/152?random=7',
         description: 'Geneva Cathedral'
+      },
+      {
+        src: 'https://loremflickr.com/248/152?random=13',
+        description: 'Geneva 2'
+      },
+      {
+        src: 'https://loremflickr.com/248/152?random=28',
+        description: 'Geneva 3'
+      },
+      {
+        src: 'https://loremflickr.com/248/152?random=29',
+        description: 'Geneva 4'
       }
     ]
   }
@@ -274,8 +298,7 @@ function getOffersForPoint(point) {
 
 function getDescriptionOfDestination (point) {
   const destinationData = mockDestinations.find((destination) => destination.name === point.destination);
-  const {description} = destinationData;
-  return description;
+  return destinationData;
 }
 
 
