@@ -3,7 +3,7 @@ import { humanizeDate, calculateDuration } from '../utils.js';
 import {getOffersForPoint} from '../mock/point.js';
 import {DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT} from '../const.js';
 
-function createPointListOfferTemplate(point) {
+function createSelectedOffersTemplate(point) {
   const pointTypeOffer = getOffersForPoint(point);
 
   const pointOffers = point.offers.map((offerId) => {
@@ -28,13 +28,13 @@ function createPointListOfferTemplate(point) {
 
 function createPointListTemplate (point) {
 
-  const {type, destination, dateFrom,dateTo,basePrice, offers, isFavorite} = point;
+  const {type, destination, dateFrom,dateTo,basePrice, isFavorite} = point;
 
   const favoriteClassName = isFavorite
     ? 'event__favorite-btn--active'
     : '';
 
-  const offerTemplate = createPointListOfferTemplate(point);
+  const selectedOfferTemplate = createSelectedOffersTemplate(point);
   const duration = calculateDuration(point);
 
   return (
@@ -58,7 +58,7 @@ function createPointListTemplate (point) {
                 </p>
                 <h4 class="visually-hidden">Offers:</h4>
                 <ul class="event__selected-offers">
-                 ${offerTemplate}
+                 ${selectedOfferTemplate}
                 </ul>
                 <button class="event__favorite-btn ${favoriteClassName}" type="button">
                   <span class="visually-hidden">Add to favorite</span>

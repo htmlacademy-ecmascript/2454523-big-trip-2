@@ -10,7 +10,7 @@ function createEditPointTypePointTemplate () {
 </div> `).join('');
 }
 
-function createPointListAllOfferTemplate(point) {
+function createOffersTemplate(point) {
   const pointTypeOffer = getOffersForPoint(point);
 
   const pointAllOffers = pointTypeOffer.offers.map((offer) => {
@@ -49,10 +49,10 @@ function createDescriptionOfDestinationTemplate (point) {
 
 function createEditPointTemplate (point) {
 
-  const {type, destination, dateFrom,dateTo,basePrice, offers} = point;
+  const {type, destination, dateFrom,dateTo,basePrice} = point;
   const typeTemplate = createEditPointTypePointTemplate();
   const destinationTemplate = createEditPointDestinationOptionTemplate();
-  const pointListAllOfferTemplate = createPointListAllOfferTemplate(point);
+  const offerTemplate = createOffersTemplate(point);
   const descriptionOfDestinationTemplate = createDescriptionOfDestinationTemplate(point);
 
   return (
@@ -111,7 +111,7 @@ function createEditPointTemplate (point) {
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
           <div class="event__available-offers">
-            ${pointListAllOfferTemplate}
+            ${offerTemplate}
           </div>
         </section>
 
