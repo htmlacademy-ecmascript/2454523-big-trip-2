@@ -1,17 +1,16 @@
 import { createElement } from '../render.js';
-import { POINT_TYPE, DESTINATION, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
-import {getOffersForPoint, getDescriptionOfDestination} from '../mock/point.js';
-import { humanizeDate } from '../utils.js';
+import { POINT_TYPES, DESTINATIONS, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
+import { humanizeDate, getFormattedType, getOffersForPoint, getDestinationForPoint  } from '../utils.js';
 
 function createEditPointTypePointTemplate () {
-  return POINT_TYPE.map((type)=> `<div class="event__type-item">
+  return POINT_TYPES.map((type)=> `<div class="event__type-item">
 <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
-<label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
+<label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${getFormattedType(type)}</label>
 </div> `).join('');
 }
 
-function createOffersTemplate(point) {
-  const pointTypeOffer = getOffersForPoint(point);
+function createOffersTemplate(point, offers) {
+  const pointTypeOffer = getOffersForPoint(point,offers);
 
   const pointAllOffers = pointTypeOffer.offers.map((offer) => {
     const arrayOfTitle = offer.title.trim().split(' ');
@@ -34,11 +33,11 @@ function createOffersTemplate(point) {
 }
 
 function createEditPointDestinationOptionTemplate () {
-  return DESTINATION.map((destination)=>`<option value="${destination}"></option>`).join('');
+  return DESTINATIONS.map((destination)=>`<option value="${destination}"></option>`).join('');
 }
 
-function createDescriptionOfDestinationTemplate (point) {
-  const destinationData = getDescriptionOfDestination(point);
+function createDescriptionOfDestinationTemplate (point,destinations) {
+  const destinationData = getDestinationForPoint(point, destinations);
   const {description} = destinationData;
   return `<section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
@@ -47,13 +46,15 @@ function createDescriptionOfDestinationTemplate (point) {
 }
 
 
-function createEditPointTemplate (point) {
+function createEditPointTemplate (point, offers, destinations) {
 
-  const {type, destination, dateFrom,dateTo,basePrice} = point;
+  const {type, dateFrom,dateTo,basePrice} = point;
+  const destinationData = getDestinationForPoint(point, destinations);
+  const {name} = destinationData;
   const typeTemplate = createEditPointTypePointTemplate();
   const destinationTemplate = createEditPointDestinationOptionTemplate();
-  const offerTemplate = createOffersTemplate(point);
-  const descriptionOfDestinationTemplate = createDescriptionOfDestinationTemplate(point);
+  const offerTemplate = createOffersTemplate(point, offers);
+  const descriptionOfDestinationTemplate = createDescriptionOfDestinationTemplate(point, destinations);
 
   return (
     `<li class="trip-events__item">
@@ -78,7 +79,7 @@ function createEditPointTemplate (point) {
           <label class="event__label  event__type-output" for="event-destination-1">
             ${type}
           </label>
-          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
+          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
           <datalist id="destination-list-1">
             ${destinationTemplate}
           </datalist>
@@ -124,12 +125,14 @@ function createEditPointTemplate (point) {
 
 export default class EditPointView {
 
-  constructor ({point}) {
+  constructor ({point}, {offers}, {destinations}) {
     this.point = point;
+    this.offers = offers;
+    this.destinations = destinations;
   }
 
   getTemplate () {
-    return createEditPointTemplate(this.point);
+    return createEditPointTemplate(this.point, this.offers, this.destinations);
   }
 
   getElement () {
@@ -139,7 +142,7 @@ export default class EditPointView {
     return this.element;
   }
 
-  remoleElement () {
+  removeElement () {
     this.element = null;
   }
 }

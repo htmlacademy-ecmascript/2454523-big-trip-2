@@ -1,6 +1,6 @@
 const mockOffers = [
   {
-    type: 'Taxi',
+    type: 'taxi',
     offers: [
       {
         id: 'taxi-1',
@@ -15,7 +15,7 @@ const mockOffers = [
     ]
   },
   {
-    type: 'Bus',
+    type: 'bus',
     offers: [
       {
         id: 'bus-1',
@@ -24,7 +24,7 @@ const mockOffers = [
       }
     ]
   },{
-    type: 'Train',
+    type: 'train',
     offers: [
       {
         id: 'train-1',
@@ -33,7 +33,7 @@ const mockOffers = [
       }
     ]
   },{
-    type: 'Ship',
+    type: 'ship',
     offers: [
       {
         id: 'ship-1',
@@ -42,7 +42,7 @@ const mockOffers = [
       }
     ]
   },{
-    type: 'Drive',
+    type: 'drive',
     offers: [
       {
         id: 'drive-1',
@@ -51,7 +51,7 @@ const mockOffers = [
       }
     ]
   },{
-    type: 'Flight',
+    type: 'flight',
     offers: [
       {
         id: 'flight-1',
@@ -75,7 +75,7 @@ const mockOffers = [
       },
     ]
   },{
-    type: 'Check-in',
+    type: 'check-in',
     offers: [
       {
         id: 'check-in-1',
@@ -94,7 +94,7 @@ const mockOffers = [
       }
     ]
   },{
-    type: 'Sightseeing',
+    type: 'sightseeing',
     offers: [
       {
         id: 'sightseeing-1',
@@ -108,7 +108,7 @@ const mockOffers = [
       }
     ]
   },{
-    type: 'Restaurant',
+    type: 'restaurant',
     offers: [
       {
         id: 'restaurant-1',

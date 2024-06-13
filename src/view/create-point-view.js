@@ -1,24 +1,20 @@
 import { createElement } from '../render.js';
-import { POINT_TYPE, DESTINATION, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
-import { humanizeDate } from '../utils.js';
+import { POINT_TYPES, DESTINATIONS, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
+import { humanizeDate, getFormattedType, getOffersForPoint, getDestinationForPoint } from '../utils.js';
 
 function createAddPointTypePointTemplate () {
-  return POINT_TYPE.map((type)=> `<div class="event__type-item">
+  return POINT_TYPES.map((type)=> `<div class="event__type-item">
 <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
-<label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
+<label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${getFormattedType(type)}</label>
 </div> `).join('');
 }
 
 function createAddPointDestinationOptionTemplate () {
-  return DESTINATION.map((destination)=>`<option value="${destination}"></option>`).join('');
+  return DESTINATIONS.map((destination)=>`<option value="${destination}"></option>`).join('');
 }
 
 function createOffersTemplate(point, offers) {
-  const pointTypeOffer = offers.find((offer) => offer.type === point.type);
-
-  if (!pointTypeOffer) {
-    return '';
-  }
+  const pointTypeOffer = getOffersForPoint(point, offers);
 
   const pointAllOffers = pointTypeOffer.offers.map((offer) => {
     const arrayOfTitle = offer.title.trim().split(' ');
@@ -41,13 +37,8 @@ function createOffersTemplate(point, offers) {
   return pointAllOffers.join('');
 }
 
-
 function createDescriptionOfDestinationTemplate (point, destinations) {
-  const destinationData = destinations.find((destination) => destination.name === point.destination);
-
-  if (!destinationData) {
-    return '';
-  }
+  const destinationData = getDestinationForPoint(point, destinations);
   const {description, pictures} = destinationData;
   const photoOfDestination = pictures.map((picture) => `<img class="event__photo" src=${picture.src}" alt="Event photo"></img>`);
   return `<section class="event__section  event__section--destination">
@@ -64,7 +55,9 @@ function createDescriptionOfDestinationTemplate (point, destinations) {
 }
 
 function createPointTemplate (point, offers,destinations) {
-  const {type, destination, dateFrom,dateTo} = point;
+  const {type, dateFrom,dateTo} = point;
+  const destinationData = getDestinationForPoint(point, destinations);
+  const {name} = destinationData;
   const typeTemplate = createAddPointTypePointTemplate();
   const destinationTemplate = createAddPointDestinationOptionTemplate();
   const descriptionOfDestinationTemplate = createDescriptionOfDestinationTemplate(point, destinations);
@@ -94,7 +87,7 @@ function createPointTemplate (point, offers,destinations) {
                     <label class="event__label  event__type-output" for="event-destination-1">
                       ${type}
                     </label>
-                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
+                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
                     <datalist id="destination-list-1">
                      ${destinationTemplate}
                     </datalist>

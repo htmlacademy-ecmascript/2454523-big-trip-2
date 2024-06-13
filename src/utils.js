@@ -8,6 +8,11 @@ function humanizeDate(date, format) {
   return date ? dayjs(date).format(format) : '';
 }
 
+function getFormattedType (type) {
+  const formattedType = type[0].toUpperCase() + type.slice(1);
+  return formattedType;
+}
+
 function calculateDuration(point) {
   const dateFrom = dayjs(point.dateFrom);
   const dateTo = dayjs(point.dateTo);
@@ -32,4 +37,22 @@ function calculateDuration(point) {
   return formattedDuration;
 }
 
-export {getRandomArrayElement, humanizeDate, calculateDuration};
+function getOffersForPoint (point, offers) {
+  const pointTypeOffer = offers.find((offer) => offer.type === point.type);
+
+  if (!pointTypeOffer) {
+    return '';
+  }
+  return pointTypeOffer;
+}
+
+function getDestinationForPoint (point, destinations) {
+  const destinationData = destinations.find((destination) => destination.id === point.destination);
+
+  if (!destinationData) {
+    return '';
+  }
+  return destinationData;
+}
+
+export {getRandomArrayElement, humanizeDate, getFormattedType, calculateDuration, getOffersForPoint, getDestinationForPoint};
