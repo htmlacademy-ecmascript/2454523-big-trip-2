@@ -1,6 +1,5 @@
 import { createElement } from '../render.js';
 import { POINT_TYPE, DESTINATION, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
-import {getOffersForPoint, getDescriptionOfDestination} from '../mock/point.js';
 import { humanizeDate } from '../utils.js';
 
 function createAddPointTypePointTemplate () {
@@ -14,8 +13,12 @@ function createAddPointDestinationOptionTemplate () {
   return DESTINATION.map((destination)=>`<option value="${destination}"></option>`).join('');
 }
 
-function createOffersTemplate(point) {
-  const pointTypeOffer = getOffersForPoint(point);
+function createOffersTemplate(point, offers) {
+  const pointTypeOffer = offers.find((offer) => offer.type === point.type);
+
+  if (!pointTypeOffer) {
+    return '';
+  }
 
   const pointAllOffers = pointTypeOffer.offers.map((offer) => {
     const arrayOfTitle = offer.title.trim().split(' ');
@@ -39,8 +42,12 @@ function createOffersTemplate(point) {
 }
 
 
-function createDescriptionOfDestinationTemplate (point) {
-  const destinationData = getDescriptionOfDestination(point);
+function createDescriptionOfDestinationTemplate (point, destinations) {
+  const destinationData = destinations.find((destination) => destination.name === point.destination);
+
+  if (!destinationData) {
+    return '';
+  }
   const {description, pictures} = destinationData;
   const photoOfDestination = pictures.map((picture) => `<img class="event__photo" src=${picture.src}" alt="Event photo"></img>`);
   return `<section class="event__section  event__section--destination">
@@ -56,12 +63,12 @@ function createDescriptionOfDestinationTemplate (point) {
                 </section>`;
 }
 
-function createPointTemplate (point) {
+function createPointTemplate (point, offers,destinations) {
   const {type, destination, dateFrom,dateTo} = point;
   const typeTemplate = createAddPointTypePointTemplate();
   const destinationTemplate = createAddPointDestinationOptionTemplate();
-  const descriptionOfDestinationTemplate = createDescriptionOfDestinationTemplate(point);
-  const offerTemplate = createOffersTemplate(point);
+  const descriptionOfDestinationTemplate = createDescriptionOfDestinationTemplate(point, destinations);
+  const offerTemplate = createOffersTemplate(point, offers);
 
 
   return (
@@ -128,12 +135,14 @@ function createPointTemplate (point) {
 
 export default class CreatePointView {
 
-  constructor ({point}) {
+  constructor ({point}, {offers}, {destinations}) {
     this.point = point;
+    this.offers = offers;
+    this.destinations = destinations;
   }
 
   getTemplate () {
-    return createPointTemplate(this.point);
+    return createPointTemplate(this.point, this.offers, this.destinations);
   }
 
   getElement () {

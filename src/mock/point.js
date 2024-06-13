@@ -102,204 +102,204 @@ const mockPoints = [
   }
 ];
 
-const mockOffers = [
-  {
-    type: 'Taxi',
-    offers: [
-      {
-        id: 'taxi-1',
-        title: 'Order Uber',
-        price: 120
-      },
-      {
-        id: 'taxi-2',
-        title: 'Select music',
-        price: 50
-      }
-    ]
-  },
-  {
-    type: 'Bus',
-    offers: [
-      {
-        id: 'bus-1',
-        title: 'add meal',
-        price: 30
-      }
-    ]
-  },{
-    type: 'Train',
-    offers: [
-      {
-        id: 'train-1',
-        title: 'Choose a seat',
-        price: 50
-      }
-    ]
-  },{
-    type: 'Ship',
-    offers: [
-      {
-        id: 'ship-1',
-        title: 'Choose a seat',
-        price: 20
-      }
-    ]
-  },{
-    type: 'Drive',
-    offers: [
-      {
-        id: 'drive-1',
-        title: 'Rent a car',
-        price: 1000
-      }
-    ]
-  },{
-    type: 'Flight',
-    offers: [
-      {
-        id: 'flight-1',
-        title: 'Add luggage',
-        price: 120
-      },
-      {
-        id: 'flight-2',
-        title: 'Switch to comfort',
-        price: 50
-      },
-      {
-        id: 'flight-3',
-        title: 'Add meal',
-        price: 30
-      },
-      {
-        id: 'flight-4',
-        title: 'Choose seats',
-        price: 150
-      },
-    ]
-  },{
-    type: 'Check-in',
-    offers: [
-      {
-        id: 'check-in-1',
-        title: 'Add breakfast',
-        price: 300
-      },
-      {
-        id: 'check-in-2',
-        title: 'Add dinner',
-        price: 350
-      },
-      {
-        id: 'check-in-3',
-        title: 'All inclusive',
-        price: 700
-      }
-    ]
-  },{
-    type: 'Sightseeing',
-    offers: [
-      {
-        id: 'sightseeing-1',
-        title: 'Book tickets',
-        price: 120
-      },
-      {
-        id: 'sightseeing-2',
-        title: 'Lunch in city',
-        price: 50
-      }
-    ]
-  },{
-    type: 'Restaurant',
-    offers: [
-      {
-        id: 'restaurant-1',
-        title: 'meet the chef',
-        price: 120
-      }
-    ]
-  },
-];
+// const mockOffers = [
+//   {
+//     type: 'Taxi',
+//     offers: [
+//       {
+//         id: 'taxi-1',
+//         title: 'Order Uber',
+//         price: 120
+//       },
+//       {
+//         id: 'taxi-2',
+//         title: 'Select music',
+//         price: 50
+//       }
+//     ]
+//   },
+//   {
+//     type: 'Bus',
+//     offers: [
+//       {
+//         id: 'bus-1',
+//         title: 'add meal',
+//         price: 30
+//       }
+//     ]
+//   },{
+//     type: 'Train',
+//     offers: [
+//       {
+//         id: 'train-1',
+//         title: 'Choose a seat',
+//         price: 50
+//       }
+//     ]
+//   },{
+//     type: 'Ship',
+//     offers: [
+//       {
+//         id: 'ship-1',
+//         title: 'Choose a seat',
+//         price: 20
+//       }
+//     ]
+//   },{
+//     type: 'Drive',
+//     offers: [
+//       {
+//         id: 'drive-1',
+//         title: 'Rent a car',
+//         price: 1000
+//       }
+//     ]
+//   },{
+//     type: 'Flight',
+//     offers: [
+//       {
+//         id: 'flight-1',
+//         title: 'Add luggage',
+//         price: 120
+//       },
+//       {
+//         id: 'flight-2',
+//         title: 'Switch to comfort',
+//         price: 50
+//       },
+//       {
+//         id: 'flight-3',
+//         title: 'Add meal',
+//         price: 30
+//       },
+//       {
+//         id: 'flight-4',
+//         title: 'Choose seats',
+//         price: 150
+//       },
+//     ]
+//   },{
+//     type: 'Check-in',
+//     offers: [
+//       {
+//         id: 'check-in-1',
+//         title: 'Add breakfast',
+//         price: 300
+//       },
+//       {
+//         id: 'check-in-2',
+//         title: 'Add dinner',
+//         price: 350
+//       },
+//       {
+//         id: 'check-in-3',
+//         title: 'All inclusive',
+//         price: 700
+//       }
+//     ]
+//   },{
+//     type: 'Sightseeing',
+//     offers: [
+//       {
+//         id: 'sightseeing-1',
+//         title: 'Book tickets',
+//         price: 120
+//       },
+//       {
+//         id: 'sightseeing-2',
+//         title: 'Lunch in city',
+//         price: 50
+//       }
+//     ]
+//   },{
+//     type: 'Restaurant',
+//     offers: [
+//       {
+//         id: 'restaurant-1',
+//         title: 'meet the chef',
+//         price: 120
+//       }
+//     ]
+//   },
+// ];
 
-const mockDestinations = [
-  {
-    id: 1,
-    description: 'Chamonix, is a beautiful city, a true asian pearl, with crowded streets.',
-    name: 'Chamonix',
-    pictures: [
-      {
-        src: 'https://loremflickr.com/248/152?random=5',
-        description: 'Chamonix parliament building'
-      },
-      {
-        src: 'https://loremflickr.com/248/152?random=18',
-        description: 'Chamonix 2'
-      },
-      {
-        src: 'https://loremflickr.com/248/152?random=21',
-        description: 'Chamonix 3'
-      }
-    ]
-  },
-  {
-    id: 2,
-    description: 'Amsterdam is the capital and most populated city of the Netherlands.',
-    name: 'Amsterdam',
-    pictures: [
-      {
-        src: 'https://loremflickr.com/248/152?random=6',
-        description: 'van gogh museum'
-      },
-      {
-        src: 'https://loremflickr.com/248/152?random=555',
-        description: 'Amsterdam 2'
-      },
-    ]
-  },
-  {
-    id: 3,
-    description: 'Geneva is the second-most populous city in Switzerland (after Zürich) and the most populous of the French-speaking Romandy.',
-    name: 'Geneva',
-    pictures: [
-      {
-        src: 'https://loremflickr.com/248/152?random=7',
-        description: 'Geneva Cathedral'
-      },
-      {
-        src: 'https://loremflickr.com/248/152?random=13',
-        description: 'Geneva 2'
-      },
-      {
-        src: 'https://loremflickr.com/248/152?random=28',
-        description: 'Geneva 3'
-      },
-      {
-        src: 'https://loremflickr.com/248/152?random=29',
-        description: 'Geneva 4'
-      }
-    ]
-  }
-];
+// const mockDestinations = [
+//   {
+//     id: 1,
+//     description: 'Chamonix, is a beautiful city, a true asian pearl, with crowded streets.',
+//     name: 'Chamonix',
+//     pictures: [
+//       {
+//         src: 'https://loremflickr.com/248/152?random=5',
+//         description: 'Chamonix parliament building'
+//       },
+//       {
+//         src: 'https://loremflickr.com/248/152?random=18',
+//         description: 'Chamonix 2'
+//       },
+//       {
+//         src: 'https://loremflickr.com/248/152?random=21',
+//         description: 'Chamonix 3'
+//       }
+//     ]
+//   },
+//   {
+//     id: 2,
+//     description: 'Amsterdam is the capital and most populated city of the Netherlands.',
+//     name: 'Amsterdam',
+//     pictures: [
+//       {
+//         src: 'https://loremflickr.com/248/152?random=6',
+//         description: 'van gogh museum'
+//       },
+//       {
+//         src: 'https://loremflickr.com/248/152?random=555',
+//         description: 'Amsterdam 2'
+//       },
+//     ]
+//   },
+//   {
+//     id: 3,
+//     description: 'Geneva is the second-most populous city in Switzerland (after Zürich) and the most populous of the French-speaking Romandy.',
+//     name: 'Geneva',
+//     pictures: [
+//       {
+//         src: 'https://loremflickr.com/248/152?random=7',
+//         description: 'Geneva Cathedral'
+//       },
+//       {
+//         src: 'https://loremflickr.com/248/152?random=13',
+//         description: 'Geneva 2'
+//       },
+//       {
+//         src: 'https://loremflickr.com/248/152?random=28',
+//         description: 'Geneva 3'
+//       },
+//       {
+//         src: 'https://loremflickr.com/248/152?random=29',
+//         description: 'Geneva 4'
+//       }
+//     ]
+//   }
+// ];
 
 function getRandomPoint() {
   return getRandomArrayElement(mockPoints);
 }
 
-function getOffersForPoint(point) {
-  const pointTypeOffer = mockOffers.find((offer) => offer.type === point.type);
+// function getOffersForPoint(point) {
+//   const pointTypeOffer = mockOffers.find((offer) => offer.type === point.type);
 
-  if (!pointTypeOffer) {
-    return '';
-  }
-  return pointTypeOffer;
-}
+//   if (!pointTypeOffer) {
+//     return '';
+//   }
+//   return pointTypeOffer;
+// }
 
-function getDescriptionOfDestination (point) {
-  const destinationData = mockDestinations.find((destination) => destination.name === point.destination);
-  return destinationData;
-}
+// function getDescriptionOfDestination (point) {
+//   const destinationData = mockDestinations.find((destination) => destination.name === point.destination);
+//   return destinationData;
+// }
 
 
-export {getRandomPoint, getOffersForPoint, getDescriptionOfDestination };
+export {getRandomPoint};

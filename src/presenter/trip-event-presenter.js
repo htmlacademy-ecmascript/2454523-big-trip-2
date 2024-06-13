@@ -17,15 +17,17 @@ export default class TripEventPresenter {
 
   init () {
     this.boardPoints = [... this.pointsModel.getPoints()];
+    this.offers = [... this.pointsModel.getOffers()];
+    this.destinations = [... this.pointsModel.getDestinations()];
     render(this.tripEventsComponent, this.tripEventsContainer);
     render(new SortView(), this.tripEventsComponent.getElement());
     render(this.tripEventListComponent,this.tripEventsComponent.getElement());
     //render (new EditPointView({point: this.boardPoints[0]}), this.tripEventListComponent.getElement());
-    render (new CreatePointView({point: this.boardPoints[0]}), this.tripEventListComponent.getElement()); //- отрисовка формы созадния
+    render (new CreatePointView({point: this.boardPoints[0]}, {offers: this.offers}, {destinations: this.destinations}), this.tripEventListComponent.getElement()); //- отрисовка формы созадния
 
-    for (let i = 1; i < this.boardPoints.length; i++) {
-      render (new PointListView({point: this.boardPoints[i]}), this.tripEventListComponent.getElement());
-    }
+    // for (let i = 1; i < this.boardPoints.length; i++) {
+    //   render (new PointListView({point: this.boardPoints[i]}), this.tripEventListComponent.getElement());
+    // }
 
   }
 }
