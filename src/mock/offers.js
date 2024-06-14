@@ -26,11 +26,11 @@ const mockOffers = [
   },{
     type: 'train',
     offers: [
-      {
-        id: 'train-1',
-        title: 'Choose a seat',
-        price: 50
-      }
+      // {
+      //   id: 'train-1',
+      //   title: 'Choose a seat',
+      //   price: 50
+      // }
     ]
   },{
     type: 'ship',

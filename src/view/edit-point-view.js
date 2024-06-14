@@ -12,6 +12,10 @@ function createEditPointTypePointTemplate () {
 function createOffersTemplate(point, offers) {
   const pointTypeOffer = getOffersForPoint(point,offers);
 
+  if (pointTypeOffer.offers.length === 0) {
+    return '';
+  }
+
   const pointAllOffers = pointTypeOffer.offers.map((offer) => {
     const arrayOfTitle = offer.title.trim().split(' ');
     const nameForAttribute = arrayOfTitle[arrayOfTitle.length - 1];
@@ -29,7 +33,13 @@ function createOffersTemplate(point, offers) {
   }
   );
 
-  return pointAllOffers.join('');
+
+  return `<section class="event__section  event__section--offers">
+  <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+  <div class="event__available-offers">
+    ${pointAllOffers.join('')}
+  </div>
+  </section>`;
 }
 
 function createEditPointDestinationOptionTemplate () {
@@ -108,13 +118,7 @@ function createEditPointTemplate (point, offers, destinations) {
         </button>
       </header>
       <section class="event__details">
-        <section class="event__section  event__section--offers">
-          <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-
-          <div class="event__available-offers">
             ${offerTemplate}
-          </div>
-        </section>
 
       ${descriptionOfDestinationTemplate}
       </section>

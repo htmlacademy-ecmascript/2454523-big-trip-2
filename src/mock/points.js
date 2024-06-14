@@ -34,7 +34,7 @@ const mockPoints = [
     basePrice: 350,
     isFavorite: false,
     offers: [
-      'train-1'
+      // 'train-1'
     ],
   },
   {
