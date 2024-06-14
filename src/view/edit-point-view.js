@@ -1,6 +1,6 @@
 import { createElement } from '../render.js';
 import { POINT_TYPES, DESTINATIONS, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
-import { humanizeDate, getFormattedType, getOffersForPoint, getDestinationForPoint  } from '../utils.js';
+import { humanizeDate, getFormattedType, getOffersForPoint, getDestinationForPoint } from '../utils.js';
 
 function createEditPointTypePointTemplate () {
   return POINT_TYPES.map((type)=> `<div class="event__type-item">
@@ -48,6 +48,9 @@ function createEditPointDestinationOptionTemplate () {
 
 function createDescriptionOfDestinationTemplate (point,destinations) {
   const destinationData = getDestinationForPoint(point, destinations);
+  if (point.destination === '' || destinationData.description === '') {
+    return '';
+  }
   const {description} = destinationData;
   return `<section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
@@ -60,7 +63,10 @@ function createEditPointTemplate (point, offers, destinations) {
 
   const {type, dateFrom,dateTo,basePrice} = point;
   const destinationData = getDestinationForPoint(point, destinations);
-  const {name} = destinationData;
+  let {name} = destinationData;
+  if (point.destination === '') {
+    name = '';
+  }
   const typeTemplate = createEditPointTypePointTemplate();
   const destinationTemplate = createEditPointDestinationOptionTemplate();
   const offerTemplate = createOffersTemplate(point, offers);

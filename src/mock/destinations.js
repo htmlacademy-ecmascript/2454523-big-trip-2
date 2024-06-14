@@ -55,6 +55,29 @@ const mockDestinations = [
         description: 'Geneva 4'
       }
     ]
+  },
+  {
+    id: 4,
+    description: '',
+    name: 'Moscow',
+    pictures: [
+      {
+        src: 'https://loremflickr.com/248/152?random=33',
+        description: 'Moscow 1'
+      },
+      {
+        src: 'https://loremflickr.com/248/152?random=44',
+        description: 'Moscow 2'
+      },
+      {
+        src: 'https://loremflickr.com/248/152?random=55',
+        description: 'Moscow 3'
+      },
+      {
+        src: 'https://loremflickr.com/248/152?random=66',
+        description: 'Moscow 4'
+      }
+    ]
   }
 ];
 

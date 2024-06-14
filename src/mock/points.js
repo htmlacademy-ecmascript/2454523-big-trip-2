@@ -64,10 +64,10 @@ const mockPoints = [
   {
     id: 6,
     type: 'flight',
-    destination: 3,
+    destination: '',
     dateFrom: new Date('2024-06-10T11:56:56.845Z'),
     dateTo: new Date('2024-06-10T15:24:56.845Z'),
-    basePrice: 2000,
+    basePrice: '',
     isFavorite: false,
     offers: [
       'flight-1', 'flight-2'
@@ -76,7 +76,7 @@ const mockPoints = [
   {
     id: 7,
     type: 'check-in',
-    destination: 1,
+    destination: 4,
     dateFrom: new Date('2024-07-10T13:48:56.845Z'),
     dateTo: new Date('2024-07-13T14:55:56.845Z'),
     basePrice: 5000,
