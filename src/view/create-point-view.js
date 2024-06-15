@@ -16,6 +16,10 @@ function createAddPointDestinationOptionTemplate () {
 function createOffersTemplate(point, offers) {
   const pointTypeOffer = getOffersForPoint(point, offers);
 
+  if (pointTypeOffer.offers.length === 0) {
+    return '';
+  }
+
   const pointAllOffers = pointTypeOffer.offers.map((offer) => {
     const arrayOfTitle = offer.title.trim().split(' ');
     const nameForAttribute = arrayOfTitle[arrayOfTitle.length - 1];
@@ -34,11 +38,22 @@ function createOffersTemplate(point, offers) {
   }
   );
 
-  return pointAllOffers.join('');
+  //return pointAllOffers.join('');
+  return `<section class="event__section  event__section--offers">
+  <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+  <div class="event__available-offers">
+    ${pointAllOffers.join('')}
+  </div>
+  </section>`;
 }
 
 function createDescriptionOfDestinationTemplate (point, destinations) {
   const destinationData = getDestinationForPoint(point, destinations);
+
+  if (point.destination === '' || destinationData.description === '') {
+    return '';
+  }
+
   const {description, pictures} = destinationData;
   const photoOfDestination = pictures.map((picture) => `<img class="event__photo" src=${picture.src}" alt="Event photo"></img>`);
   return `<section class="event__section  event__section--destination">
@@ -57,7 +72,12 @@ function createDescriptionOfDestinationTemplate (point, destinations) {
 function createPointTemplate (point, offers,destinations) {
   const {type, dateFrom,dateTo} = point;
   const destinationData = getDestinationForPoint(point, destinations);
-  const {name} = destinationData;
+  //const {name} = destinationData;
+
+  let {name} = destinationData;
+  if (point.destination === '') {
+    name = '';
+  }
   const typeTemplate = createAddPointTypePointTemplate();
   const destinationTemplate = createAddPointDestinationOptionTemplate();
   const descriptionOfDestinationTemplate = createDescriptionOfDestinationTemplate(point, destinations);
@@ -113,11 +133,9 @@ function createPointTemplate (point, offers,destinations) {
                   <button class="event__reset-btn" type="reset">Cancel</button>
                 </header>
                 <section class="event__details">
-                  <section class="event__section  event__section--offers">
-                    <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+
                     ${offerTemplate}
-                    </div>
-                  </section>
+
                   ${descriptionOfDestinationTemplate}
                 </section>
               </form>
