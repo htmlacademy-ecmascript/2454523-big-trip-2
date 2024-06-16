@@ -26,8 +26,7 @@ function createOffersTemplate(point, offers) {
 
     const checked = point.offers.includes(offer.id) ? 'checked' : '';
     const {title, price} = offer;
-    return `<div class="event__available-offers">
-              <div class="event__offer-selector">
+    return `<div class="event__offer-selector">
                 <input class="event__offer-checkbox  visually-hidden" id="event-offer-${nameForAttribute}-1" type="checkbox" name="event-offer-luggage" ${checked}>
                   <label class="event__offer-label" for="event-offer-${nameForAttribute}-1">
                     <span class="event__offer-title">${title}</span>
@@ -38,7 +37,6 @@ function createOffersTemplate(point, offers) {
   }
   );
 
-  //return pointAllOffers.join('');
   return `<section class="event__section  event__section--offers">
   <h3 class="event__section-title  event__section-title--offers">Offers</h3>
   <div class="event__available-offers">
@@ -72,7 +70,6 @@ function createDescriptionOfDestinationTemplate (point, destinations) {
 function createPointTemplate (point, offers,destinations) {
   const {type, dateFrom,dateTo} = point;
   const destinationData = getDestinationForPoint(point, destinations);
-  //const {name} = destinationData;
 
   let {name} = destinationData;
   if (point.destination === '') {
