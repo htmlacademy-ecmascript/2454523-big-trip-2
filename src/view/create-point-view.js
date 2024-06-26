@@ -21,14 +21,12 @@ function createOffersTemplate(point, offers) {
   }
 
   const pointAllOffers = pointTypeOffer.offers.map((offer) => {
-    const arrayOfTitle = offer.title.trim().split(' ');
-    const nameForAttribute = arrayOfTitle[arrayOfTitle.length - 1];
 
     const checked = point.offers.includes(offer.id) ? 'checked' : '';
-    const {title, price} = offer;
+    const {title, price,id} = offer;
     return `<div class="event__offer-selector">
-                <input class="event__offer-checkbox  visually-hidden" id="event-offer-${nameForAttribute}-1" type="checkbox" name="event-offer-luggage" ${checked}>
-                  <label class="event__offer-label" for="event-offer-${nameForAttribute}-1">
+                <input class="event__offer-checkbox  visually-hidden" id="${id}" type="checkbox" name="event-offer-${id}" ${checked}>
+                  <label class="event__offer-label" for="${id}">
                     <span class="event__offer-title">${title}</span>
                           &plus;&euro;&nbsp;
                     <span class="event__offer-price">${price}</span>
