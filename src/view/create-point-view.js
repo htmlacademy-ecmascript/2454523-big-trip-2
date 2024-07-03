@@ -140,15 +140,18 @@ function createPointTemplate (point, offers,destinations) {
 }
 
 export default class CreatePointView extends AbstractView {
+  #point = null;
+  #offers = [];
+  #destinations = [];
 
   constructor ({point}, {offers}, {destinations}) {
     super();
-    this.point = point;
-    this.offers = offers;
-    this.destinations = destinations;
+    this.#point = point;
+    this.#offers = offers;
+    this.#destinations = destinations;
   }
 
   get template () {
-    return createPointTemplate(this.point, this.offers, this.destinations);
+    return createPointTemplate(this.#point, this.#offers, this.#destinations);
   }
 }

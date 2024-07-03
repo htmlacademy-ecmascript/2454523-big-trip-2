@@ -132,15 +132,18 @@ function createEditPointTemplate (point, offers, destinations) {
 }
 
 export default class EditPointView extends AbstractView {
+  #point = null;
+  #offers = [];
+  #destinations = [];
 
   constructor ({point}, {offers}, {destinations}) {
     super();
-    this.point = point;
-    this.offers = offers;
-    this.destinations = destinations;
+    this.#point = point;
+    this.#offers = offers;
+    this.#destinations = destinations;
   }
 
   get template () {
-    return createEditPointTemplate(this.point, this.offers, this.destinations);
+    return createEditPointTemplate(this.#point, this.#offers, this.#destinations);
   }
 }

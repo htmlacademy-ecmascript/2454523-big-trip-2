@@ -7,26 +7,33 @@ import EditPointView from '../view/edit-point-view.js';
 import {render} from '../framework/render.js';
 
 export default class TripEventPresenter {
-  tripEventsComponent = new TripEventView();
-  tripEventListComponent = new TripEventListView();
+  #tripEventsContainer = null;
+  #pointsModel = null;
+
+  #tripEventsComponent = new TripEventView();
+  #tripEventListComponent = new TripEventListView();
 
   constructor ({tripEventsContainer,pointsModel}) {
-    this.tripEventsContainer = tripEventsContainer;
-    this.pointsModel = pointsModel;
+    this.#tripEventsContainer = tripEventsContainer;
+    this.#pointsModel = pointsModel;
   }
 
-  init () {
-    this.boardPoints = [... this.pointsModel.getPoints()];
-    this.offers = [... this.pointsModel.getOffers()];
-    this.destinations = [... this.pointsModel.getDestinations()];
-    render(this.tripEventsComponent, this.tripEventsContainer);
-    render(new SortView(), this.tripEventsComponent.element);
-    render(this.tripEventListComponent,this.tripEventsComponent.element);
-    render (new EditPointView({point: this.boardPoints[0]}, {offers: this.offers}, {destinations: this.destinations}), this.tripEventListComponent.element);
-    render (new CreatePointView({point: this.boardPoints[0]}, {offers: this.offers}, {destinations: this.destinations}), this.tripEventListComponent.element); //- отрисовка формы созадния
+  #boardPoints = [];
+  #offers = [];
+  #destinations = [];
 
-    for (let i = 1; i < this.boardPoints.length; i++) {
-      render (new PointListView({point: this.boardPoints[i]},{offers: this.offers}, {destinations: this.destinations}), this.tripEventListComponent.element);
+  init () {
+    this.#boardPoints = [... this.#pointsModel.points];
+    this.#offers = [... this.#pointsModel.offers];
+    this.#destinations = [... this.#pointsModel.destinations];
+    render(this.#tripEventsComponent, this.#tripEventsContainer);
+    render(new SortView(), this.#tripEventsComponent.element);
+    render(this.#tripEventListComponent,this.#tripEventsComponent.element);
+    render (new EditPointView({point: this.#boardPoints[0]}, {offers: this.#offers}, {destinations: this.#destinations}), this.#tripEventListComponent.element);
+    render (new CreatePointView({point: this.#boardPoints[0]}, {offers: this.#offers}, {destinations: this.#destinations}), this.#tripEventListComponent.element); //- отрисовка формы созадния
+
+    for (let i = 1; i < this.#boardPoints.length; i++) {
+      render (new PointListView({point: this.#boardPoints[i]},{offers: this.#offers}, {destinations: this.#destinations}), this.#tripEventListComponent.element);
     }
 
   }
