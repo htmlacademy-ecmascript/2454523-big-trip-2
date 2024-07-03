@@ -1,4 +1,4 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { humanizeDate, calculateDuration, getOffersForPoint, getDestinationForPoint} from '../utils.js';
 import {DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT} from '../const.js';
 
@@ -75,27 +75,17 @@ function createPointListTemplate (point, offers, destinations) {
   );
 }
 
-export default class PointListView {
+export default class PointListView extends AbstractView {
 
   constructor ({point}, {offers}, {destinations}) {
+    super();
     this.point = point;
     this.offers = offers;
     this.destinations = destinations;
   }
 
-  getTemplate () {
+  get template() {
     return createPointListTemplate(this.point, this.offers, this.destinations);
-  }
-
-  getElement () {
-    if(!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement () {
-    this.element = null;
   }
 }
 
