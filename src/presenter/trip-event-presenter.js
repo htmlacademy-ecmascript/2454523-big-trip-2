@@ -33,9 +33,14 @@ export default class TripEventPresenter {
     render (new CreatePointView({point: this.#boardPoints[0]}, {offers: this.#offers}, {destinations: this.#destinations}), this.#tripEventListComponent.element); //- отрисовка формы созадния
 
     for (let i = 1; i < this.#boardPoints.length; i++) {
-      render (new PointListView({point: this.#boardPoints[i]},{offers: this.#offers}, {destinations: this.#destinations}), this.#tripEventListComponent.element);
+      this.#renderPoint(this.#boardPoints[i], this.#offers, this.#destinations);
     }
 
   }
-}
 
+  #renderPoint(point, offers, destinations) {
+    const pointComponent = new PointListView({point}, {offers}, {destinations});
+    render (pointComponent, this.#tripEventListComponent.element);
+  }
+
+}
