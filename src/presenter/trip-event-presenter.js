@@ -47,21 +47,21 @@ export default class TripEventPresenter {
       }
     };
 
+    const pointEditComponent = new EditPointView({point,
+      offers,
+      destinations,
+      onFormSubmit: () => {
+        replaceFormToCard();
+       // document.removeEventListener('keydown', escKeyDownHandler);
+      }});
+
     const pointComponent = new PointListView({point,
       offers,
       destinations,
       onEditClick: () => {
         replaceCardToForm();
         document.addEventListener('keydown', escKeyDownHandler);
-        document.querySelector('.event__rollup-btn').addEventListener('click',replaceFormToCard);
-      }});
-
-    const pointEditComponent = new EditPointView({point,
-      offers,
-      destinations,
-      onFormSubmit: () => {
-        replaceFormToCard();
-        // document.removeEventListener('keydown', escKeyDownHandler);
+        pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click',replaceFormToCard);
       }});
 
     function replaceCardToForm () {
@@ -71,7 +71,7 @@ export default class TripEventPresenter {
     function replaceFormToCard() {
       replace (pointComponent, pointEditComponent);
       document.removeEventListener('keydown', escKeyDownHandler);
-      document.querySelector('.event__rollup-btn').removeEventListener('click',replaceFormToCard);
+      pointEditComponent.element.querySelector('.event__rollup-btn').removeEventListener('click',replaceFormToCard);
     }
 
     render (pointComponent, this.#tripEventListComponent.element);
