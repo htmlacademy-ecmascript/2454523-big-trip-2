@@ -26,16 +26,7 @@ export default class TripEventPresenter {
     this.#boardPoints = [... this.#pointsModel.points];
     this.#offers = [... this.#pointsModel.offers];
     this.#destinations = [... this.#pointsModel.destinations];
-    render(this.#tripEventsComponent, this.#tripEventsContainer);
-    render(new SortView(), this.#tripEventsComponent.element);
-    render(this.#tripEventListComponent,this.#tripEventsComponent.element);
-    //  render (new EditPointView({point: this.#boardPoints[0], offers: this.#offers, destinations: this.#destinations}), this.#tripEventListComponent.element);
-    //render (new CreatePointView({point: this.#boardPoints[0]}, {offers: this.#offers}, {destinations: this.#destinations}), this.#tripEventListComponent.element); //- отрисовка формы созадния
-
-    for (let i = 1; i < this.#boardPoints.length; i++) {
-      this.#renderPoint(this.#boardPoints[i], this.#offers, this.#destinations);
-    }
-
+    this.#renderBoard();
   }
 
   #renderPoint(point, offers, destinations) {
@@ -52,7 +43,7 @@ export default class TripEventPresenter {
       destinations,
       onFormSubmit: () => {
         replaceFormToCard();
-       // document.removeEventListener('keydown', escKeyDownHandler);
+        // document.removeEventListener('keydown', escKeyDownHandler);
       }});
 
     const pointComponent = new PointListView({point,
@@ -75,6 +66,17 @@ export default class TripEventPresenter {
     }
 
     render (pointComponent, this.#tripEventListComponent.element);
+  }
+
+  #renderBoard () {
+    render(this.#tripEventsComponent, this.#tripEventsContainer);
+    render(new SortView(), this.#tripEventsComponent.element);
+    render(this.#tripEventListComponent,this.#tripEventsComponent.element);
+    //render (new CreatePointView({point: this.#boardPoints[0]}, {offers: this.#offers}, {destinations: this.#destinations}), this.#tripEventListComponent.element); //- отрисовка формы созадния
+
+    for (let i = 1; i < this.#boardPoints.length; i++) {
+      this.#renderPoint(this.#boardPoints[i], this.#offers, this.#destinations);
+    }
   }
 
 }
