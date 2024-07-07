@@ -1,16 +1,7 @@
 import dayjs from 'dayjs';
 
-function getRandomArrayElement(items) {
-  return items[Math.floor(Math.random() * items.length)];
-}
-
 function humanizeDate(date, format) {
   return date ? dayjs(date).format(format) : '';
-}
-
-function getFormattedType (type) {
-  const formattedType = type[0].toUpperCase() + type.slice(1);
-  return formattedType;
 }
 
 function calculateDuration(point) {
@@ -37,24 +28,4 @@ function calculateDuration(point) {
   return formattedDuration;
 }
 
-function getOffersForPoint (point, offers) {
-
-  const pointTypeOffer = offers.find((offer) => offer.type === point.type);
-
-  if (!pointTypeOffer) {
-    return '';
-  }
-  return pointTypeOffer;
-}
-
-function getDestinationForPoint (point, destinations) {
-
-  const destinationData = destinations.find((destination) => destination.id === point.destination);
-
-  if (!destinationData) {
-    return '';
-  }
-  return destinationData;
-}
-
-export {getRandomArrayElement, humanizeDate, getFormattedType, calculateDuration, getOffersForPoint, getDestinationForPoint};
+export {humanizeDate, calculateDuration};

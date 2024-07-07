@@ -1,6 +1,9 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { POINT_TYPES, DESTINATIONS, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
-import { humanizeDate, getFormattedType, getOffersForPoint, getDestinationForPoint } from '../utils.js';
+import { humanizeDate } from '../utils/date.js';
+import { getFormattedType } from '../utils/common.js';
+import {getOffersForPoint} from '../utils/point.js';
+import {getDestinationForPoint} from '../utils/point.js';
 
 function createEditPointTypePointTemplate () {
   return POINT_TYPES.map((type)=> `<div class="event__type-item">
@@ -49,11 +52,20 @@ function createDescriptionOfDestinationTemplate (point,destinations) {
   if (point.destination === '' || destinationData.description === '') {
     return '';
   }
-  const {description} = destinationData;
+
+  const {description, pictures} = destinationData;
+  const photoOfDestination = pictures.map((picture) => `<img class="event__photo" src=${picture.src}" alt="Event photo"></img>`);
   return `<section class="event__section  event__section--destination">
-          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${description}</p>
-        </section>`;
+                  <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+                  <p class="event__destination-description">${description}</p>
+
+                  <div class="event__photos-container">
+                    <div class="event__photos-tape">
+                   ${photoOfDestination}
+                    </div>
+                  </div>
+                </section>
+              </section>`;
 }
 
 

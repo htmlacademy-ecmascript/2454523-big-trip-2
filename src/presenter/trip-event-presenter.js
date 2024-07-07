@@ -1,6 +1,6 @@
 import SortView from '../view/sort-view.js';
 import TripEventView from '../view/trip-event-section-view.js';
-import CreatePointView from '../view/create-point-view.js'; //импорт класса форма создания
+//import CreatePointView from '../view/create-point-view.js'; //импорт класса форма создания
 import TripEventListView from '../view/trip-event-list-view.js';
 import PointListView from '../view/point-list-view.js';
 import EditPointView from '../view/edit-point-view.js';
@@ -33,8 +33,7 @@ export default class TripEventPresenter {
     const escKeyDownHandler = (evt)=> {
       if (evt.key === 'Escape') {
         evt.preventDefault();
-        replaceFormToCard();
-        //document.removeEventListener('keydown', escKeyDownHandler);
+        replaceEditFormToPoint();
       }
     };
 
@@ -42,27 +41,26 @@ export default class TripEventPresenter {
       offers,
       destinations,
       onFormSubmit: () => {
-        replaceFormToCard();
-        // document.removeEventListener('keydown', escKeyDownHandler);
+        replaceEditFormToPoint();
       }});
 
     const pointComponent = new PointListView({point,
       offers,
       destinations,
       onEditClick: () => {
-        replaceCardToForm();
+        replacePointToEditForm();
         document.addEventListener('keydown', escKeyDownHandler);
-        pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click',replaceFormToCard);
+        pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click',replaceEditFormToPoint);
       }});
 
-    function replaceCardToForm () {
+    function replacePointToEditForm () {
       replace (pointEditComponent, pointComponent);
     }
 
-    function replaceFormToCard() {
+    function replaceEditFormToPoint() {
       replace (pointComponent, pointEditComponent);
       document.removeEventListener('keydown', escKeyDownHandler);
-      pointEditComponent.element.querySelector('.event__rollup-btn').removeEventListener('click',replaceFormToCard);
+      pointEditComponent.element.querySelector('.event__rollup-btn').removeEventListener('click',replaceEditFormToPoint);
     }
 
     render (pointComponent, this.#tripEventListComponent.element);

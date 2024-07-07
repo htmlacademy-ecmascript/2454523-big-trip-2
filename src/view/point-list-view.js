@@ -1,6 +1,8 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { humanizeDate, calculateDuration, getOffersForPoint, getDestinationForPoint} from '../utils.js';
+import { humanizeDate, calculateDuration } from '../utils/date.js';
 import {DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT} from '../const.js';
+import {getOffersForPoint} from '../utils/point.js';
+import {getDestinationForPoint} from '../utils/point.js';
 
 function createSelectedOffersTemplate(point, offers) {
   const pointTypeOffer = getOffersForPoint(point, offers);
