@@ -1,6 +1,9 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { POINT_TYPES, DESTINATIONS, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
-import { humanizeDate, getFormattedType, getOffersForPoint, getDestinationForPoint } from '../utils.js';
+import { humanizeDate } from '../utils/date.js';
+import { getFormattedType } from '../utils/common.js';
+import {getOffersForPoint} from '../utils/point.js';
+import {getDestinationForPoint} from '../utils/point.js';
 
 function createAddPointTypePointTemplate () {
   return POINT_TYPES.map((type)=> `<div class="event__type-item">
@@ -139,26 +142,19 @@ function createPointTemplate (point, offers,destinations) {
 
 }
 
-export default class CreatePointView {
+export default class CreatePointView extends AbstractView {
+  #point = null;
+  #offers = [];
+  #destinations = [];
 
   constructor ({point}, {offers}, {destinations}) {
-    this.point = point;
-    this.offers = offers;
-    this.destinations = destinations;
+    super();
+    this.#point = point;
+    this.#offers = offers;
+    this.#destinations = destinations;
   }
 
-  getTemplate () {
-    return createPointTemplate(this.point, this.offers, this.destinations);
-  }
-
-  getElement () {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement () {
-    this.element = null;
+  get template () {
+    return createPointTemplate(this.#point, this.#offers, this.#destinations);
   }
 }

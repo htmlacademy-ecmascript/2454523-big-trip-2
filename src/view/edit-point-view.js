@@ -1,6 +1,9 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { POINT_TYPES, DESTINATIONS, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
-import { humanizeDate, getFormattedType, getOffersForPoint, getDestinationForPoint } from '../utils.js';
+import { humanizeDate } from '../utils/date.js';
+import { getFormattedType } from '../utils/common.js';
+import {getOffersForPoint} from '../utils/point.js';
+import {getDestinationForPoint} from '../utils/point.js';
 
 function createEditPointTypePointTemplate () {
   return POINT_TYPES.map((type)=> `<div class="event__type-item">
@@ -49,11 +52,20 @@ function createDescriptionOfDestinationTemplate (point,destinations) {
   if (point.destination === '' || destinationData.description === '') {
     return '';
   }
-  const {description} = destinationData;
+
+  const {description, pictures} = destinationData;
+  const photoOfDestination = pictures.map((picture) => `<img class="event__photo" src=${picture.src}" alt="Event photo"></img>`);
   return `<section class="event__section  event__section--destination">
-          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${description}</p>
-        </section>`;
+                  <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+                  <p class="event__destination-description">${description}</p>
+
+                  <div class="event__photos-container">
+                    <div class="event__photos-tape">
+                   ${photoOfDestination}
+                    </div>
+                  </div>
+                </section>
+              </section>`;
 }
 
 
@@ -131,26 +143,30 @@ function createEditPointTemplate (point, offers, destinations) {
   );
 }
 
-export default class EditPointView {
+export default class EditPointView extends AbstractView {
+  #point = null;
+  #offers = [];
+  #destinations = [];
+  #handleForSubmit = null;
 
-  constructor ({point}, {offers}, {destinations}) {
-    this.point = point;
-    this.offers = offers;
-    this.destinations = destinations;
+  constructor ({point, offers, destinations, onFormSubmit}) {
+    super();
+    this.#point = point;
+    this.#offers = offers;
+    this.#destinations = destinations;
+    this. #handleForSubmit = onFormSubmit;
+
+    this.element.querySelector('form')
+      .addEventListener('submit', this.#formSubmitHandler);
   }
 
-  getTemplate () {
-    return createEditPointTemplate(this.point, this.offers, this.destinations);
+  get template () {
+    return createEditPointTemplate(this.#point, this.#offers, this.#destinations);
   }
 
-  getElement () {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this. #handleForSubmit();
 
-  removeElement () {
-    this.element = null;
-  }
+  };
 }
