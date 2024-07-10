@@ -5,6 +5,7 @@ import TripEventListView from '../view/trip-event-list-view.js';
 import PointListView from '../view/point-list-view.js';
 import EditPointView from '../view/edit-point-view.js';
 import {render, replace} from '../framework/render.js';
+import NoPointView from '../view/no-point-view.js';
 
 export default class TripEventPresenter {
   #tripEventsContainer = null;
@@ -12,6 +13,7 @@ export default class TripEventPresenter {
 
   #tripEventsComponent = new TripEventView();
   #tripEventListComponent = new TripEventListView();
+  #noPointComponent = new NoPointView();
 
   constructor ({tripEventsContainer,pointsModel}) {
     this.#tripEventsContainer = tripEventsContainer;
@@ -68,6 +70,12 @@ export default class TripEventPresenter {
 
   #renderBoard () {
     render(this.#tripEventsComponent, this.#tripEventsContainer);
+
+    if (this.#boardPoints.length === 0) {
+      render(this.#noPointComponent,this.#tripEventsComponent.element);
+      return;
+    }
+
     render(new SortView(), this.#tripEventsComponent.element);
     render(this.#tripEventListComponent,this.#tripEventsComponent.element);
     //render (new CreatePointView({point: this.#boardPoints[0]}, {offers: this.#offers}, {destinations: this.#destinations}), this.#tripEventListComponent.element); //- отрисовка формы созадния
