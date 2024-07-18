@@ -1,5 +1,5 @@
 import SortView from '../view/sort-view.js';
-import TripEventView from '../view/trip-event-section-view.js';
+import TripEventView from '../view/trip-event-view.js';
 //import CreatePointView from '../view/create-point-view.js'; //импорт класса форма создания
 import TripEventListView from '../view/trip-event-list-view.js';
 import {render,RenderPosition} from '../framework/render.js';
@@ -10,7 +10,7 @@ export default class TripEventPresenter {
   #tripEventsContainer = null;
   #pointsModel = null;
 
-  #tripEventsComponent = new TripEventView();
+  #tripEventComponent = new TripEventView();
   #tripEventListComponent = new TripEventListView();
   #noPointComponent = new NoPointView();
   #sortComponent = new SortView();
@@ -32,7 +32,7 @@ export default class TripEventPresenter {
   }
 
   #renderSort () {
-    render(this.#sortComponent, this.#tripEventsComponent.element, RenderPosition.AFTERBEGIN);
+    render(this.#sortComponent, this.#tripEventComponent.element, RenderPosition.AFTERBEGIN);
   }
 
   #renderPoint(point, offers, destinations) {
@@ -43,7 +43,7 @@ export default class TripEventPresenter {
   }
 
   #renderPointList () {
-    render(this.#tripEventListComponent,this.#tripEventsComponent.element);
+    render(this.#tripEventListComponent,this.#tripEventComponent.element);
     for (let i = 1; i < this.#boardPoints.length; i++) {
       this.#renderPoint(this.#boardPoints[i], this.#offers, this.#destinations);
     }
@@ -51,11 +51,11 @@ export default class TripEventPresenter {
 
 
   #renderNoPoints () {
-    render(this.#noPointComponent,this.#tripEventsComponent.element,RenderPosition.AFTERBEGIN);
+    render(this.#noPointComponent,this.#tripEventComponent.element,RenderPosition.AFTERBEGIN);
   }
 
   #renderBoard () {
-    render(this.#tripEventsComponent, this.#tripEventsContainer);
+    render(this.#tripEventComponent, this.#tripEventsContainer);
 
     if (this.#boardPoints.length === 0) {
       this.#renderNoPoints();

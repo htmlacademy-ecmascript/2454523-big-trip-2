@@ -27,7 +27,7 @@ function createSelectedOffersTemplate(point, offers) {
 }
 
 
-function createPointListTemplate (point, offers, destinations) {
+function createPointTemplate (point, offers, destinations) {
 
   const {type, dateFrom,dateTo,basePrice, isFavorite} = point;
   const destinationData = getDestinationForPoint(point, destinations);
@@ -77,7 +77,7 @@ function createPointListTemplate (point, offers, destinations) {
   );
 }
 
-export default class PointListView extends AbstractView {
+export default class PointView extends AbstractView {
 
   #point = null;
   #offers = [];
@@ -96,7 +96,7 @@ export default class PointListView extends AbstractView {
   }
 
   get template() {
-    return createPointListTemplate(this.#point, this.#offers, this.#destinations);
+    return createPointTemplate(this.#point, this.#offers, this.#destinations);
   }
 
   #editClickHandler = (evt) => {

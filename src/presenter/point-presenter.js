@@ -1,5 +1,5 @@
 import EditPointView from '../view/edit-point-view.js';
-import PointListView from '../view/point-list-view.js';
+import PointView from '../view/point-view.js';
 import {render, replace} from '../framework/render.js';
 
 export default class PointPresenter {
@@ -26,7 +26,7 @@ export default class PointPresenter {
       onFormSubmit: this.#handleFormSubmit,
     });
 
-    this.#pointComponent = new PointListView({
+    this.#pointComponent = new PointView({
       point: this.#point,
       offers: this.#offers,
       destinations: this.#destinations,
@@ -37,7 +37,7 @@ export default class PointPresenter {
   }
 
 
-  #escKeyDownHandler = (evt)=> {
+  #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
       this.#replaceEditFormToPoint();
@@ -45,15 +45,15 @@ export default class PointPresenter {
   };
 
 
-  #replacePointToEditForm () {
+  #replacePointToEditForm = () => {
     replace (this.#pointEditComponent, this.#pointComponent);
-  }
+  };
 
-  #replaceEditFormToPoint () {
-    replace (this.#pointComponent, this.#pointEditComponent);
+  #replaceEditFormToPoint = () => {
+    replace(this.#pointComponent, this.#pointEditComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#pointEditComponent.element.querySelector('.event__rollup-btn').removeEventListener('click',this.#replaceEditFormToPoint);
-  }
+  };
 
   #handleFormSubmit = () => {
     this.#replaceEditFormToPoint();
