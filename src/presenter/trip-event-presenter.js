@@ -5,6 +5,7 @@ import TripEventListView from '../view/trip-event-list-view.js';
 import {render,RenderPosition} from '../framework/render.js';
 import NoPointView from '../view/no-point-view.js';
 import PointPresenter from './point-presenter.js';
+import { updateItem } from '../utils/common.js';
 
 export default class TripEventPresenter {
   #tripEventsContainer = null;
@@ -31,6 +32,12 @@ export default class TripEventPresenter {
     this.#destinations = [... this.#pointsModel.destinations];
     this.#renderBoard();
   }
+
+  #handlePointChange = (updatePoint,offers,destinations) => {
+    this.#boardPoints = updateItem(this.#boardPoints, updatePoint);
+    this.#pointPresenters.get(updatePoint.id).init(updatePoint, offers, destinations);
+
+  };
 
   #renderSort () {
     render(this.#sortComponent, this.#tripEventComponent.element, RenderPosition.AFTERBEGIN);
