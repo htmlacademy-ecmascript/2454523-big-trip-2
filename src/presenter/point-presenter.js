@@ -1,6 +1,6 @@
 import EditPointView from '../view/edit-point-view.js';
 import PointView from '../view/point-view.js';
-import {render, replace} from '../framework/render.js';
+import {render, replace, remove} from '../framework/render.js';
 
 export default class PointPresenter {
   #point = null;
@@ -19,6 +19,9 @@ export default class PointPresenter {
     this.#offers = offers;
     this.#destinations = destinations;
 
+    const prevPointComponent = this.#pointComponent;
+    const prevPointEditComponent = this.#pointEditComponent;
+
     this.#pointEditComponent = new EditPointView({
       point: this.#point,
       offers: this.#offers,
@@ -33,7 +36,25 @@ export default class PointPresenter {
       onEditClick: this.#handleEditClick,
     });
 
-    render (this.#pointComponent, this.#tripEventListComponent);
+    if (prevPointComponent === null || prevPointEditComponent === null) {
+      render (this.#pointComponent, this.#tripEventListComponent);
+      return;
+    }
+
+    if (this.#tripEventListComponent.contains(prevPointComponent.element)) {
+      replace(this.#pointComponent, prevPointComponent);
+    }
+    if (this.#tripEventListComponent.contains(prevPointEditComponent.element)) {
+      replace (this.#pointEditComponent, prevPointEditComponent);
+    }
+
+    remove (prevPointComponent);
+    remove (prevPointEditComponent);
+  }
+
+  #destroy () {
+    remove(this.#pointComponent);
+    remove(this.#pointEditComponent);
   }
 
 
