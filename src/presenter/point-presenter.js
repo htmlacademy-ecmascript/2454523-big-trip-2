@@ -9,9 +9,11 @@ export default class PointPresenter {
   #tripEventListComponent = null;
   #pointEditComponent = null;
   #pointComponent = null;
+  #handleDataChange = null;
 
-  constructor ({tripEventListComponent}) {
+  constructor ({tripEventListComponent, onDataChange}) {
     this.#tripEventListComponent = tripEventListComponent;
+    this.#handleDataChange = onDataChange;
   }
 
   init(point, offers, destinations) {
@@ -34,6 +36,7 @@ export default class PointPresenter {
       offers: this.#offers,
       destinations: this.#destinations,
       onEditClick: this.#handleEditClick,
+      onFavoriteClick:this.#handleFavoriteClick,
     });
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
@@ -86,5 +89,13 @@ export default class PointPresenter {
     this.#pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click',this.#replaceEditFormToPoint);
   };
 
+  #handleFavoriteClick = () => {
+    const updatedPoint = {
+      ...this.#point,
+      isFavorite: !this.#point.isFavorite,
+    };
+    this.#handleDataChange(updatedPoint, this.#offers, this.#destinations);
+  };
 }
+
 

@@ -46,6 +46,7 @@ export default class TripEventPresenter {
   #renderPoint(point, offers, destinations) {
     const pointPresenter = new PointPresenter({
       tripEventListComponent: this.#tripEventListComponent.element,
+      onDataChange: this.#handlePointChange
     });
     pointPresenter.init(point, offers, destinations);
     this.#pointPresenters.set(point.id, pointPresenter);
@@ -53,7 +54,7 @@ export default class TripEventPresenter {
 
   #renderPointList () {
     render(this.#tripEventListComponent,this.#tripEventComponent.element);
-    for (let i = 1; i < this.#boardPoints.length; i++) {
+    for (let i = 0; i < this.#boardPoints.length; i++) {
       this.#renderPoint(this.#boardPoints[i], this.#offers, this.#destinations);
     }
   }
