@@ -2,6 +2,10 @@ import EditPointView from '../view/edit-point-view.js';
 import PointView from '../view/point-view.js';
 import {render, replace, remove} from '../framework/render.js';
 
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING'
+};
 export default class PointPresenter {
   #point = null;
   #offers = [];
@@ -10,10 +14,13 @@ export default class PointPresenter {
   #pointEditComponent = null;
   #pointComponent = null;
   #handleDataChange = null;
+  #handleModeChange = null;
+  #mode = Mode.DEFAULT;
 
-  constructor ({tripEventListComponent, onDataChange}) {
+  constructor ({tripEventListComponent, onDataChange, onModeChange}) {
     this.#tripEventListComponent = tripEventListComponent;
     this.#handleDataChange = onDataChange;
+    this.#handleModeChange = onModeChange;
   }
 
   init(point, offers, destinations) {
@@ -44,11 +51,11 @@ export default class PointPresenter {
       return;
     }
 
-    if (this.#tripEventListComponent.contains(prevPointComponent.element)) {
+    if (this.#mode === Mode.DEFAULT) {
       replace(this.#pointComponent, prevPointComponent);
     }
-    if (this.#tripEventListComponent.contains(prevPointEditComponent.element)) {
-      replace (this.#pointEditComponent, prevPointEditComponent);
+    if (this.#mode === Mode.EDITING) {
+      replace(this.#pointEditComponent, prevPointEditComponent);
     }
 
     remove (prevPointComponent);
@@ -58,6 +65,12 @@ export default class PointPresenter {
   #destroy () {
     remove(this.#pointComponent);
     remove(this.#pointEditComponent);
+  }
+
+  resetView() {
+    if (this.#mode !== Mode.DEFAULT) {
+      this.#replaceEditFormToPoint();
+    }
   }
 
 
@@ -71,15 +84,19 @@ export default class PointPresenter {
 
   #replacePointToEditForm = () => {
     replace (this.#pointEditComponent, this.#pointComponent);
+    this.#handleModeChange();
+    this.#mode = Mode.EDITING;
   };
 
   #replaceEditFormToPoint = () => {
     replace(this.#pointComponent, this.#pointEditComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#pointEditComponent.element.querySelector('.event__rollup-btn').removeEventListener('click',this.#replaceEditFormToPoint);
+    this.#mode = Mode.DEFAULT;
   };
 
-  #handleFormSubmit = () => {
+  #handleFormSubmit = (point,offers,destinations) => {
+    this.#handleDataChange(point,offers,destinations);
     this.#replaceEditFormToPoint();
   };
 
