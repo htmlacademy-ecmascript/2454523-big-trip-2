@@ -39,7 +39,7 @@ export default class TripEventPresenter {
 
   #handlePointChange = (updatePoint,offers,destinations) => {
     this.#boardPoints = updateItem(this.#boardPoints, updatePoint);
-    this.#pointPresenters.get(updatePoint.id).init(updatePoint, offers, destinations);
+    this.#pointPresenters.get(updatePoint.uniqId).init(updatePoint, offers, destinations);
 
   };
 
@@ -54,7 +54,7 @@ export default class TripEventPresenter {
       onModeChange: this.#handleModeChange,
     });
     pointPresenter.init(point, offers, destinations);
-    this.#pointPresenters.set(point.id, pointPresenter);
+    this.#pointPresenters.set(point.uniqId, pointPresenter);
   }
 
   #renderPointList () {

@@ -8,7 +8,7 @@ function getFormattedType (type) {
 }
 
 function updateItem (items, update) {
-  return items.map((item) => item.id === update.id ? update : item);
+  return items.map((item) => item.uniqId === update.uniqId ? update : item);
 }
 
 export {getRandomArrayElement, getFormattedType,updateItem};
