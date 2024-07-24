@@ -27,7 +27,7 @@ function createSelectedOffersTemplate(point, offers) {
 }
 
 
-function createPointListTemplate (point, offers, destinations) {
+function createPointTemplate (point, offers, destinations) {
 
   const {type, dateFrom,dateTo,basePrice, isFavorite} = point;
   const destinationData = getDestinationForPoint(point, destinations);
@@ -77,31 +77,39 @@ function createPointListTemplate (point, offers, destinations) {
   );
 }
 
-export default class PointListView extends AbstractView {
+export default class PointView extends AbstractView {
 
   #point = null;
   #offers = [];
   #destinations = [];
   #handleEditClick = null;
+  #handleFavoriteClick = null;
 
-  constructor ({point, offers, destinations, onEditClick}) {
+  constructor ({point, offers, destinations, onEditClick, onFavoriteClick}) {
     super();
     this.#point = point;
     this.#offers = offers;
     this.#destinations = destinations;
     this.#handleEditClick = onEditClick;
+    this.#handleFavoriteClick = onFavoriteClick;
 
-    this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#editClickHandler);
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
+    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#favoriteClickHandler);
+
   }
 
   get template() {
-    return createPointListTemplate(this.#point, this.#offers, this.#destinations);
+    return createPointTemplate(this.#point, this.#offers, this.#destinations);
   }
 
   #editClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleEditClick();
+  };
+
+  #favoriteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFavoriteClick();
   };
 }
 
