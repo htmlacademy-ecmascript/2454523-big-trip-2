@@ -14,7 +14,7 @@ export default class TripEventPresenter {
   #tripEventComponent = new TripEventView();
   #tripEventListComponent = new TripEventListView();
   #noPointComponent = new NoPointView();
-  #sortComponent = new SortView();
+  #sortComponent = null;
   #pointPresenters = new Map();
 
   #boardPoints = [];
@@ -43,7 +43,12 @@ export default class TripEventPresenter {
 
   };
 
+  #handleSortTypeChange = (/*sortType*/) => {};
+
   #renderSort () {
+    this.#sortComponent = new SortView({
+      onSortTypeChange: this.#handleSortTypeChange
+    });
     render(this.#sortComponent, this.#tripEventComponent.element, RenderPosition.AFTERBEGIN);
   }
 
