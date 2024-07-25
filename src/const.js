@@ -14,5 +14,11 @@ const NoEventText = {
   FUTURE:'There are no future events now',
 };
 
-export {POINT_TYPES, DESTINATIONS, DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT, DATETIME_FORMAT_FOR_EDIT_FORM, NoEventText };
+const SortType = {
+  DAY:'day',
+  TIME: 'time',
+  PRICE: 'price',
+};
+
+export {POINT_TYPES, DESTINATIONS, DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT, DATETIME_FORMAT_FOR_EDIT_FORM, NoEventText, SortType};
 
