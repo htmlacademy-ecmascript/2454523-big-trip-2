@@ -6,6 +6,8 @@ import {render,RenderPosition} from '../framework/render.js';
 import NoPointView from '../view/no-point-view.js';
 import PointPresenter from './point-presenter.js';
 import { updateItem } from '../utils/common.js';
+import { SortType } from '../const.js';
+import { sortPriceDown, sortTimeDurationDown, sortDateFromUp } from '../utils/point.js';
 
 export default class TripEventPresenter {
   #tripEventsContainer = null;
@@ -20,6 +22,7 @@ export default class TripEventPresenter {
   #boardPoints = [];
   #offers = [];
   #destinations = [];
+  #currentSortType = SortType.DAY;
 
   constructor ({tripEventsContainer,pointsModel}) {
     this.#tripEventsContainer = tripEventsContainer;
@@ -43,7 +46,29 @@ export default class TripEventPresenter {
 
   };
 
-  #handleSortTypeChange = (/*sortType*/) => {};
+  #sortPoint(sortType) {
+    switch(sortType) {
+      case SortType.PRICE:
+        this.#boardPoints.sort(sortPriceDown);
+        break;
+      case SortType.TIME:
+        this.#boardPoints.sort(sortTimeDurationDown);
+        break;
+      default:
+        this.#boardPoints.sort(sortDateFromUp);
+    }
+    this.#currentSortType = sortType;
+  }
+
+
+  #handleSortTypeChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+    this.#sortPoint(sortType);
+    this.#clearPointList();
+    this.#renderPointList();
+  };
 
   #renderSort () {
     this.#sortComponent = new SortView({

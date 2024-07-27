@@ -28,4 +28,12 @@ function calculateDuration(point) {
   return formattedDuration;
 }
 
-export {humanizeDate, calculateDuration};
+function calculateDurationInMilliseconds(point) {
+  const dateFrom = dayjs(point.dateFrom);
+  const dateTo = dayjs(point.dateTo);
+  const differenceInMilliseconds = dateTo.diff(dateFrom);
+
+  return differenceInMilliseconds;
+}
+
+export {humanizeDate, calculateDuration, calculateDurationInMilliseconds};
