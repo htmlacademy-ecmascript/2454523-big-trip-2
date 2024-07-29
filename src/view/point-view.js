@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { humanizeDate, calculateDuration } from '../utils/date.js';
+import { humanizeDate, calculateFormattedDuration } from '../utils/date.js';
 import {DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT} from '../const.js';
 import {getOffersForPoint} from '../utils/point.js';
 import {getDestinationForPoint} from '../utils/point.js';
@@ -38,7 +38,7 @@ function createPointTemplate (point, offers, destinations) {
     : '';
 
   const selectedOfferTemplate = createSelectedOffersTemplate(point, offers);
-  const duration = calculateDuration(point);
+  const duration = calculateFormattedDuration(point);
 
   return (
     `<li class="trip-events__item">

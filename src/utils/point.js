@@ -34,12 +34,12 @@ function getWeightForNullPrice(priceA, priceB) {
     return -1;
   }
 
-  return 0;
+  return null;
 }
 
 function sortPriceDown(pointA, pointB) {
   const weight = getWeightForNullPrice(pointA.basePrice, pointB.basePrice);
-  return weight !== 0 ? weight : pointB.basePrice - pointA.basePrice;
+  return weight !== null ? weight : pointB.basePrice - pointA.basePrice;
 }
 
 
@@ -64,7 +64,7 @@ function sortTimeDurationDown(pointA, pointB) {
   const timeDurationB = calculateDurationInMilliseconds(pointB);
   const weight = getWeightForNullTimeDuration(timeDurationA, timeDurationB);
 
-  return weight ?? timeDurationB - timeDurationA;
+  return weight !== null ? weight : timeDurationB - timeDurationA;
 }
 
 function getWeightForNullDateFrom(dateFromA, dateFromB) {
@@ -86,6 +86,6 @@ function getWeightForNullDateFrom(dateFromA, dateFromB) {
 function sortDateFromUp(pointA, pointB) {
   const weight = getWeightForNullDateFrom(pointA.dateFrom, pointB.dateFrom);
 
-  return weight ?? dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
+  return weight !== null ? weight : dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
 }
 export {getOffersForPoint, getDestinationForPoint,sortPriceDown, sortTimeDurationDown,sortDateFromUp };

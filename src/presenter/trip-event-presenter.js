@@ -31,6 +31,7 @@ export default class TripEventPresenter {
 
   init () {
     this.#boardPoints = [... this.#pointsModel.points];
+    this.#sortPoint(this.#currentSortType);
     this.#offers = [... this.#pointsModel.offers];
     this.#destinations = [... this.#pointsModel.destinations];
     this.#renderBoard();
