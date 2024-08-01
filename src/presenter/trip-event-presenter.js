@@ -6,6 +6,8 @@ import {render,RenderPosition} from '../framework/render.js';
 import NoPointView from '../view/no-point-view.js';
 import PointPresenter from './point-presenter.js';
 import { updateItem } from '../utils/common.js';
+import { SortType } from '../const.js';
+import { sortPriceDown, sortTimeDurationDown, sortDateFromUp } from '../utils/point.js';
 
 export default class TripEventPresenter {
   #tripEventsContainer = null;
@@ -14,12 +16,13 @@ export default class TripEventPresenter {
   #tripEventComponent = new TripEventView();
   #tripEventListComponent = new TripEventListView();
   #noPointComponent = new NoPointView();
-  #sortComponent = new SortView();
+  #sortComponent = null;
   #pointPresenters = new Map();
 
   #boardPoints = [];
   #offers = [];
   #destinations = [];
+  #currentSortType = SortType.DAY;
 
   constructor ({tripEventsContainer,pointsModel}) {
     this.#tripEventsContainer = tripEventsContainer;
@@ -28,6 +31,7 @@ export default class TripEventPresenter {
 
   init () {
     this.#boardPoints = [... this.#pointsModel.points];
+    this.#sortPoint(this.#currentSortType);
     this.#offers = [... this.#pointsModel.offers];
     this.#destinations = [... this.#pointsModel.destinations];
     this.#renderBoard();
@@ -43,7 +47,34 @@ export default class TripEventPresenter {
 
   };
 
+  #sortPoint(sortType) {
+    switch(sortType) {
+      case SortType.PRICE:
+        this.#boardPoints.sort(sortPriceDown);
+        break;
+      case SortType.TIME:
+        this.#boardPoints.sort(sortTimeDurationDown);
+        break;
+      default:
+        this.#boardPoints.sort(sortDateFromUp);
+    }
+    this.#currentSortType = sortType;
+  }
+
+
+  #handleSortTypeChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+    this.#sortPoint(sortType);
+    this.#clearPointList();
+    this.#renderPointList();
+  };
+
   #renderSort () {
+    this.#sortComponent = new SortView({
+      onSortTypeChange: this.#handleSortTypeChange
+    });
     render(this.#sortComponent, this.#tripEventComponent.element, RenderPosition.AFTERBEGIN);
   }
 

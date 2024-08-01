@@ -4,10 +4,16 @@ function humanizeDate(date, format) {
   return date ? dayjs(date).format(format) : '';
 }
 
-function calculateDuration(point) {
+function calculateDurationInMilliseconds(point) {
   const dateFrom = dayjs(point.dateFrom);
   const dateTo = dayjs(point.dateTo);
   const differenceInMilliseconds = dateTo.diff(dateFrom);
+
+  return differenceInMilliseconds;
+}
+
+function calculateFormattedDuration(point) {
+  const differenceInMilliseconds = calculateDurationInMilliseconds(point);
 
   const minutesTotal = Math.floor(differenceInMilliseconds / (1000 * 60));
   const hoursTotal = Math.floor(minutesTotal / 60);
@@ -28,4 +34,5 @@ function calculateDuration(point) {
   return formattedDuration;
 }
 
-export {humanizeDate, calculateDuration};
+
+export {humanizeDate, calculateFormattedDuration, calculateDurationInMilliseconds};
