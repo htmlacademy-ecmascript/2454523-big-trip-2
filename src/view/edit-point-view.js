@@ -1,4 +1,5 @@
-import AbstractView from '../framework/view/abstract-view.js';
+//import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { POINT_TYPES, DESTINATIONS, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
 import { humanizeDate } from '../utils/date.js';
 import { getFormattedType } from '../utils/common.js';
@@ -143,7 +144,7 @@ function createEditPointTemplate (point, offers, destinations) {
   );
 }
 
-export default class EditPointView extends AbstractView {
+export default class EditPointView extends AbstractStatefulView {
   #point = null;
   #offers = [];
   #destinations = [];
@@ -151,22 +152,63 @@ export default class EditPointView extends AbstractView {
 
   constructor ({point, offers, destinations, onFormSubmit}) {
     super();
-    this.#point = point;
+    //this.#point = point;
+    this._setState(EditPointView.parsePointToState(point));
     this.#offers = offers;
     this.#destinations = destinations;
     this. #handleForSubmit = onFormSubmit;
+    this._restoreHandlers();
 
-    this.element.querySelector('form')
-      .addEventListener('submit', this.#formSubmitHandler);
+
   }
 
   get template () {
-    return createEditPointTemplate(this.#point, this.#offers, this.#destinations);
+    // return createEditPointTemplate(this.#point, this.#offers, this.#destinations);
+    return createEditPointTemplate(this._state, this.#offers, this.#destinations);
   }
+
+  _restoreHandlers() {
+    this.element.querySelector('form')
+      .addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelector('.event__type-list').addEventListener('change', this.#typeChangeHandler);
+    this.element.querySelector('.event__input--destination').addEventListener('change', (evt) => this.#destinationChangeHandler(evt, this.#destinations));
+  }
+
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this. #handleForSubmit(this.#point, this.#offers, this.#destinations);
+    this. #handleForSubmit(EditPointView.parseStateToPoint(this._state), this.#offers, this.#destinations);
 
   };
+
+  #typeChangeHandler = (evt)=> {
+    evt.preventDefault();
+    const newType = evt.target.value;
+    this.updateElement({
+      type: newType,
+    });
+
+  };
+
+  #destinationChangeHandler = (evt, destinations) => {
+    evt.preventDefault();
+    const newDestination = evt.target.value;
+    const destinationData = destinations.find((destination)=> destination.name === newDestination);
+    this.updateElement({
+      destination: destinationData.id,
+    });
+
+  };
+
+  static parsePointToState (point) {
+    return {...point,
+    };
+
+  }
+
+  static parseStateToPoint (state) {
+    const point = {...state};
+
+    return point;
+  }
 }
