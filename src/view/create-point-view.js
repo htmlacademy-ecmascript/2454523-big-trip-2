@@ -1,4 +1,5 @@
-import AbstractView from '../framework/view/abstract-view.js';
+//import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { POINT_TYPES, DESTINATIONS, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
 import { humanizeDate } from '../utils/date.js';
 import { getFormattedType } from '../utils/common.js';
@@ -142,12 +143,12 @@ function createPointTemplate (point, offers,destinations) {
 
 }
 
-export default class CreatePointView extends AbstractView {
+export default class CreatePointView extends AbstractStatefulView {
   #point = null;
   #offers = [];
   #destinations = [];
 
-  constructor ({point}, {offers}, {destinations}) {
+  constructor ({point, offers, destinations}) {
     super();
     this.#point = point;
     this.#offers = offers;

@@ -167,6 +167,10 @@ export default class EditPointView extends AbstractStatefulView {
     return createEditPointTemplate(this._state, this.#offers, this.#destinations);
   }
 
+  reset (point) {
+    this.updateElement(EditPointView.parsePointToState(point));
+  }
+
   _restoreHandlers() {
     this.element.querySelector('form')
       .addEventListener('submit', this.#formSubmitHandler);
@@ -186,6 +190,7 @@ export default class EditPointView extends AbstractStatefulView {
     const newType = evt.target.value;
     this.updateElement({
       type: newType,
+      offers: [],
     });
 
   };
