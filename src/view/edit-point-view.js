@@ -175,7 +175,11 @@ export default class EditPointView extends AbstractStatefulView {
     this.element.querySelector('form')
       .addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__type-list').addEventListener('change', this.#typeChangeHandler);
-    this.element.querySelector('.event__input--destination').addEventListener('change', (evt) => this.#destinationChangeHandler(evt, this.#destinations));
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+    this.element.querySelectorAll('.event__offer-checkbox')
+      .forEach((checkbox) => {
+        checkbox.addEventListener('change', this.#offerChangeHandler);
+      });
   }
 
 
@@ -183,6 +187,26 @@ export default class EditPointView extends AbstractStatefulView {
     evt.preventDefault();
     this. #handleForSubmit(EditPointView.parseStateToPoint(this._state), this.#offers, this.#destinations);
 
+  };
+
+  #offerChangeHandler = (evt) => {
+    evt.preventDefault();
+    const selectedOfferId = evt.target.id;
+    const isChecked = evt.target.checked;
+
+    let newOffers;
+
+    if (isChecked && !this._state.offers.includes(selectedOfferId)) {
+      newOffers = [...this._state.offers, selectedOfferId];
+    } else if (!isChecked) {
+      newOffers = this._state.offers.filter((offer) => offer !== selectedOfferId);
+    } else {
+      newOffers = this._state.offers;
+    }
+
+    this.updateElement({
+      offers: newOffers,
+    });
   };
 
   #typeChangeHandler = (evt)=> {
@@ -195,10 +219,10 @@ export default class EditPointView extends AbstractStatefulView {
 
   };
 
-  #destinationChangeHandler = (evt, destinations) => {
+  #destinationChangeHandler = (evt) => {
     evt.preventDefault();
     const newDestination = evt.target.value;
-    const destinationData = destinations.find((destination)=> destination.name === newDestination);
+    const destinationData = this.#destinations.find((destination)=> destination.name === newDestination);
     this.updateElement({
       destination: destinationData.id,
     });
