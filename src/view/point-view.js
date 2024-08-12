@@ -26,10 +26,31 @@ function createSelectedOffersTemplate(point, offers) {
   return pointOffers.join('');
 }
 
+function createPointPriceTemplate (point) {
+  const {basePrice} = point;
+  if (basePrice === '') {
+    return `<p class="event__price">
+  &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
+</p>`;
+  }
+  const correctPrice = parseInt(basePrice,10);
+
+
+  if (isNaN(correctPrice) || correctPrice < 0) {
+    return `<p class="event__price">
+    &euro;&nbsp;<span class="event__price-value"></span>
+  </p>`;
+
+  }
+  return `<p class="event__price">
+  &euro;&nbsp;<span class="event__price-value">${correctPrice}</span>
+</p>`;
+}
+
 
 function createPointTemplate (point, offers, destinations) {
 
-  const {type, dateFrom,dateTo,basePrice, isFavorite} = point;
+  const {type, dateFrom,dateTo, isFavorite} = point;
   const destinationData = getDestinationForPoint(point, destinations);
   const {name} = destinationData;
 
@@ -56,9 +77,7 @@ function createPointTemplate (point, offers, destinations) {
                   </p>
                   <p class="event__duration">${duration}</p>
                 </div>
-                <p class="event__price">
-                  &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
-                </p>
+               ${createPointPriceTemplate(point)}
                 <h4 class="visually-hidden">Offers:</h4>
                 <ul class="event__selected-offers">
                  ${selectedOfferTemplate}
