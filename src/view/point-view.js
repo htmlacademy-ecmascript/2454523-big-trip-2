@@ -52,7 +52,10 @@ function createPointTemplate (point, offers, destinations) {
 
   const {type, dateFrom,dateTo, isFavorite} = point;
   const destinationData = getDestinationForPoint(point, destinations);
-  const {name} = destinationData;
+  let {name} = destinationData;
+  if (point.destination === '') {
+    name = '';
+  }
 
   const favoriteClassName = isFavorite
     ? 'event__favorite-btn--active'

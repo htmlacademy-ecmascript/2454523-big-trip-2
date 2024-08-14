@@ -186,7 +186,6 @@ ${createFieldEventPriceTemplate(point)}
 }
 
 export default class EditPointView extends AbstractStatefulView {
-  //#point = null;
   #offers = [];
   #destinations = [];
   #handleForSubmit = null;
@@ -211,8 +210,7 @@ export default class EditPointView extends AbstractStatefulView {
   }
 
   _restoreHandlers() {
-    this.element.querySelector('form')
-      .addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__type-list').addEventListener('change', this.#typeChangeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
     this.element.addEventListener('change', (evt) => {
