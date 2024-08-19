@@ -1,6 +1,6 @@
 import SortView from '../view/sort-view.js';
 import TripEventView from '../view/trip-event-view.js';
-import CreatePointView from '../view/create-point-view.js'; //импорт класса форма создания
+//import CreatePointView from '../view/create-point-view.js'; //импорт класса форма создания
 import TripEventListView from '../view/trip-event-list-view.js';
 import {render,RenderPosition} from '../framework/render.js';
 import NoPointView from '../view/no-point-view.js';
@@ -115,7 +115,7 @@ export default class TripEventPresenter {
 
     this.#renderSort();
     this.#renderPointList();
-    render (new CreatePointView({point: this.#boardPoints[0], offers: this.#offers, destinations: this.#destinations}), this.#tripEventListComponent.element); //- отрисовка формы созадния
+    //render (new CreatePointView({point: this.#boardPoints[0], offers: this.#offers, destinations: this.#destinations}), this.#tripEventListComponent.element); //- отрисовка формы созадния
 
   }
 

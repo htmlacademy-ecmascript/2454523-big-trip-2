@@ -136,30 +136,28 @@ function createFieldEventPriceTemplate (point) {
         </div>`;
   }
 
-  const correctPrice = parseInt(basePrice,10);
-
-  if (isNaN(correctPrice) || correctPrice < 0) {
-    return `<div class="event__field-group  event__field-group--price">
-          <label class="event__label" for="event-price-1">
-            <span class="visually-hidden">Price</span>
-            &euro;
-          </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
-        </div>`;
-  }
+  const isValidPrice = /^[0-9]+$/.test(basePrice) && (basePrice === '0' || /^[1-9][0-9]*$/.test(basePrice));
+  const correctPrice = parseInt(basePrice, 10);
+  const isPriceNotCorrect = !isValidPrice || correctPrice < 0;
 
   return `<div class="event__field-group  event__field-group--price">
           <label class="event__label" for="event-price-1">
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${correctPrice}">
+          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}"
+          style="border: ${isPriceNotCorrect ? '2px solid red' : 'none'}">
+          ${isPriceNotCorrect ? '<p class="event__error-message">Price must be a positive integer.</p>' : ''}
         </div>`;
 }
 
 function createEditPointTemplate (point, offers, destinations) {
   const offerTemplate = createOffersTemplate(point, offers);
   const descriptionOfDestinationTemplate = createDescriptionOfDestinationTemplate(point, destinations);
+  const {basePrice} = point;
+  const isValidPrice = /^[0-9]+$/.test(basePrice) && (basePrice === '0' || /^[1-9][0-9]*$/.test(basePrice));
+  const correctPrice = parseInt(basePrice, 10);
+  const isPriceNotCorrect = !isValidPrice || correctPrice < 0;
 
   return (
     `<li class="trip-events__item">
@@ -169,7 +167,7 @@ ${createEventTypeTemplate(point)}
 ${createFieldGroupDestinationTemplate(point, destinations)}
 ${createFieldEventDateTemplate(point)}
 ${createFieldEventPriceTemplate(point)}
-        <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+        <button class="event__save-btn  btn  btn--blue" type="submit" ${isPriceNotCorrect ? 'disabled' : ''}>Save</button>
         <button class="event__reset-btn" type="reset">Delete</button>
         <button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
@@ -273,7 +271,7 @@ export default class EditPointView extends AbstractStatefulView {
   #priceChangeHandler = (evt) => {
     evt.preventDefault();
     const newPrice = evt.target.value;
-    this._setState({
+    this.updateElement({
       basePrice: newPrice
     });
 
