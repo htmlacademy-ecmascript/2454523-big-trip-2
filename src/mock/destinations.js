@@ -58,7 +58,7 @@ const mockDestinations = [
   },
   {
     id: 4,
-    description: '',
+    description: 'Прекрасная Москва!',
     name: 'Moscow',
     pictures: [
       {

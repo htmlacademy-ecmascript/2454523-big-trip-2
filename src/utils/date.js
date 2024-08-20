@@ -7,9 +7,8 @@ function humanizeDate(date, format) {
 function calculateDurationInMilliseconds(point) {
   const dateFrom = dayjs(point.dateFrom);
   const dateTo = dayjs(point.dateTo);
-  const differenceInMilliseconds = dateTo.diff(dateFrom);
 
-  return differenceInMilliseconds;
+  return dateTo.diff(dateFrom);
 }
 
 function calculateFormattedDuration(point) {

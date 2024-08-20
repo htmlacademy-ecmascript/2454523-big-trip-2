@@ -1,6 +1,6 @@
 const POINT_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
-const DESTINATIONS = ['Amsterdam', 'Geneva', 'Chamonix'];
+const DESTINATIONS = ['Amsterdam', 'Geneva', 'Chamonix', 'Moscow'];
 
 const DATE_FORMAT = 'MMM DD';
 const TIME_FORMAT = 'HH:mm';

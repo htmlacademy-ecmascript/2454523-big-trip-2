@@ -115,7 +115,7 @@ export default class TripEventPresenter {
 
     this.#renderSort();
     this.#renderPointList();
-    //render (new CreatePointView({point: this.#boardPoints[0]}, {offers: this.#offers}, {destinations: this.#destinations}), this.#tripEventListComponent.element); //- отрисовка формы созадния
+    //render (new CreatePointView({point: this.#boardPoints[0], offers: this.#offers, destinations: this.#destinations}), this.#tripEventListComponent.element); //- отрисовка формы созадния
 
   }
 
