@@ -4,6 +4,8 @@ import { humanizeDate } from '../utils/date.js';
 import { getFormattedType } from '../utils/common.js';
 import {getOffersForPoint} from '../utils/point.js';
 import {getDestinationForPoint} from '../utils/point.js';
+//import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 
 function createEditPointTypePointTemplate () {
   return POINT_TYPES.map((type)=> `<div class="event__type-item">
