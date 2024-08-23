@@ -156,10 +156,15 @@ function createFieldEventPriceTemplate (point) {
 function createEditPointTemplate (point, offers, destinations) {
   const offerTemplate = createOffersTemplate(point, offers);
   const descriptionOfDestinationTemplate = createDescriptionOfDestinationTemplate(point, destinations);
-  const {basePrice} = point;
+  const {basePrice, dateFrom, dateTo} = point;
   const isValidPrice = /^[0-9]+$/.test(basePrice) && (basePrice === '0' || /^[1-9][0-9]*$/.test(basePrice));
   const correctPrice = parseInt(basePrice, 10);
   const isPriceNotCorrect = !isValidPrice || correctPrice < 0;
+
+  const dateFromInMilliseconds = dateFrom.getTime();
+  const dateToInMilliseconds = dateTo.getTime();
+  const isDateToNotCorrect = dateToInMilliseconds < dateFromInMilliseconds;
+
 
   return (
     `<li class="trip-events__item">
@@ -169,7 +174,7 @@ ${createEventTypeTemplate(point)}
 ${createFieldGroupDestinationTemplate(point, destinations)}
 ${createFieldEventDateTemplate(point)}
 ${createFieldEventPriceTemplate(point)}
-        <button class="event__save-btn  btn  btn--blue" type="submit" ${isPriceNotCorrect ? 'disabled' : ''}>Save</button>
+        <button class="event__save-btn  btn  btn--blue" type="submit" ${isPriceNotCorrect || isDateToNotCorrect ? 'disabled' : ''}>Save</button>
         <button class="event__reset-btn" type="reset">Delete</button>
         <button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
@@ -292,12 +297,14 @@ export default class EditPointView extends AbstractStatefulView {
   };
 
   #startDateChangeHandler = ([userDate]) => {
+    this.#endDatepicker.set('minDate', userDate);
     this.updateElement({
       dateFrom: userDate,
     });
   };
 
   #endDateChangeHandler = ([userDate]) => {
+    this.#startDatepicker.set('maxDate', userDate);
     this.updateElement({
       dateTo: userDate,
     });
@@ -318,9 +325,10 @@ export default class EditPointView extends AbstractStatefulView {
       {
         dateFormat: 'd/m/y H:i',
         enableTime: true,
-        time_24hr: true,
+        'time_24hr': true,
         defaultDate: this._state.dateFrom,
-        onChange: this.#startDateChangeHandler
+        maxDate: this._state.dateTo,
+        onClose: this.#startDateChangeHandler
 
       }
     );
@@ -332,10 +340,10 @@ export default class EditPointView extends AbstractStatefulView {
       {
         dateFormat: 'd/m/y H:i',
         enableTime: true,
-        time_24hr: true,
+        'time_24hr': true,
         defaultDate: this._state.dateTo,
-        minDate: this.#startDatepicker ? this.#startDatepicker.selectedDates[0] : null,
-        onChange: this.#endDateChangeHandler
+        minDate: this._state.dateFrom,
+        onClose: this.#endDateChangeHandler
 
       }
     );
