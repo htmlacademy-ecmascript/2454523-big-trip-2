@@ -2,8 +2,10 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { POINT_TYPES, DESTINATIONS, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
 import { humanizeDate } from '../utils/date.js';
 import { getFormattedType } from '../utils/common.js';
-import {getOffersForPoint} from '../utils/point.js';
+import {getOffersForPoint, isValidPrice} from '../utils/point.js';
 import {getDestinationForPoint} from '../utils/point.js';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 
 function createPointTypeTemplate () {
   return POINT_TYPES.map((type)=> `<div class="event__type-item">
@@ -135,31 +137,29 @@ function createFieldEventPriceTemplate (point) {
           <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
         </div>`;
   }
-
-  const correctPrice = parseInt(basePrice,10);
-
-  if (isNaN(correctPrice) || correctPrice < 0) {
-    return `<div class="event__field-group  event__field-group--price">
-          <label class="event__label" for="event-price-1">
-            <span class="visually-hidden">Price</span>
-            &euro;
-          </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
-        </div>`;
-  }
+  const isPriceNotCorrect = !isValidPrice(basePrice);
 
   return `<div class="event__field-group  event__field-group--price">
           <label class="event__label" for="event-price-1">
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${correctPrice}">
+          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}"
+          style="border: ${isPriceNotCorrect ? '2px solid red' : 'none'}">
+          ${isPriceNotCorrect ? '<p class="event__error-message">Price must be a positive integer.</p>' : ''}
         </div>`;
 }
 
 function createCreationFormTemplate (point, offers, destinations) {
   const offerTemplate = createOffersTemplate(point, offers);
   const descriptionOfDestinationTemplate = createDescriptionOfDestinationTemplate(point, destinations);
+  const {basePrice, dateFrom, dateTo} = point;
+
+  const isPriceNotCorrect = !isValidPrice(basePrice);
+
+  const dateFromInMilliseconds = dateFrom.getTime();
+  const dateToInMilliseconds = dateTo.getTime();
+  const isDateToNotCorrect = dateToInMilliseconds < dateFromInMilliseconds;
 
   return (
     `<li class="trip-events__item">
@@ -169,7 +169,7 @@ ${createEventTypeTemplate(point)}
 ${createFieldGroupDestinationTemplate(point, destinations)}
 ${createFieldEventDateTemplate(point)}
 ${createFieldEventPriceTemplate(point)}
-        <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+        <button class="event__save-btn  btn  btn--blue" type="submit" ${isPriceNotCorrect || isDateToNotCorrect ? 'disabled' : ''}>Save</button>
         <button class="event__reset-btn" type="reset">Delete</button>
         <button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
@@ -186,9 +186,10 @@ ${createFieldEventPriceTemplate(point)}
 }
 
 export default class CreatePointView extends AbstractStatefulView {
-  //#point = null;
   #offers = [];
   #destinations = [];
+  #startDatepicker = null;
+  #endDatepicker = null;
 
   constructor ({point, offers, destinations}) {
     super();
@@ -201,6 +202,19 @@ export default class CreatePointView extends AbstractStatefulView {
   get template () {
     return createCreationFormTemplate(this._state, this.#offers, this.#destinations);
   }
+
+  removeElement() {
+    super.removeElement();
+    if (this.#startDatepicker) {
+      this.#startDatepicker.destroy();
+      this.#startDatepicker = null;
+    }
+    if (this.#endDatepicker) {
+      this.#endDatepicker.destroy();
+      this.#endDatepicker = null;
+    }
+  }
+
 
   reset (point) {
     this.updateElement(CreatePointView.parsePointToState(point));
@@ -215,6 +229,8 @@ export default class CreatePointView extends AbstractStatefulView {
       }
     });
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
+    this.#setStartDatepicker();
+    this.#setEndDatepicker();
   }
 
   #offerChangeHandler = (evt) => {
@@ -252,6 +268,10 @@ export default class CreatePointView extends AbstractStatefulView {
   #destinationChangeHandler = (evt) => {
     evt.preventDefault();
     const newDestination = evt.target.value;
+    if (!DESTINATIONS.includes(newDestination)) {
+      evt.target.value = this.#destinations.find((destination) => destination.id === this._state.destination).name;
+      return;
+    }
     const destinationData = this.#destinations.find((destination)=> destination.name === newDestination);
     this.updateElement({
       destination: destinationData.id,
@@ -259,14 +279,58 @@ export default class CreatePointView extends AbstractStatefulView {
 
   };
 
+  #startDateChangeHandler = ([userDate]) => {
+    this.#endDatepicker.set('minDate', userDate);
+    this.updateElement({
+      dateFrom: userDate,
+    });
+  };
+
+  #endDateChangeHandler = ([userDate]) => {
+    this.#startDatepicker.set('maxDate', userDate);
+    this.updateElement({
+      dateTo: userDate,
+    });
+  };
+
   #priceChangeHandler = (evt) => {
     evt.preventDefault();
     const newPrice = evt.target.value;
-    this._setState({
+    this.updateElement({
       basePrice: newPrice
     });
 
   };
+
+  #setStartDatepicker () {
+    this.#startDatepicker = flatpickr (
+      this.element.querySelector('#event-start-time-1'),
+      {
+        dateFormat: 'd/m/y H:i',
+        enableTime: true,
+        'time_24hr': true,
+        defaultDate: this._state.dateFrom,
+        maxDate: this._state.dateTo,
+        onClose: this.#startDateChangeHandler
+
+      }
+    );
+  }
+
+  #setEndDatepicker () {
+    this.#endDatepicker = flatpickr (
+      this.element.querySelector('#event-end-time-1'),
+      {
+        dateFormat: 'd/m/y H:i',
+        enableTime: true,
+        'time_24hr': true,
+        defaultDate: this._state.dateTo,
+        minDate: this._state.dateFrom,
+        onClose: this.#endDateChangeHandler
+
+      }
+    );
+  }
 
   static parsePointToState (point) {
     return {...point,
