@@ -2,7 +2,7 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { POINT_TYPES, DESTINATIONS, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
 import { humanizeDate } from '../utils/date.js';
 import { getFormattedType } from '../utils/common.js';
-import {getOffersForPoint} from '../utils/point.js';
+import {getOffersForPoint, isValidPrice} from '../utils/point.js';
 import {getDestinationForPoint} from '../utils/point.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
@@ -138,9 +138,7 @@ function createFieldEventPriceTemplate (point) {
         </div>`;
   }
 
-  const isValidPrice = /^[0-9]+$/.test(basePrice) && (basePrice === '0' || /^[1-9][0-9]*$/.test(basePrice));
-  const correctPrice = parseInt(basePrice, 10);
-  const isPriceNotCorrect = !isValidPrice || correctPrice < 0;
+  const isPriceNotCorrect = !isValidPrice(basePrice);
 
   return `<div class="event__field-group  event__field-group--price">
           <label class="event__label" for="event-price-1">
@@ -157,9 +155,8 @@ function createEditPointTemplate (point, offers, destinations) {
   const offerTemplate = createOffersTemplate(point, offers);
   const descriptionOfDestinationTemplate = createDescriptionOfDestinationTemplate(point, destinations);
   const {basePrice, dateFrom, dateTo} = point;
-  const isValidPrice = /^[0-9]+$/.test(basePrice) && (basePrice === '0' || /^[1-9][0-9]*$/.test(basePrice));
-  const correctPrice = parseInt(basePrice, 10);
-  const isPriceNotCorrect = !isValidPrice || correctPrice < 0;
+
+  const isPriceNotCorrect = !isValidPrice(basePrice);
 
   const dateFromInMilliseconds = dateFrom.getTime();
   const dateToInMilliseconds = dateTo.getTime();

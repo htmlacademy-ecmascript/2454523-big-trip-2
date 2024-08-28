@@ -88,4 +88,10 @@ function sortDateFromUp(pointA, pointB) {
 
   return weight !== null ? weight : dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
 }
-export {getOffersForPoint, getDestinationForPoint,sortPriceDown, sortTimeDurationDown,sortDateFromUp };
+
+function isValidPrice(basePrice) {
+  const correctPrice = parseInt(basePrice, 10);
+  return (basePrice === '0' || /^[1-9][0-9]*$/.test(basePrice)) && correctPrice >= 0;
+}
+
+export {getOffersForPoint, getDestinationForPoint,sortPriceDown, sortTimeDurationDown,sortDateFromUp, isValidPrice};
