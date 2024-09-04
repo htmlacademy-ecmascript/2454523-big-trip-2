@@ -1,6 +1,7 @@
 import EditPointView from '../view/edit-point-view.js';
 import PointView from '../view/point-view.js';
 import {render, replace, remove} from '../framework/render.js';
+import { UserAction, UpdateType } from '../const.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -97,8 +98,19 @@ export default class PointPresenter {
     this.#mode = Mode.DEFAULT;
   };
 
-  #handleFormSubmit = (point,offers,destinations) => {
-    this.#handleDataChange(point,offers,destinations);
+  // #handleFormSubmit = (point,offers,destinations) => {
+  //   this.#handleDataChange(
+  //     UserAction.UPDATE_POINT,
+  //     UpdateType.MINOR,
+  //     point,offers,destinations);
+  //   this.#replaceEditFormToPoint();
+  // };
+
+  #handleFormSubmit = (point) => {
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      point);
     this.#replaceEditFormToPoint();
   };
 
@@ -108,12 +120,26 @@ export default class PointPresenter {
     this.#pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click',this.#replaceEditFormToPoint);
   };
 
+  // #handleFavoriteClick = () => {
+  //   const updatedPoint = {
+  //     ...this.#point,
+  //     isFavorite: !this.#point.isFavorite,
+  //   };
+  //   this.#handleDataChange(
+  //     UserAction.UPDATE_POINT,
+  //     UpdateType.PATCH,
+  //     updatedPoint, this.#offers, this.#destinations);
+  // };
+
   #handleFavoriteClick = () => {
     const updatedPoint = {
       ...this.#point,
       isFavorite: !this.#point.isFavorite,
     };
-    this.#handleDataChange(updatedPoint, this.#offers, this.#destinations);
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.PATCH,
+      updatedPoint);
   };
 }
 

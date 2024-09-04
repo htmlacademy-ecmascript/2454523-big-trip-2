@@ -5,7 +5,7 @@ import TripEventListView from '../view/trip-event-list-view.js';
 import {render,RenderPosition} from '../framework/render.js';
 import NoPointView from '../view/no-point-view.js';
 import PointPresenter from './point-presenter.js';
-import { SortType } from '../const.js';
+import { SortType, UserAction, UpdateType } from '../const.js';
 import { sortPriceDown, sortTimeDurationDown, sortDateFromUp } from '../utils/point.js';
 
 export default class TripEventPresenter {
@@ -27,6 +27,7 @@ export default class TripEventPresenter {
     this.#pointsModel = pointsModel;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
+    this.#pointsModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
@@ -47,9 +48,39 @@ export default class TripEventPresenter {
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
 
-  #handlePointChange = (updatePoint,offers,destinations) => {
-    this.#pointPresenters.get(updatePoint.uniqId).init(updatePoint, offers, destinations);
+  // #handlePointChange = (updatePoint,offers,destinations) => {
+  //   this.#pointPresenters.get(updatePoint.uniqId).init(updatePoint, offers, destinations);
 
+  // };
+
+  #handleViewAction = (actionType, updateType, update) => {
+    switch (actionType) {
+      case UserAction.UPDATE_POINT:
+        this.#pointsModel.updatePoint(updateType, update);
+        break;
+      case UserAction.ADD_POINT:
+        this.#pointsModel.addPoint(updateType, update);
+        break;
+      case UserAction.DELETE_POINT:
+        this.#pointsModel.deletePoint(updateType, update);
+        break;
+    }
+
+  };
+
+  #handleModelEvent = (updateType, data) => {
+    // - обновить часть списка (например, когда поменялось описание)
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this.#pointPresenters.get(data.uniqId).init(data, this.#offersModel.offers, this.#destinationsModel.destinations);
+        break;
+      case UpdateType.MINOR:
+        // - обновить список
+        break;
+      case UpdateType.MAJOR:
+        // - обновить всю доску (например, при переключении фильтра)
+        break;
+    }
   };
 
   #handleSortTypeChange = (sortType) => {
@@ -71,7 +102,7 @@ export default class TripEventPresenter {
   #renderPoint(point, offers, destinations) {
     const pointPresenter = new PointPresenter({
       tripEventListComponent: this.#tripEventListComponent.element,
-      onDataChange: this.#handlePointChange,
+      onDataChange: this.#handleViewAction,
       onModeChange: this.#handleModeChange,
     });
     pointPresenter.init(point, offers, destinations);
