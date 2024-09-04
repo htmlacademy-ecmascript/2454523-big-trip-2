@@ -2,7 +2,7 @@ import SortView from '../view/sort-view.js';
 import TripEventView from '../view/trip-event-view.js';
 //import CreatePointView from '../view/create-point-view.js'; //импорт класса форма создания
 import TripEventListView from '../view/trip-event-list-view.js';
-import {render,RenderPosition} from '../framework/render.js';
+import {remove, render,RenderPosition} from '../framework/render.js';
 import NoPointView from '../view/no-point-view.js';
 import PointPresenter from './point-presenter.js';
 import { SortType, UserAction, UpdateType } from '../const.js';
@@ -76,9 +76,13 @@ export default class TripEventPresenter {
         break;
       case UpdateType.MINOR:
         // - обновить список
+        this.#clearBoard();
+        this.#renderBoard();
         break;
       case UpdateType.MAJOR:
         // - обновить всю доску (например, при переключении фильтра)
+        this.#clearBoard({resetSortType: true});
+        this.#renderBoard();
         break;
     }
   };
@@ -88,12 +92,15 @@ export default class TripEventPresenter {
       return;
     }
     this.#currentSortType = sortType;
-    this.#clearPointList();
-    this.#renderPointList();
+    // this.#clearPointList();
+    // this.#renderPointList();
+    this.#clearBoard();
+    this.#renderBoard();
   };
 
   #renderSort () {
     this.#sortComponent = new SortView({
+      currentSortType: this.#currentSortType,
       onSortTypeChange: this.#handleSortTypeChange
     });
     render(this.#sortComponent, this.#tripEventComponent.element, RenderPosition.AFTERBEGIN);
@@ -109,21 +116,34 @@ export default class TripEventPresenter {
     this.#pointPresenters.set(point.uniqId, pointPresenter);
   }
 
-  #renderPointList () {
-    render(this.#tripEventListComponent,this.#tripEventComponent.element);
-    for (let i = 0; i < this.points.length; i++) {
-      this.#renderPoint(this.points[i], this.#offersModel.offers, this.#destinationsModel.destinations);
-    }
-  }
+  // #renderPointList () {
+  //   render(this.#tripEventListComponent,this.#tripEventComponent.element);
+  //   for (let i = 0; i < this.points.length; i++) {
+  //     this.#renderPoint(this.points[i], this.#offersModel.offers, this.#destinationsModel.destinations);
+  //   }
+  // }
 
-  #clearPointList () {
-    this.#pointPresenters.forEach((presenter) => presenter.destroy());
-    this.#pointPresenters.clear();
-  }
+  // #clearPointList () {
+  //   this.#pointPresenters.forEach((presenter) => presenter.destroy());
+  //   this.#pointPresenters.clear();
+  // }
 
 
   #renderNoPoints () {
     render(this.#noPointComponent,this.#tripEventComponent.element,RenderPosition.AFTERBEGIN);
+  }
+
+  #clearBoard ({resetSortType = false} = {}) {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
+
+    remove(this.#sortComponent);
+    remove(this.#noPointComponent);
+
+    if (resetSortType){
+      this.#currentSortType = SortType.DAY;
+    }
+
   }
 
   #renderBoard () {
@@ -135,7 +155,11 @@ export default class TripEventPresenter {
     }
 
     this.#renderSort();
-    this.#renderPointList();
+    // this.#renderPointList();
+    render(this.#tripEventListComponent,this.#tripEventComponent.element);
+    for (let i = 0; i < this.points.length; i++) {
+      this.#renderPoint(this.points[i], this.#offersModel.offers, this.#destinationsModel.destinations);
+    }
     //render (new CreatePointView({point: this.#boardPoints[0], offers: this.#offers, destinations: this.#destinations}), this.#tripEventListComponent.element); //- отрисовка формы созадния
 
   }

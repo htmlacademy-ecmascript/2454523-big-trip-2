@@ -11,7 +11,8 @@ export default class PointsModel extends Observable {
   }
 
   updatePoint(updateType, update) {
-    const index = this.#points.findIndex((point) => point.id === update.id);
+    //const index = this.#points.findIndex((point) => point.id === update.id);
+    const index = this.#points.findIndex((point) => point.uniqId === update.uniqId);
 
     if (index === -1) {
       throw new Error('Can\'t update unexisting task');
@@ -35,7 +36,8 @@ export default class PointsModel extends Observable {
   }
 
   deletePoint (updateType, update) {
-    const index = this.#points.findIndex((point) => point.id === update.id);
+    //const index = this.#points.findIndex((point) => point.id === update.id);
+    const index = this.#points.findIndex((point) => point.uniqId === update.uniqId);
 
     if (index === -1) {
       throw new Error('Can\'t update unexisting task');
