@@ -37,6 +37,7 @@ export default class PointPresenter {
       offers: this.#offers,
       destinations: this.#destinations,
       onFormSubmit: this.#handleFormSubmit,
+      onDeleteClick: this.#handleDeleteClick
     });
 
     this.#pointComponent = new PointView({
@@ -98,14 +99,6 @@ export default class PointPresenter {
     this.#mode = Mode.DEFAULT;
   };
 
-  // #handleFormSubmit = (point,offers,destinations) => {
-  //   this.#handleDataChange(
-  //     UserAction.UPDATE_POINT,
-  //     UpdateType.MINOR,
-  //     point,offers,destinations);
-  //   this.#replaceEditFormToPoint();
-  // };
-
   #handleFormSubmit = (point) => {
     this.#handleDataChange(
       UserAction.UPDATE_POINT,
@@ -120,17 +113,6 @@ export default class PointPresenter {
     this.#pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click',this.#replaceEditFormToPoint);
   };
 
-  // #handleFavoriteClick = () => {
-  //   const updatedPoint = {
-  //     ...this.#point,
-  //     isFavorite: !this.#point.isFavorite,
-  //   };
-  //   this.#handleDataChange(
-  //     UserAction.UPDATE_POINT,
-  //     UpdateType.PATCH,
-  //     updatedPoint, this.#offers, this.#destinations);
-  // };
-
   #handleFavoriteClick = () => {
     const updatedPoint = {
       ...this.#point,
@@ -140,6 +122,14 @@ export default class PointPresenter {
       UserAction.UPDATE_POINT,
       UpdateType.PATCH,
       updatedPoint);
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#handleDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point
+    );
   };
 }
 
