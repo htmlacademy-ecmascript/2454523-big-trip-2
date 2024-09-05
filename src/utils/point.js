@@ -94,4 +94,19 @@ function isValidPrice(basePrice) {
   return (basePrice === '0' || /^[1-9][0-9]*$/.test(basePrice)) && correctPrice >= 0;
 }
 
-export {getOffersForPoint, getDestinationForPoint,sortPriceDown, sortTimeDurationDown,sortDateFromUp, isValidPrice};
+function isDateFromEqual(dateA, dateB) {
+  return (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
+}
+
+function isDurationsEqual(pointA, pointB) {
+  const durationA = calculateDurationInMilliseconds(pointA);
+  const durationB = calculateDurationInMilliseconds(pointB);
+
+  return durationA === durationB;
+}
+
+function isPriceEqual (priceA,priceB) {
+  return (priceA === null && priceB === null) || priceA === priceB;
+}
+
+export {getOffersForPoint, getDestinationForPoint,sortPriceDown, sortTimeDurationDown,sortDateFromUp, isValidPrice, isDateFromEqual,isDurationsEqual,isPriceEqual};

@@ -48,11 +48,6 @@ export default class TripEventPresenter {
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
 
-  // #handlePointChange = (updatePoint,offers,destinations) => {
-  //   this.#pointPresenters.get(updatePoint.uniqId).init(updatePoint, offers, destinations);
-
-  // };
-
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
       case UserAction.UPDATE_POINT:
@@ -92,8 +87,6 @@ export default class TripEventPresenter {
       return;
     }
     this.#currentSortType = sortType;
-    // this.#clearPointList();
-    // this.#renderPointList();
     this.#clearBoard();
     this.#renderBoard();
   };
@@ -115,19 +108,6 @@ export default class TripEventPresenter {
     pointPresenter.init(point, offers, destinations);
     this.#pointPresenters.set(point.uniqId, pointPresenter);
   }
-
-  // #renderPointList () {
-  //   render(this.#tripEventListComponent,this.#tripEventComponent.element);
-  //   for (let i = 0; i < this.points.length; i++) {
-  //     this.#renderPoint(this.points[i], this.#offersModel.offers, this.#destinationsModel.destinations);
-  //   }
-  // }
-
-  // #clearPointList () {
-  //   this.#pointPresenters.forEach((presenter) => presenter.destroy());
-  //   this.#pointPresenters.clear();
-  // }
-
 
   #renderNoPoints () {
     render(this.#noPointComponent,this.#tripEventComponent.element,RenderPosition.AFTERBEGIN);
@@ -155,7 +135,6 @@ export default class TripEventPresenter {
     }
 
     this.#renderSort();
-    // this.#renderPointList();
     render(this.#tripEventListComponent,this.#tripEventComponent.element);
     for (let i = 0; i < this.points.length; i++) {
       this.#renderPoint(this.points[i], this.#offersModel.offers, this.#destinationsModel.destinations);
