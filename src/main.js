@@ -4,8 +4,15 @@ import {render} from './framework/render.js';
 import PointsModel from './model/points-model.js';
 import DestinationsModel from './model/destinations-model.js';
 import OffersModel from './model/offers-model.js';
+import FilterModel from './model/filter-model.js';
 import ButtonNewEventView from './view/button-new-event-view.js';
 
+const filters = [
+  {
+    type:'everything',
+    count:0,
+  }
+];
 
 const tripMainElement = document.querySelector('.trip-main');
 const tripControlsFiltersElement = tripMainElement.querySelector('.trip-controls__filters');
@@ -14,7 +21,8 @@ const pageBodyContainerElement = pageMainElement.querySelector('.page-body__cont
 const pointsModel = new PointsModel();
 const destinationsModel = new DestinationsModel();
 const offersModel = new OffersModel();
-const filterComponent = new FilterView();
+const filterModel = new FilterModel();
+//const filterComponent = new FilterView();
 const buttonNewEventComponent = new ButtonNewEventView();
 
 const tripEventPresenter = new TripEventPresenter({tripEventsContainer: pageBodyContainerElement,
@@ -23,7 +31,13 @@ const tripEventPresenter = new TripEventPresenter({tripEventsContainer: pageBody
   offersModel
 });
 
-render(filterComponent, tripControlsFiltersElement);
+render(new FilterView({
+  filters,
+  currentFilterType: 'everything',
+  onFilterTypeChange: () => {}
+}), tripControlsFiltersElement);
+
+
 render(buttonNewEventComponent, tripMainElement);
 
 tripEventPresenter.init();

@@ -36,5 +36,12 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
-export {POINT_TYPES, DESTINATIONS, DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT, DATETIME_FORMAT_FOR_EDIT_FORM, NoEventText, SortType, SORT_TYPE_DISABLED, UserAction, UpdateType};
+const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE:'future',
+  PRESENT: 'present',
+  PAST: 'past',
+};
+
+export {POINT_TYPES, DESTINATIONS, DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT, DATETIME_FORMAT_FOR_EDIT_FORM, NoEventText, SortType, SORT_TYPE_DISABLED, UserAction, UpdateType,FilterType};
 
