@@ -6,8 +6,8 @@ const mockPoints = [
     id: 1,
     type: 'taxi',
     destination: 1,
-    dateFrom: new Date('2024-01-10T00:55:56.845Z'),
-    dateTo: new Date('2024-01-10T01:25:56.845Z'),
+    dateFrom: new Date('2024-09-06T00:55:56.845Z'),
+    dateTo: new Date('2024-09-09T01:25:56.845Z'),
     basePrice: 1100,
     isFavorite: false,
     offers: [
@@ -101,8 +101,8 @@ const mockPoints = [
     id: 9,
     type: 'restaurant',
     destination: 3,
-    dateFrom: new Date('2024-09-10T18:00:56.845Z'),
-    dateTo: new Date('2024-09-10T20:00:56.845Z'),
+    dateFrom: new Date('2024-09-20T18:00:56.845Z'),
+    dateTo: new Date('2024-09-20T20:00:56.845Z'),
     basePrice: 700,
     isFavorite: false,
     offers: [
