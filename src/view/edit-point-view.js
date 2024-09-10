@@ -137,7 +137,6 @@ function createFieldEventPriceTemplate (point) {
           <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
         </div>`;
   }
-
   const isPriceNotCorrect = !isValidPrice(basePrice);
 
   return `<div class="event__field-group  event__field-group--price">
@@ -161,7 +160,6 @@ function createEditPointTemplate (point, offers, destinations) {
   const dateFromInMilliseconds = dateFrom.getTime();
   const dateToInMilliseconds = dateTo.getTime();
   const isDateToNotCorrect = dateToInMilliseconds < dateFromInMilliseconds;
-
 
   return (
     `<li class="trip-events__item">
@@ -195,7 +193,6 @@ export default class EditPointView extends AbstractStatefulView {
   #startDatepicker = null;
   #endDatepicker = null;
 
-
   constructor ({point, offers, destinations, onFormSubmit, onDeleteClick}) {
     super();
     this._setState(EditPointView.parsePointToState(point));
@@ -204,8 +201,6 @@ export default class EditPointView extends AbstractStatefulView {
     this. #handleForSubmit = onFormSubmit;
     this._restoreHandlers();
     this.#handleDeleteClick = onDeleteClick;
-
-
   }
 
   get template () {
