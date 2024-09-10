@@ -171,8 +171,6 @@ export default class TripEventPresenter {
     for (let i = 0; i < this.points.length; i++) {
       this.#renderPoint(this.points[i], this.#offersModel.offers, this.#destinationsModel.destinations);
     }
-    //render (new CreatePointView({point: this.#boardPoints[0], offers: this.#offers, destinations: this.#destinations}), this.#tripEventListComponent.element); //- отрисовка формы созадния
-
   }
 
 }
