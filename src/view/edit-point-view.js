@@ -17,7 +17,8 @@ function createEditPointTypePointTemplate () {
 function createOffersTemplate(point, offers) {
   const pointTypeOffer = getOffersForPoint(point,offers);
 
-  if (pointTypeOffer.offers.length === 0) {
+
+  if (!pointTypeOffer || !pointTypeOffer.offers || pointTypeOffer.offers.length === 0) {
     return '';
   }
 
@@ -157,8 +158,9 @@ function createEditPointTemplate (point, offers, destinations) {
 
   const isPriceNotCorrect = !isValidPrice(basePrice);
 
-  const dateFromInMilliseconds = dateFrom.getTime();
-  const dateToInMilliseconds = dateTo.getTime();
+  const dateFromInMilliseconds = dateFrom ? dateFrom.getTime() : 0;
+  const dateToInMilliseconds = dateTo ? dateTo.getTime() : 0;
+
   const isDateToNotCorrect = dateToInMilliseconds < dateFromInMilliseconds;
 
   return (

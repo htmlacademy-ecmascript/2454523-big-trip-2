@@ -100,13 +100,6 @@ export default class PointPresenter {
     this.#mode = Mode.DEFAULT;
   };
 
-  // #handleFormSubmit = (point) => {
-  //   this.#handleDataChange(
-  //     UserAction.UPDATE_POINT,
-  //     UpdateType.MINOR,
-  //     point);
-  //   this.#replaceEditFormToPoint();
-  // };
 
   #handleFormSubmit = (update) => {
 

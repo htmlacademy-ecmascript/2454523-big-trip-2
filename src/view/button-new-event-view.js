@@ -19,7 +19,6 @@ export default class ButtonNewEventView extends AbstractView {
   }
 
   #clickHandler = (evt) => {
-    debugger;
     evt.preventDefault();
     this.#handleClick();
   };

@@ -1,6 +1,5 @@
 import SortView from '../view/sort-view.js';
 import TripEventView from '../view/trip-event-view.js';
-//import CreatePointView from '../view/create-point-view.js'; //импорт класса форма создания
 import NewPointPresenter from './new-point-presenter.js';
 import TripEventListView from '../view/trip-event-list-view.js';
 import {remove, render,RenderPosition} from '../framework/render.js';

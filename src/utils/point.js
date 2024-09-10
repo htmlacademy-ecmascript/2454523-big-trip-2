@@ -5,9 +5,6 @@ function getOffersForPoint (point, offers) {
 
   const pointTypeOffer = offers.find((offer) => offer.type === point.type);
 
-  // if (!pointTypeOffer) {
-  //   return '';
-  // }
   if (!pointTypeOffer) {
     return { offers: [] };
   }
@@ -94,8 +91,7 @@ function sortDateFromUp(pointA, pointB) {
 
 function isValidPrice(basePrice) {
   const correctPrice = parseInt(basePrice, 10);
-  //return (basePrice === '0' || /^[1-9][0-9]*$/.test(basePrice)) && correctPrice >= 0;
-  return (basePrice === 0 || /^[1-9][0-9]*$/.test(basePrice)) && correctPrice >= 0;
+  return (/^0$/.test(basePrice) || /^[1-9][0-9]*$/.test(basePrice)) && correctPrice >= 0;
 }
 
 function isDateFromEqual(dateA, dateB) {

@@ -4,9 +4,6 @@ import { nanoid } from 'nanoid';
 import {UserAction, UpdateType} from '../const.js';
 
 export default class NewPointPresenter {
-  //#point = null;
-  // #offers = [];
-  // #destinations = [];
   #pointListContainer = null;
   #handleDataChange = null;
   #handleDestroy = null;
@@ -25,7 +22,6 @@ export default class NewPointPresenter {
       return;
     }
     this.#createPointComponent = new CreatePointView({
-      //point: this.#point,
       offers: offers,
       destinations: destinations,
       onFormSubmit: this.#handleFormSubmit,
