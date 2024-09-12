@@ -1,3 +1,4 @@
+import he from 'he';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { POINT_TYPES, DESTINATIONS, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
 import { humanizeDate } from '../utils/date.js';
@@ -108,7 +109,7 @@ function createFieldGroupDestinationTemplate (point, destinations) {
   </label>
   <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
   <datalist id="destination-list-1">
-  ${destinationTemplate}
+  ${he.encode(destinationTemplate)}
   </datalist>
 </div>`;
 }
@@ -135,7 +136,7 @@ function createFieldEventPriceTemplate (point) {
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
+          <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="">
         </div>`;
   }
   const isPriceNotCorrect = !isValidPrice(basePrice);
@@ -145,7 +146,7 @@ function createFieldEventPriceTemplate (point) {
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}"
+          <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${basePrice}"
           style="border: ${isPriceNotCorrect ? '2px solid red' : 'none'}">
           ${isPriceNotCorrect ? '<p class="event__error-message">Price must be a positive integer.</p>' : ''}
         </div>`;
@@ -283,7 +284,7 @@ export default class EditPointView extends AbstractStatefulView {
     evt.preventDefault();
     const newDestination = evt.target.value;
     if (!DESTINATIONS.includes(newDestination)) {
-      evt.target.value = this.#destinations.find((destination) => destination.id === this._state.destination).name;
+      evt.target.value = '';
       return;
     }
     const destinationData = this.#destinations.find((destination)=> destination.name === newDestination);
