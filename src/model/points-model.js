@@ -1,24 +1,52 @@
+import Observable from '../framework/observable.js';
 import {getRandomPoint} from '../mock/points.js';
-import { mockOffers } from '../mock/offers.js';
-import { mockDestinations } from '../mock/destinations.js';
 
 const POINT_COUNT = 10;
 
-export default class PointsModel {
+export default class PointsModel extends Observable {
   #points = Array.from({length: POINT_COUNT}, getRandomPoint);
-  #offers = mockOffers;
-  #destinations = mockDestinations;
-
 
   get points() {
     return this.#points;
   }
 
-  get offers() {
-    return this.#offers;
+  updatePoint(updateType, update) {
+    //const index = this.#points.findIndex((point) => point.id === update.id);
+    const index = this.#points.findIndex((point) => point.uniqId === update.uniqId);
+
+    if (index === -1) {
+      throw new Error('Can\'t update unexisting task');
+    }
+
+    this.#points = [
+      ...this.#points.slice(0, index),
+      update,
+      ...this.#points.slice(index + 1),
+    ];
+
+    this._notify(updateType, update);
   }
 
-  get destinations() {
-    return this.#destinations;
+  addPoint (updateType, update) {
+    this.#points = [
+      update,
+      ...this.#points,
+    ];
+    this._notify(updateType, update);
   }
+
+  deletePoint (updateType, update) {
+    //const index = this.#points.findIndex((point) => point.id === update.id);
+    const index = this.#points.findIndex((point) => point.uniqId === update.uniqId);
+
+    if (index === -1) {
+      throw new Error('Can\'t update unexisting task');
+    }
+    this.#points = [
+      ...this.#points.slice(0, index),
+      ...this.#points.slice(index + 1)
+    ];
+    this._notify(updateType);
+  }
+
 }

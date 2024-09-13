@@ -1,3 +1,4 @@
+import he from 'he';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { POINT_TYPES, DESTINATIONS, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
 import { humanizeDate } from '../utils/date.js';
@@ -6,6 +7,17 @@ import {getOffersForPoint, isValidPrice} from '../utils/point.js';
 import {getDestinationForPoint} from '../utils/point.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+
+const BLANK_POINT = {
+  id: 100,
+  type: 'flight',
+  destination: '',
+  dateFrom: null,
+  dateTo: null,
+  basePrice: 0,
+  isFavorite: false,
+  offers: [],
+};
 
 function createPointTypeTemplate () {
   return POINT_TYPES.map((type)=> `<div class="event__type-item">
@@ -17,7 +29,7 @@ function createPointTypeTemplate () {
 function createOffersTemplate(point, offers) {
   const pointTypeOffer = getOffersForPoint(point,offers);
 
-  if (pointTypeOffer.offers.length === 0) {
+  if (!pointTypeOffer || !pointTypeOffer.offers || pointTypeOffer.offers.length === 0) {
     return '';
   }
 
@@ -107,7 +119,7 @@ function createFieldGroupDestinationTemplate (point, destinations) {
   </label>
   <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
   <datalist id="destination-list-1">
-  ${destinationTemplate}
+  ${he.encode(destinationTemplate)}
   </datalist>
 </div>`;
 }
@@ -134,7 +146,7 @@ function createFieldEventPriceTemplate (point) {
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
+          <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="">
         </div>`;
   }
   const isPriceNotCorrect = !isValidPrice(basePrice);
@@ -144,7 +156,7 @@ function createFieldEventPriceTemplate (point) {
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}"
+          <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${basePrice}"
           style="border: ${isPriceNotCorrect ? '2px solid red' : 'none'}">
           ${isPriceNotCorrect ? '<p class="event__error-message">Price must be a positive integer.</p>' : ''}
         </div>`;
@@ -157,8 +169,10 @@ function createCreationFormTemplate (point, offers, destinations) {
 
   const isPriceNotCorrect = !isValidPrice(basePrice);
 
-  const dateFromInMilliseconds = dateFrom.getTime();
-  const dateToInMilliseconds = dateTo.getTime();
+  const dateFromInMilliseconds = dateFrom ? dateFrom.getTime() : 0;
+  const dateToInMilliseconds = dateTo ? dateTo.getTime() : 0;
+
+
   const isDateToNotCorrect = dateToInMilliseconds < dateFromInMilliseconds;
 
   return (
@@ -188,15 +202,19 @@ ${createFieldEventPriceTemplate(point)}
 export default class CreatePointView extends AbstractStatefulView {
   #offers = [];
   #destinations = [];
+  #handleForSubmit = null;
+  #handleDeleteClick = null;
   #startDatepicker = null;
   #endDatepicker = null;
 
-  constructor ({point, offers, destinations}) {
+  constructor ({point = BLANK_POINT, offers, destinations,onFormSubmit, onDeleteClick}) {
     super();
     this._setState(CreatePointView.parsePointToState(point));
     this.#offers = offers;
     this.#destinations = destinations;
+    this. #handleForSubmit = onFormSubmit;
     this._restoreHandlers();
+    this.#handleDeleteClick = onDeleteClick;
   }
 
   get template () {
@@ -215,14 +233,15 @@ export default class CreatePointView extends AbstractStatefulView {
     }
   }
 
-
   reset (point) {
     this.updateElement(CreatePointView.parsePointToState(point));
   }
 
   _restoreHandlers() {
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__type-list').addEventListener('change', this.#typeChangeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
     this.element.addEventListener('change', (evt) => {
       if (evt.target.classList.contains('event__offer-checkbox')) {
         this.#offerChangeHandler(evt);
@@ -232,6 +251,13 @@ export default class CreatePointView extends AbstractStatefulView {
     this.#setStartDatepicker();
     this.#setEndDatepicker();
   }
+
+
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this. #handleForSubmit(CreatePointView.parseStateToPoint(this._state), this.#offers, this.#destinations);
+
+  };
 
   #offerChangeHandler = (evt) => {
 
@@ -269,7 +295,7 @@ export default class CreatePointView extends AbstractStatefulView {
     evt.preventDefault();
     const newDestination = evt.target.value;
     if (!DESTINATIONS.includes(newDestination)) {
-      evt.target.value = this.#destinations.find((destination) => destination.id === this._state.destination).name;
+      evt.target.value = '';
       return;
     }
     const destinationData = this.#destinations.find((destination)=> destination.name === newDestination);
@@ -331,6 +357,11 @@ export default class CreatePointView extends AbstractStatefulView {
       }
     );
   }
+
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(CreatePointView.parseStateToPoint(this._state));
+  };
 
   static parsePointToState (point) {
     return {...point,
