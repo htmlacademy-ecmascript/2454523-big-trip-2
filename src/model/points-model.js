@@ -1,6 +1,10 @@
 import Observable from '../framework/observable.js';
 import {getRandomPoint} from '../mock/points.js';
 
+import { sortPriceDown, sortTimeDurationDown, sortDateFromUp, findPointIndexById } from '../utils/point.js';
+import {filter} from '../utils/filter.js';
+import { SortType } from '../const.js';
+
 const POINT_COUNT = 10;
 
 export default class PointsModel extends Observable {
@@ -10,9 +14,20 @@ export default class PointsModel extends Observable {
     return this.#points;
   }
 
+  filteredAndSortedPoints(currentSortType, filterType) {
+    const filteredPoints = filter[filterType](this.#points);
+
+    switch(currentSortType) {
+      case SortType.PRICE:
+        return filteredPoints.sort(sortPriceDown);
+      case SortType.TIME:
+        return filteredPoints.sort(sortTimeDurationDown);
+    }
+    return filteredPoints.sort(sortDateFromUp);
+  }
+
   updatePoint(updateType, update) {
-    //const index = this.#points.findIndex((point) => point.id === update.id);
-    const index = this.#points.findIndex((point) => point.uniqId === update.uniqId);
+    const index = findPointIndexById(this.#points, update);
 
     if (index === -1) {
       throw new Error('Can\'t update unexisting task');
@@ -36,8 +51,7 @@ export default class PointsModel extends Observable {
   }
 
   deletePoint (updateType, update) {
-    //const index = this.#points.findIndex((point) => point.id === update.id);
-    const index = this.#points.findIndex((point) => point.uniqId === update.uniqId);
+    const index = findPointIndexById(this.#points, update);
 
     if (index === -1) {
       throw new Error('Can\'t update unexisting task');

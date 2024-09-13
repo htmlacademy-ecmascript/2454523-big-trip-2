@@ -6,8 +6,6 @@ import {remove, render,RenderPosition} from '../framework/render.js';
 import NoPointView from '../view/no-point-view.js';
 import PointPresenter from './point-presenter.js';
 import { SortType, UserAction, UpdateType, FilterType } from '../const.js';
-import { sortPriceDown, sortTimeDurationDown, sortDateFromUp } from '../utils/point.js';
-import {filter} from '../utils/filter.js';
 
 export default class TripEventPresenter {
   #tripEventsContainer = null;
@@ -45,18 +43,9 @@ export default class TripEventPresenter {
   }
 
   get points() {
-    this.#filterType = this.#filterModel.filter;
-    const points = this.#pointsModel.points;
-    const filteredPoints = filter[this.#filterType](points);
-
-    switch(this.#currentSortType) {
-      case SortType.PRICE:
-        return filteredPoints.sort(sortPriceDown);
-      case SortType.TIME:
-        return filteredPoints.sort(sortTimeDurationDown);
-    }
-    return filteredPoints.sort(sortDateFromUp);
+    return this.#pointsModel.filteredAndSortedPoints(this.#currentSortType, this.#filterModel.filter);
   }
+
 
   init () {
     this.#renderBoard();

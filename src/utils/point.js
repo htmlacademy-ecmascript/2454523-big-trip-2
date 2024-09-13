@@ -21,6 +21,10 @@ function getDestinationForPoint (point, destinations) {
   return destinationData;
 }
 
+function findPointIndexById (points, update) {
+  return points.findIndex((point) => point.uniqId === update.uniqId);
+}
+
 function getWeightForNullPrice(priceA, priceB) {
   if (priceA === null && priceB === null) {
     return 0;
@@ -106,7 +110,7 @@ function isDurationsEqual(pointA, pointB) {
 }
 
 function isPriceEqual (priceA,priceB) {
-  return (priceA === null && priceB === null) || priceA === priceB;
+  return priceA === priceB;
 }
 
-export {getOffersForPoint, getDestinationForPoint,sortPriceDown, sortTimeDurationDown,sortDateFromUp, isValidPrice, isDateFromEqual,isDurationsEqual,isPriceEqual};
+export {getOffersForPoint, getDestinationForPoint,findPointIndexById, sortPriceDown, sortTimeDurationDown,sortDateFromUp, isValidPrice, isDateFromEqual,isDurationsEqual,isPriceEqual};
