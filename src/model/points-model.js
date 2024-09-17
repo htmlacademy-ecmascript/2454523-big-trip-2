@@ -8,7 +8,18 @@ import { SortType } from '../const.js';
 const POINT_COUNT = 10;
 
 export default class PointsModel extends Observable {
+  #pointsApiService = null;
   #points = Array.from({length: POINT_COUNT}, getRandomPoint);
+
+  constructor({pointsApiService}) {
+    super();
+    this.#pointsApiService = pointsApiService;
+
+    this.#pointsApiService.points.then((points) => {
+      console.log(points);
+    });
+
+  }
 
   get points() {
     return this.#points;

@@ -36,5 +36,12 @@ const FilterType = {
   PAST: 'past',
 };
 
-export {POINT_TYPES, DESTINATIONS, DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT, DATETIME_FORMAT_FOR_EDIT_FORM, SortType, SORT_TYPE_DISABLED, UserAction, UpdateType,FilterType};
+const Method = {
+  GET: 'GET',
+  PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE'
+};
+
+export {POINT_TYPES, DESTINATIONS, DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT, DATETIME_FORMAT_FOR_EDIT_FORM, SortType, SORT_TYPE_DISABLED, UserAction, UpdateType,FilterType, Method};
 
