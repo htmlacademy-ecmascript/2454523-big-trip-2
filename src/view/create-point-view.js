@@ -29,7 +29,7 @@ function createPointTypeTemplate () {
 function createOffersTemplate(point, offers) {
   const pointTypeOffer = getOffersForPoint(point,offers);
 
-  if (!pointTypeOffer || !pointTypeOffer.offers || pointTypeOffer.offers.length === 0) {
+  if (!pointTypeOffer?.offers?.length) {
     return '';
   }
 
