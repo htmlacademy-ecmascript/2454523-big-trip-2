@@ -60,3 +60,6 @@ function handleNewPointButtonClick(){
 render(buttonNewEventComponent, tripMainElement);
 filterPresenter.init();
 tripEventPresenter.init();
+pointsModel.init();
+destinationsModel.init();
+offersModel.init();

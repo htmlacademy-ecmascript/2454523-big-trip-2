@@ -1,23 +1,24 @@
 import Observable from '../framework/observable.js';
-import {getRandomPoint} from '../mock/points.js';
+//import {getRandomPoint} from '../mock/points.js';
 
 import { sortPriceDown, sortTimeDurationDown, sortDateFromUp, findPointIndexById } from '../utils/point.js';
 import {filter} from '../utils/filter.js';
 import { SortType } from '../const.js';
 
-const POINT_COUNT = 10;
+//const POINT_COUNT = 10;
 
 export default class PointsModel extends Observable {
   #pointsApiService = null;
-  #points = Array.from({length: POINT_COUNT}, getRandomPoint);
+  //#points = Array.from({length: POINT_COUNT}, getRandomPoint);
+  #points = [];
 
   constructor({pointsApiService}) {
     super();
     this.#pointsApiService = pointsApiService;
 
-    this.#pointsApiService.points.then((points) => {
-      console.log(points.map(this.#adaptPointToClient));
-    });
+    // this.#pointsApiService.points.then((points) => {
+    //   console.log(points.map(this.#adaptPointToClient));
+    // });
 
   }
 
@@ -35,6 +36,16 @@ export default class PointsModel extends Observable {
         return filteredPoints.sort(sortTimeDurationDown);
     }
     return filteredPoints.sort(sortDateFromUp);
+  }
+
+  async init() {
+    try {
+      const points = await this.#pointsApiService.points;
+      this.#points = points.map(this.#adaptPointToClient);
+
+    } catch(err) {
+      this.#points = [];
+    }
   }
 
   updatePoint(updateType, update) {
