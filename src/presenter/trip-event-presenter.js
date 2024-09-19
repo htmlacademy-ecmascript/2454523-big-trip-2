@@ -4,6 +4,7 @@ import NewPointPresenter from './new-point-presenter.js';
 import TripEventListView from '../view/trip-event-list-view.js';
 import {remove, render,RenderPosition} from '../framework/render.js';
 import NoPointView from '../view/no-point-view.js';
+import LoadingView from '../view/loading-view.js';
 import PointPresenter from './point-presenter.js';
 import { SortType, UserAction, UpdateType, FilterType } from '../const.js';
 
@@ -16,12 +17,14 @@ export default class TripEventPresenter {
 
   #tripEventComponent = new TripEventView();
   #tripEventListComponent = new TripEventListView();
+  #loadingComponent = new LoadingView();
   #noPointComponent = null;
   #sortComponent = null;
   #pointPresenters = new Map();
   #newPointPresenter = null;
   #currentSortType = SortType.DAY;
   #filterType = FilterType.EVERYTHING;
+  #isLoading = true;
 
   constructor ({tripEventsContainer,pointsModel, destinationsModel, offersModel, filterModel, onNewPointDestroy}) {
     this.#tripEventsContainer = tripEventsContainer;
@@ -82,7 +85,7 @@ export default class TripEventPresenter {
     // - обновить часть списка (например, когда поменялось описание)
     switch (updateType) {
       case UpdateType.PATCH:
-        this.#pointPresenters.get(data.uniqId).init(data, this.#offersModel.offers, this.#destinationsModel.destinations);
+        this.#pointPresenters.get(data.id).init(data, this.#offersModel.offers, this.#destinationsModel.destinations);
         break;
       case UpdateType.MINOR:
         // - обновить список
@@ -92,6 +95,11 @@ export default class TripEventPresenter {
       case UpdateType.MAJOR:
         // - обновить всю доску (например, при переключении фильтра)
         this.#clearBoard({resetSortType: true});
+        this.#renderBoard();
+        break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
         this.#renderBoard();
         break;
     }
@@ -121,7 +129,12 @@ export default class TripEventPresenter {
       onModeChange: this.#handleModeChange,
     });
     pointPresenter.init(point, offers, destinations);
-    this.#pointPresenters.set(point.uniqId, pointPresenter);
+    //this.#pointPresenters.set(point.Id, pointPresenter);
+    this.#pointPresenters.set(point.id, pointPresenter);
+  }
+
+  #renderLoading() {
+    render(this.#loadingComponent,this.#tripEventComponent.element, RenderPosition.AFTERBEGIN);
   }
 
   #renderNoPoints () {
@@ -136,6 +149,7 @@ export default class TripEventPresenter {
     this.#pointPresenters.clear();
 
     remove(this.#sortComponent);
+    remove(this.#loadingComponent);
 
     if(this.#noPointComponent) {
       remove(this.#noPointComponent);
@@ -149,6 +163,11 @@ export default class TripEventPresenter {
 
   #renderBoard () {
     render(this.#tripEventComponent, this.#tripEventsContainer);
+
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
 
     if (this.points.length === 0) {
       this.#renderNoPoints();

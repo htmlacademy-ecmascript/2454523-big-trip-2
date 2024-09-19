@@ -22,7 +22,7 @@ function getDestinationForPoint (point, destinations) {
 }
 
 function findPointIndexById (points, update) {
-  return points.findIndex((point) => point.uniqId === update.uniqId);
+  return points.findIndex((point) => point.id === update.id);
 }
 
 function getWeightForNullPrice(priceA, priceB) {

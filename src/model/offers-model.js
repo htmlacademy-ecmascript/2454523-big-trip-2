@@ -22,7 +22,7 @@ export default class OffersModel extends Observable {
 
   async init() {
     try {
-      this.#offers = this.#offersApiService.offers;
+      this.#offers = await this.#offersApiService.offers;
 
     } catch(err) {
       this.#offers = [];

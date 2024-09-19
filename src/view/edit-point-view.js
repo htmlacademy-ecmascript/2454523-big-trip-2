@@ -57,7 +57,7 @@ function createDescriptionOfDestinationTemplate (point,destinations) {
   }
 
   const {description, pictures} = destinationData;
-  const photoOfDestination = pictures.map((picture) => `<img class="event__photo" src=${picture.src}" alt="Event photo"></img>`);
+  const photoOfDestination = pictures.map((picture) => `<img class="event__photo" src=${picture.src} alt="Event photo"></img>`);
   return `<section class="event__section  event__section--destination">
                   <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                   <p class="event__destination-description">${description}</p>
