@@ -129,7 +129,6 @@ export default class TripEventPresenter {
       onModeChange: this.#handleModeChange,
     });
     pointPresenter.init(point, offers, destinations);
-    //this.#pointPresenters.set(point.Id, pointPresenter);
     this.#pointPresenters.set(point.id, pointPresenter);
   }
 
@@ -171,6 +170,20 @@ export default class TripEventPresenter {
 
     if (this.points.length === 0) {
       this.#renderNoPoints();
+      return;
+    }
+
+    // надо придумать свою заглушку!
+    if (this.#offersModel.offers.length === 0) {
+      this.#renderNoPoints();
+      console.log('офферы не загружены');
+      return;
+    }
+
+    // надо придумать свою заглушку!
+    if (this.#destinationsModel.destinations.length === 0) {
+      this.#renderNoPoints();
+      console.log('пункты назначения не загружены');
       return;
     }
 

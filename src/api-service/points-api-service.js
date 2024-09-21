@@ -8,6 +8,7 @@ export default class PointsApiService extends ApiService {
   }
 
   async updatePoint(point) {
+
     const response = await this._load({
       url: `points/${point.id}`,
       method: Method.PUT,
@@ -23,7 +24,7 @@ export default class PointsApiService extends ApiService {
 
   #adaptPointToSrever(point) {
     const adaptedPoint = {...point,
-      'base_price': point.basePrice,
+      'base_price': Number(point.basePrice),
       'date_from': point.dateFrom instanceof Date ? point.dateFrom.toISOString() : null,
       'date_to': point.dateTo instanceof Date ? point.dateTo.toISOString() : null,
       'is_favorite': point.isFavorite,
