@@ -1,3 +1,4 @@
+/* eslint-disable semi */
 import FilterPresenter from './presenter/filter-presenter.js';
 import TripEventPresenter from './presenter/trip-event-presenter.js';
 import {render} from './framework/render.js';
@@ -61,10 +62,11 @@ function handleNewPointButtonClick(){
   buttonNewEventComponent.element.disabled = true;
 }
 
-render(buttonNewEventComponent, tripMainElement);
+
 filterPresenter.init();
 tripEventPresenter.init();
-// destinationsModel.init();
-// offersModel.init();
-pointsModel.init();
+pointsModel.init()
+  .finally(() => {
+    render(buttonNewEventComponent, tripMainElement)
+  });
 
