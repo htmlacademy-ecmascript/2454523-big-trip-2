@@ -4,9 +4,10 @@ import NewPointPresenter from './new-point-presenter.js';
 import TripEventListView from '../view/trip-event-list-view.js';
 import {remove, render,RenderPosition} from '../framework/render.js';
 import NoPointView from '../view/no-point-view.js';
+import NoDataView from '../view/no-data-view.js';
 import LoadingView from '../view/loading-view.js';
 import PointPresenter from './point-presenter.js';
-import { SortType, UserAction, UpdateType, FilterType } from '../const.js';
+import { SortType, UserAction, UpdateType, FilterType, NoDataType } from '../const.js';
 
 export default class TripEventPresenter {
   #tripEventsContainer = null;
@@ -19,6 +20,7 @@ export default class TripEventPresenter {
   #tripEventListComponent = new TripEventListView();
   #loadingComponent = new LoadingView();
   #noPointComponent = null;
+  #noDataComponent = null;
   #sortComponent = null;
   #pointPresenters = new Map();
   #newPointPresenter = null;
@@ -143,6 +145,13 @@ export default class TripEventPresenter {
     render(this.#noPointComponent,this.#tripEventComponent.element,RenderPosition.AFTERBEGIN);
   }
 
+  #renderNoData (noDataType) {
+    this.#noDataComponent = new NoDataView({
+      noDataType: noDataType
+    });
+    render(this.#noDataComponent,this.#tripEventComponent.element,RenderPosition.AFTERBEGIN);
+  }
+
   #clearBoard ({resetSortType = false} = {}) {
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
@@ -173,17 +182,13 @@ export default class TripEventPresenter {
       return;
     }
 
-    // надо придумать свою заглушку!
     if (this.#offersModel.offers.length === 0) {
-      this.#renderNoPoints();
-      console.log('офферы не загружены');
+      this.#renderNoData(NoDataType.OFFERS);
       return;
     }
 
-    // надо придумать свою заглушку!
     if (this.#destinationsModel.destinations.length === 0) {
-      this.#renderNoPoints();
-      console.log('пункты назначения не загружены');
+      this.#renderNoData(NoDataType.DESTINATIONS);
       return;
     }
 
