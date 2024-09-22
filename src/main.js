@@ -70,3 +70,4 @@ pointsModel.init()
     render(buttonNewEventComponent, tripMainElement)
   });
 
+

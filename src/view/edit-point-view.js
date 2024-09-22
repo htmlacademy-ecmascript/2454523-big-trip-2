@@ -46,8 +46,13 @@ function createOffersTemplate(point, offers) {
   </section>`;
 }
 
-function createEditPointDestinationOptionTemplate () {
-  return DESTINATIONS.map((destination)=>`<option value="${destination}"></option>`).join('');
+// function createEditPointDestinationOptionTemplate () {
+//   return DESTINATIONS.map((destination)=>`<option value="${destination}"></option>`).join('');
+// }
+
+function createEditPointDestinationOptionTemplate (destinations) {
+  const nameOfDestinations = destinations.map((destination) => destination.name);
+  return nameOfDestinations.map((destination)=>`<option value="${destination}"></option>`).join('');
 }
 
 function createDescriptionOfDestinationTemplate (point,destinations) {
@@ -100,7 +105,7 @@ function createFieldGroupDestinationTemplate (point, destinations) {
   if (point.destination === '') {
     name = '';
   }
-  const destinationTemplate = createEditPointDestinationOptionTemplate();
+  const destinationTemplate = createEditPointDestinationOptionTemplate(destinations);
 
   return `<div class="event__field-group  event__field-group--destination">
   <label class="event__label  event__type-output" for="event-destination-1">
