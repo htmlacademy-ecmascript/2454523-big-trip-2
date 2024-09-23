@@ -84,18 +84,15 @@ export default class TripEventPresenter {
   };
 
   #handleModelEvent = (updateType, data) => {
-    // - обновить часть списка (например, когда поменялось описание)
     switch (updateType) {
       case UpdateType.PATCH:
         this.#pointPresenters.get(data.id).init(data, this.#offersModel.offers, this.#destinationsModel.destinations);
         break;
       case UpdateType.MINOR:
-        // - обновить список
         this.#clearBoard();
         this.#renderBoard();
         break;
       case UpdateType.MAJOR:
-        // - обновить всю доску (например, при переключении фильтра)
         this.#clearBoard({resetSortType: true});
         this.#renderBoard();
         break;
