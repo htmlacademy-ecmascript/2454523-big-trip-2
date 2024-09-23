@@ -1,10 +1,9 @@
-import he from 'he';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import { POINT_TYPES, DESTINATIONS, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
+import { POINT_TYPES, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
 import { humanizeDate } from '../utils/date.js';
 import { getFormattedType } from '../utils/common.js';
 import {getOffersForPoint, isValidPrice} from '../utils/point.js';
-import {getDestinationForPoint} from '../utils/point.js';
+import {getDestinationForPoint, getNameOfDestinations} from '../utils/point.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -57,8 +56,9 @@ function createOffersTemplate(point, offers) {
   </section>`;
 }
 
-function createDestinationOptionTemplate () {
-  return DESTINATIONS.map((destination)=>`<option value="${destination}"></option>`).join('');
+function createDestinationOptionTemplate (destinations) {
+  const nameOfDestinations = getNameOfDestinations(destinations);
+  return nameOfDestinations.map((destination)=>`<option value="${destination}"></option>`).join('');
 }
 
 function createDescriptionOfDestinationTemplate (point,destinations) {
@@ -111,7 +111,7 @@ function createFieldGroupDestinationTemplate (point, destinations) {
   if (point.destination === '') {
     name = '';
   }
-  const destinationTemplate = createDestinationOptionTemplate();
+  const destinationTemplate = createDestinationOptionTemplate(destinations);
 
   return `<div class="event__field-group  event__field-group--destination">
   <label class="event__label  event__type-output" for="event-destination-1">
@@ -294,7 +294,8 @@ export default class CreatePointView extends AbstractStatefulView {
   #destinationChangeHandler = (evt) => {
     evt.preventDefault();
     const newDestination = evt.target.value;
-    if (!DESTINATIONS.includes(newDestination)) {
+    const nameOfDestinations = getNameOfDestinations(this.#destinations);
+    if (!nameOfDestinations.includes(newDestination)) {
       evt.target.value = '';
       return;
     }

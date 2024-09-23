@@ -1,5 +1,4 @@
 import Observable from '../framework/observable.js';
-//import {getRandomPoint} from '../mock/points.js';
 import { UpdateType } from '../const.js';
 
 import { sortPriceDown, sortTimeDurationDown, sortDateFromUp, findPointIndexById } from '../utils/point.js';
@@ -17,12 +16,6 @@ export default class PointsModel extends Observable {
     this.#pointsApiService = pointsApiService;
     this.#offers = offersModel;
     this.#destinations = destinationsModel;
-
-
-    // this.#pointsApiService.points.then((points) => {
-    //   console.log(points.map(this.#adaptPointToClient));
-    // });
-
   }
 
   get points() {

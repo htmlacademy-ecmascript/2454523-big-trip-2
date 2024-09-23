@@ -1,10 +1,9 @@
-import he from 'he';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import { POINT_TYPES, DESTINATIONS, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
+import { POINT_TYPES, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
 import { humanizeDate } from '../utils/date.js';
 import { getFormattedType } from '../utils/common.js';
 import {getOffersForPoint, isValidPrice} from '../utils/point.js';
-import {getDestinationForPoint} from '../utils/point.js';
+import {getDestinationForPoint, getNameOfDestinations} from '../utils/point.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -46,12 +45,9 @@ function createOffersTemplate(point, offers) {
   </section>`;
 }
 
-// function createEditPointDestinationOptionTemplate () {
-//   return DESTINATIONS.map((destination)=>`<option value="${destination}"></option>`).join('');
-// }
 
 function createEditPointDestinationOptionTemplate (destinations) {
-  const nameOfDestinations = destinations.map((destination) => destination.name);
+  const nameOfDestinations = getNameOfDestinations(destinations);
   return nameOfDestinations.map((destination)=>`<option value="${destination}"></option>`).join('');
 }
 
@@ -287,7 +283,8 @@ export default class EditPointView extends AbstractStatefulView {
   #destinationChangeHandler = (evt) => {
     evt.preventDefault();
     const newDestination = evt.target.value;
-    if (!DESTINATIONS.includes(newDestination)) {
+    const nameOfDestinations = getNameOfDestinations(this.#destinations);
+    if (!nameOfDestinations.includes(newDestination)) {
       evt.target.value = '';
       return;
     }

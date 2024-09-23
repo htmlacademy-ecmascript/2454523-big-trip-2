@@ -1,7 +1,5 @@
 const POINT_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
-const DESTINATIONS = ['Hiroshima', 'Vien', 'Madrid', 'Paris', 'Kioto', 'Venice', 'Chamonix', 'Saint Petersburg', 'Geneva'];
-
 const DATE_FORMAT = 'MMM DD';
 const TIME_FORMAT = 'HH:mm';
 const DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm';
@@ -49,5 +47,5 @@ const NoDataType = {
   DESTINATIONS: 'DESTINATIONS',
 };
 
-export {POINT_TYPES, DESTINATIONS, DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT, DATETIME_FORMAT_FOR_EDIT_FORM, SortType, SORT_TYPE_DISABLED, UserAction, UpdateType,FilterType, Method, NoDataType};
+export {POINT_TYPES, DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT, DATETIME_FORMAT_FOR_EDIT_FORM, SortType, SORT_TYPE_DISABLED, UserAction, UpdateType,FilterType, Method, NoDataType};
 

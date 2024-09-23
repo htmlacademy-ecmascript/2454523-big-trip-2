@@ -21,6 +21,11 @@ function getDestinationForPoint (point, destinations) {
   return destinationData;
 }
 
+function getNameOfDestinations (destinations) {
+  const nameOfDestinations = destinations.map((destination) => destination.name);
+  return nameOfDestinations;
+}
+
 function findPointIndexById (points, update) {
   return points.findIndex((point) => point.id === update.id);
 }
@@ -113,4 +118,4 @@ function isPriceEqual (priceA,priceB) {
   return priceA === priceB;
 }
 
-export {getOffersForPoint, getDestinationForPoint,findPointIndexById, sortPriceDown, sortTimeDurationDown,sortDateFromUp, isValidPrice, isDateFromEqual,isDurationsEqual,isPriceEqual};
+export {getOffersForPoint, getDestinationForPoint,findPointIndexById, sortPriceDown, sortTimeDurationDown,sortDateFromUp, isValidPrice, isDateFromEqual,isDurationsEqual,isPriceEqual, getNameOfDestinations};
