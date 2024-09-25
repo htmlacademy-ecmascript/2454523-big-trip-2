@@ -18,7 +18,7 @@ export default class PointsModel extends Observable {
     this.#destinations = destinationsModel;
   }
 
-  get points() {
+  getPoints() {
     return this.#points;
   }
 
@@ -100,19 +100,20 @@ export default class PointsModel extends Observable {
   }
 
   #adaptPointToClient(point) {
-    const adaptedPoint = {...point,
-      basePrice: point['base_price'],
-      dateFrom: point['date_from'] !== null ? new Date(point['date_from']) : point['date_from'],
-      dateTo: point['date_to'] !== null ? new Date(point['date_to']) : point['date_to'],
-      isFavorite: point['is_favorite'],
+    const {
+      base_price: basePrice,
+      date_from: dateFrom,
+      date_to: dateTo,
+      is_favorite: isFavorite,
+      ...rest
+    } = point;
+
+    return {
+      ...rest,
+      basePrice,
+      dateFrom: dateFrom !== null ? new Date(dateFrom) : dateFrom,
+      dateTo: dateTo !== null ? new Date(dateTo) : dateTo,
+      isFavorite
     };
-
-    delete adaptedPoint['base_price'];
-    delete adaptedPoint['date_from'];
-    delete adaptedPoint['date_to'];
-    delete adaptedPoint['is_favorite'];
-
-    return adaptedPoint;
   }
-
 }

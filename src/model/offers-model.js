@@ -10,7 +10,7 @@ export default class OffersModel extends Observable {
 
   }
 
-  get offers() {
+  getOffers() {
     return this.#offers;
   }
 

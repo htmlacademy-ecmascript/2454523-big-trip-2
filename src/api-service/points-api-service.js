@@ -23,20 +23,20 @@ export default class PointsApiService extends ApiService {
   }
 
   #adaptPointToSrever(point) {
-    const adaptedPoint = {...point,
-      'base_price': parseInt(point.basePrice,10),
-      'date_from': point.dateFrom instanceof Date ? point.dateFrom.toISOString() : null,
-      'date_to': point.dateTo instanceof Date ? point.dateTo.toISOString() : null,
-      'is_favorite': point.isFavorite,
+    const {
+      basePrice,
+      dateFrom,
+      dateTo,
+      isFavorite,
+      ...rest
+    } = point;
+
+    return {
+      ...rest,
+      'base_price': parseInt(basePrice,10),
+      'date_from': dateFrom instanceof Date ? dateFrom.toISOString() : null,
+      'date_to': dateTo instanceof Date ? dateTo.toISOString() : null,
+      'is_favorite': isFavorite,
     };
-
-    delete adaptedPoint.basePrice;
-    delete adaptedPoint.dateFrom;
-    delete adaptedPoint.dateTo;
-    delete adaptedPoint.isFavorite;
-
-    return adaptedPoint;
   }
-
-
 }

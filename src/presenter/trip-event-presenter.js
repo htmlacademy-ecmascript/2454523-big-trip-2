@@ -59,7 +59,7 @@ export default class TripEventPresenter {
   createPoint () {
     this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    this.#newPointPresenter.init(this.#offersModel.offers, this.#destinationsModel.destinations);
+    this.#newPointPresenter.init(this.#offersModel.getOffers(), this.#destinationsModel.getDestinations());
   }
 
 
@@ -86,7 +86,7 @@ export default class TripEventPresenter {
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
       case UpdateType.PATCH:
-        this.#pointPresenters.get(data.id).init(data, this.#offersModel.offers, this.#destinationsModel.destinations);
+        this.#pointPresenters.get(data.id).init(data, this.#offersModel.getOffers(), this.#destinationsModel.getDestinations());
         break;
       case UpdateType.MINOR:
         this.#clearBoard();
@@ -179,12 +179,12 @@ export default class TripEventPresenter {
       return;
     }
 
-    if (this.#offersModel.offers.length === 0) {
+    if (this.#offersModel.getOffers().length === 0) {
       this.#renderNoData(NoDataType.OFFERS);
       return;
     }
 
-    if (this.#destinationsModel.destinations.length === 0) {
+    if (this.#destinationsModel.getDestinations().length === 0) {
       this.#renderNoData(NoDataType.DESTINATIONS);
       return;
     }
@@ -192,7 +192,7 @@ export default class TripEventPresenter {
     this.#renderSort();
     render(this.#tripEventListComponent,this.#tripEventComponent.element);
     for (let i = 0; i < this.points.length; i++) {
-      this.#renderPoint(this.points[i], this.#offersModel.offers, this.#destinationsModel.destinations);
+      this.#renderPoint(this.points[i], this.#offersModel.getOffers(), this.#destinationsModel.getDestinations());
     }
   }
 

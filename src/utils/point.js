@@ -22,8 +22,7 @@ function getDestinationForPoint (point, destinations) {
 }
 
 function getNameOfDestinations (destinations) {
-  const nameOfDestinations = destinations.map((destination) => destination.name);
-  return nameOfDestinations;
+  return destinations.map((destination) => destination.name);
 }
 
 function findPointIndexById (points, update) {
