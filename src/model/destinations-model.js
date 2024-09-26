@@ -1,10 +1,24 @@
 import Observable from '../framework/observable.js';
-import { mockDestinations } from '../mock/destinations.js';
 
 export default class DestinationsModel extends Observable {
-  #destinations = mockDestinations;
+  #destinationsApiService = null;
+  #destinations = [];
 
-  get destinations() {
+  constructor ({destinationsApiService}) {
+    super();
+    this.#destinationsApiService = destinationsApiService;
+  }
+
+  getDestinations() {
     return this.#destinations;
+  }
+
+  async init() {
+    try {
+      this.#destinations = await this.#destinationsApiService.destinations;
+
+    } catch(err) {
+      this.#destinations = [];
+    }
   }
 }

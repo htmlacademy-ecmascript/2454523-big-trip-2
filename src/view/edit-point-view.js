@@ -1,10 +1,9 @@
-import he from 'he';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import { POINT_TYPES, DESTINATIONS, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
+import { POINT_TYPES, DATETIME_FORMAT_FOR_EDIT_FORM } from '../const.js';
 import { humanizeDate } from '../utils/date.js';
 import { getFormattedType } from '../utils/common.js';
 import {getOffersForPoint, isValidPrice} from '../utils/point.js';
-import {getDestinationForPoint} from '../utils/point.js';
+import {getDestinationForPoint, getNameOfDestinations} from '../utils/point.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -46,8 +45,10 @@ function createOffersTemplate(point, offers) {
   </section>`;
 }
 
-function createEditPointDestinationOptionTemplate () {
-  return DESTINATIONS.map((destination)=>`<option value="${destination}"></option>`).join('');
+
+function createEditPointDestinationOptionTemplate (destinations) {
+  const nameOfDestinations = getNameOfDestinations(destinations);
+  return nameOfDestinations.map((destination)=>`<option value="${destination}"></option>`).join('');
 }
 
 function createDescriptionOfDestinationTemplate (point,destinations) {
@@ -57,7 +58,7 @@ function createDescriptionOfDestinationTemplate (point,destinations) {
   }
 
   const {description, pictures} = destinationData;
-  const photoOfDestination = pictures.map((picture) => `<img class="event__photo" src=${picture.src}" alt="Event photo"></img>`);
+  const photoOfDestination = pictures.map((picture) => `<img class="event__photo" src=${picture.src} alt="Event photo"></img>`);
   return `<section class="event__section  event__section--destination">
                   <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                   <p class="event__destination-description">${description}</p>
@@ -100,15 +101,15 @@ function createFieldGroupDestinationTemplate (point, destinations) {
   if (point.destination === '') {
     name = '';
   }
-  const destinationTemplate = createEditPointDestinationOptionTemplate();
+  const destinationTemplate = createEditPointDestinationOptionTemplate(destinations);
 
   return `<div class="event__field-group  event__field-group--destination">
   <label class="event__label  event__type-output" for="event-destination-1">
     ${type}
   </label>
-  <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
+  <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1" autocomplete="off">
   <datalist id="destination-list-1">
-  ${he.encode(destinationTemplate)}
+  ${destinationTemplate}
   </datalist>
 </div>`;
 }
@@ -282,7 +283,8 @@ export default class EditPointView extends AbstractStatefulView {
   #destinationChangeHandler = (evt) => {
     evt.preventDefault();
     const newDestination = evt.target.value;
-    if (!DESTINATIONS.includes(newDestination)) {
+    const nameOfDestinations = getNameOfDestinations(this.#destinations);
+    if (!nameOfDestinations.includes(newDestination)) {
       evt.target.value = '';
       return;
     }
