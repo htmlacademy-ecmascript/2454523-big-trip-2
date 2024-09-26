@@ -8,7 +8,6 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 const BLANK_POINT = {
-  id: 100,
   type: 'flight',
   destination: '',
   dateFrom: null,
