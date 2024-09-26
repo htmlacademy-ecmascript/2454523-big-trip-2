@@ -58,7 +58,10 @@ export default class PointPresenter {
       replace(this.#pointComponent, prevPointComponent);
     }
     if (this.#mode === Mode.EDITING) {
-      replace(this.#pointEditComponent, prevPointEditComponent);
+      // replace(this.#pointEditComponent, prevPointEditComponent);
+      replace(this.#pointComponent, prevPointEditComponent);
+      this.#mode = Mode.DEFAULT;
+
     }
 
     remove (prevPointComponent);
@@ -77,6 +80,23 @@ export default class PointPresenter {
     }
   }
 
+  setSaving() {
+    if (this.#mode === Mode.EDITING) {
+      this.#pointEditComponent.updateElement({
+        isDisabled: true,
+        isSaving: true,
+      });
+    }
+  }
+
+  setDeleting() {
+    if (this.#mode === Mode.EDITING) {
+      this.#pointEditComponent.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
+    }
+  }
 
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape') {
@@ -111,7 +131,7 @@ export default class PointPresenter {
       isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       update);
 
-    this.#replaceEditFormToPoint();
+    //this.#replaceEditFormToPoint();
   };
 
   #handleEditClick = () => {
