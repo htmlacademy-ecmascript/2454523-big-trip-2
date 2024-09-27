@@ -163,7 +163,7 @@ export default class TripEventPresenter {
 
   #renderNoPoints () {
     this.#noPointComponent = new NoPointView({
-      filterType: this.#filterType
+      filterType: this.#filterModel.filter
     });
     render(this.#noPointComponent,this.#tripEventComponent.element,RenderPosition.AFTERBEGIN);
   }

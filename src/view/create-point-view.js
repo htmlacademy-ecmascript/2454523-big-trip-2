@@ -185,7 +185,7 @@ ${createFieldGroupDestinationTemplate(point, destinations)}
 ${createFieldEventDateTemplate(point)}
 ${createFieldEventPriceTemplate(point)}
         <button class="event__save-btn  btn  btn--blue" type="submit" ${isPriceNotCorrect || isDisabled || isDateToNotCorrect ? 'disabled' : ''}>${isSaving ? 'Saving...' : 'Save'}</button>
-        <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>${isDeleting ? 'Deleting...' : 'Delete'}</button>
+        <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>Cancel</button>
         <button class="event__rollup-btn" type="button" ${isDisabled ? 'disabled' : ''}>
           <span class="visually-hidden">Open event</span>
         </button>
