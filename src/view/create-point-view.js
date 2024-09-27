@@ -166,7 +166,7 @@ function createFieldEventPriceTemplate (point) {
 function createCreationFormTemplate (point, offers, destinations) {
   const offerTemplate = createOffersTemplate(point, offers);
   const descriptionOfDestinationTemplate = createDescriptionOfDestinationTemplate(point, destinations);
-  const {basePrice, dateFrom, dateTo, isDisabled, isSaving, isDeleting} = point;
+  const {basePrice, dateFrom, dateTo, isDisabled, isSaving} = point;
 
   const isPriceNotCorrect = !isValidPrice(basePrice);
 
@@ -369,7 +369,6 @@ export default class CreatePointView extends AbstractStatefulView {
     return {...point,
       isDisabled: false,
       isSaving: false,
-      isDeleting: false,
     };
 
   }
@@ -378,7 +377,6 @@ export default class CreatePointView extends AbstractStatefulView {
     const point = {...state};
     delete point.isDisabled;
     delete point.isSaving;
-    delete point.isDeleting;
 
     return point;
   }
