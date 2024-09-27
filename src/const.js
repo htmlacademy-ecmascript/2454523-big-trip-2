@@ -47,5 +47,21 @@ const NoDataType = {
   DESTINATIONS: 'DESTINATIONS',
 };
 
-export {POINT_TYPES, DATE_FORMAT, TIME_FORMAT, DATETIME_FORMAT, DATETIME_FORMAT_FOR_EDIT_FORM, SortType, SORT_TYPE_DISABLED, UserAction, UpdateType,FilterType, Method, NoDataType};
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
+
+export {POINT_TYPES,
+  DATE_FORMAT,
+  TIME_FORMAT,
+  DATETIME_FORMAT,
+  DATETIME_FORMAT_FOR_EDIT_FORM,
+  SortType, SORT_TYPE_DISABLED,
+  UserAction,
+  UpdateType,
+  FilterType,
+  Method,
+  NoDataType,
+  TimeLimit};
 
