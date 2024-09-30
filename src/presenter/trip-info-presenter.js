@@ -16,20 +16,31 @@ export default class TripInfoPresenter {
     this.#destinationsModel = destinationsModel;
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#offersModel.addObserver(this.#handleModelEvent);
+    this.#destinationsModel.addObserver(this.#handleModelEvent);
 
   }
 
   init() {
+    const prevTripInfoComponent = this.#tripInfoComponent;
+
     this.#tripInfoComponent = new TripInfoView({
       points: this.#pointsModel.getPoints(),
       offers: this.#offersModel.getOffers(),
       destinations: this.#destinationsModel.getDestinations()
     });
-    render(this.#tripInfoComponent, this.#tripInfoContainer, RenderPosition.AFTERBEGIN);
+
+
+    if (prevTripInfoComponent === null) {
+      render(this.#tripInfoComponent, this.#tripInfoContainer, RenderPosition.AFTERBEGIN);
+      return;
+    }
+
+    replace(this.#tripInfoComponent, prevTripInfoComponent);
+    remove(prevTripInfoComponent);
   }
 
   #handleModelEvent = () => {
     this.init();
   };
-
 }

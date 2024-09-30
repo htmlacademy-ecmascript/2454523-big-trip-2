@@ -1,5 +1,6 @@
 import AbstractView from '../framework/view/abstract-stateful-view.js';
 import {getDestinationForPoint} from '../utils/point.js';
+import {formatTripDatesForHeader} from '../utils/date.js';
 
 
 function createTripInfoTitleTemplate (points, destinations) {
@@ -8,13 +9,17 @@ function createTripInfoTitleTemplate (points, destinations) {
   const lastDestination = getDestinationForPoint(points[points.length - 1], destinations);
   const lastNameOfDestination = lastDestination.name;
 
-  return `<h1 class="trip-info__title">${firstNameOfDestination} &mdash; Chamonix &mdash; ${lastNameOfDestination}</h1>`;
+  //магическое число надо будет перенести в константы
+  const secondNameOfDestination = getDestinationForPoint(points[1], destinations).name;
+
+  return `<h1 class="trip-info__title">${firstNameOfDestination} &mdash; ${secondNameOfDestination} &mdash; ${lastNameOfDestination}</h1>`;
 }
 
 function createTripInfoDatesTemplate (points) {
   const dateFrom = points[0].dateFrom;
   const dateTo = points[points.length - 1].dateTo;
-  return `<p class="trip-info__dates">${dateFrom}&nbsp;&mdash;&nbsp;${dateTo}</p> `;
+  const formattedDates = formatTripDatesForHeader(dateFrom, dateTo);
+  return `<p class="trip-info__dates">${formattedDates}</p> `;
 }
 
 function createTripInfoMainTemplate (points, destinations) {

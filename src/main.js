@@ -73,8 +73,8 @@ function handleNewPointButtonClick(){
 filterPresenter.init();
 tripEventPresenter.init();
 pointsModel.init()
+  .then(() => tripInfoPresenter.init())
   .finally(() => {
     render(buttonNewEventComponent, tripMainElement)
   });
-  tripInfoPresenter.init();
 
