@@ -1,16 +1,31 @@
 import AbstractView from '../framework/view/abstract-stateful-view.js';
-import {getDestinationForPoint} from '../utils/point.js';
+import {getDestinationForPoint, calculateCostOfPoint} from '../utils/point.js';
 import {formatTripDatesForHeader} from '../utils/date.js';
 
 
 function createTripInfoTitleTemplate (points, destinations) {
-  const firstDestination = getDestinationForPoint(points[0], destinations);
-  const firstNameOfDestination = firstDestination.name;
-  const lastDestination = getDestinationForPoint(points[points.length - 1], destinations);
-  const lastNameOfDestination = lastDestination.name;
 
-  //магическое число надо будет перенести в константы
-  const secondNameOfDestination = getDestinationForPoint(points[1], destinations).name;
+  if (points.length === 0) {
+    return '';
+  }
+
+  const firstNameOfDestination = getDestinationForPoint(points[0], destinations).name;
+
+  if (points.length === 1) {
+    return `<h1 class="trip-info__title">${firstNameOfDestination}</h1>`;
+  }
+
+  const lastNameOfDestination = getDestinationForPoint(points[points.length - 1], destinations).name;
+
+  if (points.length === 2) {
+    return `<h1 class="trip-info__title">${firstNameOfDestination} &mdash; ${lastNameOfDestination}</h1>`;
+  }
+
+  let secondNameOfDestination = getDestinationForPoint(points[1], destinations).name;
+
+  if (points.length > 3) {
+    secondNameOfDestination = '...';
+  }
 
   return `<h1 class="trip-info__title">${firstNameOfDestination} &mdash; ${secondNameOfDestination} &mdash; ${lastNameOfDestination}</h1>`;
 }
@@ -29,16 +44,18 @@ function createTripInfoMainTemplate (points, destinations) {
             </div>`;
 }
 
-function createTripInfoMCostTemplate () {
+function createTripInfoCostTemplate (points, offers) {
+  const pointsCosts = points.map((point)=> calculateCostOfPoint(point, offers));
+  const totalCost = pointsCosts.reduce ((accumulator, currentValue) => accumulator + currentValue, 0);
   return `  <p class="trip-info__cost">
-              Total: &euro;&nbsp;<span class="trip-info__cost-value">1230</span>
+              Total: &euro;&nbsp;<span class="trip-info__cost-value">${totalCost}</span>
             </p>`;
 }
 
-function createTripInfoTemplate (points, destinations) {
+function createTripInfoTemplate (points, destinations, offers) {
   return `<section class="trip-main__trip-info  trip-info">
   ${createTripInfoMainTemplate(points, destinations)}
-  ${createTripInfoMCostTemplate()}
+  ${createTripInfoCostTemplate(points,offers)}
           </section>`;
 }
 
@@ -55,6 +72,6 @@ export default class TripInfoView extends AbstractView {
   }
 
   get template () {
-    return createTripInfoTemplate (this.#points, this.#destinations);
+    return createTripInfoTemplate (this.#points, this.#destinations, this.#offers);
   }
 }
