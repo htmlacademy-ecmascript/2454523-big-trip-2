@@ -11,6 +11,7 @@ export default class FilterPresenter {
   #filterComponent = null;
 
   constructor ({filterContainer, filterModel, pointsModel}) {
+
     this.#filterContainer = filterContainer;
     this.#filterModel = filterModel;
     this.#pointsModel = pointsModel;

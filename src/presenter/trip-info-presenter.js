@@ -16,8 +16,6 @@ export default class TripInfoPresenter {
     this.#destinationsModel = destinationsModel;
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
-    this.#offersModel.addObserver(this.#handleModelEvent);
-    this.#destinationsModel.addObserver(this.#handleModelEvent);
 
   }
 

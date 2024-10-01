@@ -6,6 +6,7 @@ import {remove, render,RenderPosition} from '../framework/render.js';
 import NoPointView from '../view/no-point-view.js';
 import NoDataView from '../view/no-data-view.js';
 import LoadingView from '../view/loading-view.js';
+import FailedLoadDataView from '../view/failed-load-data-view.js';
 import PointPresenter from './point-presenter.js';
 import { SortType, UserAction, UpdateType, FilterType, NoDataType, TimeLimit } from '../const.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
@@ -26,7 +27,6 @@ export default class TripEventPresenter {
   #pointPresenters = new Map();
   #newPointPresenter = null;
   #currentSortType = SortType.DAY;
-  #filterType = FilterType.EVERYTHING;
   #isLoading = true;
   #UiBlocker = new UiBlocker({
     lowerLimit: TimeLimit.LOWER_LIMIT,
@@ -175,6 +175,11 @@ export default class TripEventPresenter {
     render(this.#noDataComponent,this.#tripEventComponent.element,RenderPosition.AFTERBEGIN);
   }
 
+  #renderFailedToLoad () {
+    const failedLoadDataText = new FailedLoadDataView();
+    render(failedLoadDataText, this.#tripEventComponent.element,RenderPosition.AFTERBEGIN);
+  }
+
   #clearBoard ({resetSortType = false} = {}) {
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
@@ -214,6 +219,12 @@ export default class TripEventPresenter {
       this.#renderNoData(NoDataType.DESTINATIONS);
       return;
     }
+
+    if (this.#pointsModel.isServerError){
+      this.#renderFailedToLoad();
+      return;
+    }
+
 
     this.#renderSort();
     render(this.#tripEventListComponent,this.#tripEventComponent.element);
