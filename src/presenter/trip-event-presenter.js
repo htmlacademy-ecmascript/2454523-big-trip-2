@@ -28,6 +28,8 @@ export default class TripEventPresenter {
   #newPointPresenter = null;
   #currentSortType = SortType.DAY;
   #isLoading = true;
+  #isCreatingFormOpen = false;
+  #isServerError = false;
   #UiBlocker = new UiBlocker({
     lowerLimit: TimeLimit.LOWER_LIMIT,
     upperLimit: TimeLimit.UPPER_LIMIT
@@ -62,6 +64,7 @@ export default class TripEventPresenter {
   }
 
   createPoint () {
+    this.#isCreatingFormOpen = true;
     this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init(this.#offersModel.getOffers(), this.#destinationsModel.getDestinations());
@@ -126,6 +129,13 @@ export default class TripEventPresenter {
         this.#isLoading = false;
         remove(this.#loadingComponent);
         this.#renderBoard();
+        break;
+      case UpdateType.ERROR:
+        this.#isLoading = false;
+        this.#isServerError = true;
+        remove(this.#loadingComponent);
+        remove(this.#noDataComponent);
+        this.#renderFailedToLoad();
         break;
     }
   };
@@ -205,7 +215,7 @@ export default class TripEventPresenter {
       return;
     }
 
-    if (this.points.length === 0) {
+    if (this.points.length === 0 && !this.#isCreatingFormOpen ) {
       this.#renderNoPoints();
       return;
     }
@@ -217,11 +227,6 @@ export default class TripEventPresenter {
 
     if (this.#destinationsModel.getDestinations().length === 0) {
       this.#renderNoData(NoDataType.DESTINATIONS);
-      return;
-    }
-
-    if (this.#pointsModel.isServerError){
-      this.#renderFailedToLoad();
       return;
     }
 

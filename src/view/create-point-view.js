@@ -377,6 +377,7 @@ export default class CreatePointView extends AbstractStatefulView {
     const point = {...state};
     delete point.isDisabled;
     delete point.isSaving;
+    delete point.isDeleting;
 
     return point;
   }

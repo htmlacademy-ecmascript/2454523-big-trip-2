@@ -23,6 +23,7 @@ export default class PointsModel extends Observable {
     return this.#points;
   }
 
+
   filteredAndSortedPoints(currentSortType, filterType) {
     const filteredPoints = filter[filterType](this.#points);
 
@@ -47,15 +48,13 @@ export default class PointsModel extends Observable {
       this.#offers = offers;
       this.#destinations = destinations;
       this.#isServerError = false;
+      this._notify(UpdateType.INIT);
 
     } catch(err) {
-      this.#points = [];
-      this.#destinations = [];
-      this.#offers = [];
       this.#isServerError = true;
+      this._notify(UpdateType.ERROR);
 
     }
-    this._notify(UpdateType.INIT);
   }
 
   async updatePoint(updateType, update) {

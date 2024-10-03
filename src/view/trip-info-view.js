@@ -5,7 +5,7 @@ import {formatTripDatesForHeader} from '../utils/date.js';
 
 function createTripInfoTitleTemplate (points, destinations) {
 
-  if (points.length === 0) {
+  if (points.length === 0 || destinations.length === 0) {
     return '';
   }
 
@@ -31,6 +31,9 @@ function createTripInfoTitleTemplate (points, destinations) {
 }
 
 function createTripInfoDatesTemplate (points) {
+  if (points.length === 0) {
+    return '';
+  }
   const dateFrom = points[0].dateFrom;
   const dateTo = points[points.length - 1].dateTo;
   const formattedDates = formatTripDatesForHeader(dateFrom, dateTo);
@@ -38,6 +41,9 @@ function createTripInfoDatesTemplate (points) {
 }
 
 function createTripInfoMainTemplate (points, destinations) {
+  if (points.length === 0 || destinations.length === 0) {
+    return '';
+  }
   return `  <div class="trip-info__main">
               ${createTripInfoTitleTemplate(points, destinations)}
               ${createTripInfoDatesTemplate (points)}
@@ -45,6 +51,9 @@ function createTripInfoMainTemplate (points, destinations) {
 }
 
 function createTripInfoCostTemplate (points, offers) {
+  if (points.length === 0 || offers.length === 0) {
+    return '';
+  }
   const pointsCosts = points.map((point)=> calculateCostOfPoint(point, offers));
   const totalCost = pointsCosts.reduce ((accumulator, currentValue) => accumulator + currentValue, 0);
   return `  <p class="trip-info__cost">
@@ -53,6 +62,9 @@ function createTripInfoCostTemplate (points, offers) {
 }
 
 function createTripInfoTemplate (points, destinations, offers) {
+  if (points.length === 0 || destinations.length === 0 || offers.length === 0) {
+    return '';
+  }
   return `<section class="trip-main__trip-info  trip-info">
   ${createTripInfoMainTemplate(points, destinations)}
   ${createTripInfoCostTemplate(points,offers)}
