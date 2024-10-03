@@ -215,7 +215,7 @@ export default class TripEventPresenter {
       return;
     }
 
-    if (this.points.length === 0 && !this.#isCreatingFormOpen ) {
+    if (this.points.length === 0 && !this.#isCreatingFormOpen) {
       this.#renderNoPoints();
       return;
     }
