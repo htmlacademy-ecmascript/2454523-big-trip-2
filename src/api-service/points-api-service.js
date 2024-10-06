@@ -2,9 +2,20 @@ import ApiService from '../framework/api-service';
 import {Method} from '../const.js';
 
 export default class PointsApiService extends ApiService {
+  #isServerError = false;
+
   get points () {
     return this._load({url: 'points'})
-      .then(ApiService.parseResponse);
+      .then(ApiService.parseResponse)
+      // eslint-disable-next-line no-unused-vars
+      .catch((err) => {
+        this.#isServerError = true;
+        throw new Error('Server unavailable');
+      });
+  }
+
+  isServerError() {
+    return this.#isServerError;
   }
 
   async updatePoint(point) {
