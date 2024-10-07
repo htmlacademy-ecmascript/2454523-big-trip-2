@@ -6,6 +6,7 @@ export default class NewPointPresenter {
   #pointListContainer = null;
   #handleDataChange = null;
   #handleDestroy = null;
+  #isCreatingFormOpen = false;
 
   #createPointComponent = null;
 
@@ -32,6 +33,7 @@ export default class NewPointPresenter {
   }
 
   destroy () {
+    this.#isCreatingFormOpen = false;
     if(this.#createPointComponent === null) {
       return;
     }

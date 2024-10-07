@@ -1,6 +1,7 @@
 /* eslint-disable semi */
 import FilterPresenter from './presenter/filter-presenter.js';
 import TripEventPresenter from './presenter/trip-event-presenter.js';
+import TripInfoPresenter from './presenter/trip-info-presenter.js';
 import {render} from './framework/render.js';
 import PointsModel from './model/points-model.js';
 import DestinationsModel from './model/destinations-model.js';
@@ -42,6 +43,12 @@ const tripEventPresenter = new TripEventPresenter({tripEventsContainer: pageBody
   onNewPointDestroy:handleNewPointFormClose
 });
 
+const tripInfoPresenter = new TripInfoPresenter({
+  tripInfoContainer: tripMainElement,
+  pointsModel,
+  offersModel,
+  destinationsModel
+})
 
 const filterPresenter = new FilterPresenter({
   filterContainer: tripControlsFiltersElement,
@@ -63,11 +70,13 @@ function handleNewPointButtonClick(){
 }
 
 
-filterPresenter.init();
-tripEventPresenter.init();
 pointsModel.init()
+  .then(() => {
+    tripInfoPresenter.init();
+  })
   .finally(() => {
-    render(buttonNewEventComponent, tripMainElement)
+    render(buttonNewEventComponent, tripMainElement);
   });
 
-
+filterPresenter.init();
+tripEventPresenter.init();

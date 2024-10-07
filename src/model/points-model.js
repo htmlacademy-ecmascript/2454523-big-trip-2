@@ -10,6 +10,7 @@ export default class PointsModel extends Observable {
   #points = [];
   #offers = [];
   #destinations = [];
+  #isServerError = false;
 
   constructor({pointsApiService, offersModel, destinationsModel}) {
     super();
@@ -21,6 +22,7 @@ export default class PointsModel extends Observable {
   getPoints() {
     return this.#points;
   }
+
 
   filteredAndSortedPoints(currentSortType, filterType) {
     const filteredPoints = filter[filterType](this.#points);
@@ -36,23 +38,32 @@ export default class PointsModel extends Observable {
 
   async init() {
     try {
-      const [points, offers, destinations] = await Promise.all([
-        this.#pointsApiService.points,
+      const points = await this.#pointsApiService.points;
+      this.#points = points.map(this.#adaptPointToClient);
+
+      await Promise.all([
         this.#offers.init(),
         this.#destinations.init()
       ]);
 
-      this.#points = points.map(this.#adaptPointToClient);
-      this.#offers = offers;
-      this.#destinations = destinations;
 
-    } catch(err) {
-      this.#points = [];
-      this.#destinations = [];
-      this.#offers = [];
+      this.#offers = this.#offers.getOffers();
 
+      this.#destinations = this.#destinations.getDestinations();
+
+      this._notify(UpdateType.INIT);
+
+    } catch (err) {
+      this.#isServerError = this.#pointsApiService.isServerError();
+      if (this.#isServerError) {
+        this._notify(UpdateType.ERROR);
+      } else {
+        this.#points = [];
+        this.#offers = [];
+        this.#destinations = [];
+        this._notify(UpdateType.INIT);
+      }
     }
-    this._notify(UpdateType.INIT);
   }
 
   async updatePoint(updateType, update) {

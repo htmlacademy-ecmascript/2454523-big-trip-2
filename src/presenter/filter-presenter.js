@@ -11,6 +11,7 @@ export default class FilterPresenter {
   #filterComponent = null;
 
   constructor ({filterContainer, filterModel, pointsModel}) {
+
     this.#filterContainer = filterContainer;
     this.#filterModel = filterModel;
     this.#pointsModel = pointsModel;
@@ -23,7 +24,8 @@ export default class FilterPresenter {
     const points = this.#pointsModel.getPoints();
     return Object.values(FilterType).map((type) => ({
       type,
-      count:filter[type](points).length
+      count:filter[type](points).length,
+      isFilterDisabled:filter[type](points).length === 0
     }));
   }
 

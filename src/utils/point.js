@@ -11,6 +11,7 @@ function getOffersForPoint (point, offers) {
   return pointTypeOffer;
 }
 
+
 function getDestinationForPoint (point, destinations) {
 
   const destinationData = destinations.find((destination) => destination.id === point.destination);
@@ -117,4 +118,35 @@ function isPriceEqual (priceA,priceB) {
   return priceA === priceB;
 }
 
-export {getOffersForPoint, getDestinationForPoint,findPointIndexById, sortPriceDown, sortTimeDurationDown,sortDateFromUp, isValidPrice, isDateFromEqual,isDurationsEqual,isPriceEqual, getNameOfDestinations};
+
+function calculateCostOfPoint (point, offers) {
+  const pointTypeOffer = getOffersForPoint(point, offers);
+
+  const pointOffersPrice = point.offers.map((offerId) => {
+
+    const selectedOffer = pointTypeOffer.offers.find((offer) => offer.id === offerId);
+    if (!selectedOffer) {
+      return '';
+    }
+    const {price} = selectedOffer;
+
+    return price;
+  });
+
+  const costOfPoint = pointOffersPrice.reduce((accumulator, currentValue) => accumulator + currentValue, point.basePrice);
+  return costOfPoint;
+}
+
+export {getOffersForPoint,
+  getDestinationForPoint,
+  findPointIndexById,
+  sortPriceDown,
+  sortTimeDurationDown,
+  sortDateFromUp,
+  isValidPrice,
+  isDateFromEqual,
+  isDurationsEqual,
+  isPriceEqual,
+  getNameOfDestinations,
+  calculateCostOfPoint
+};

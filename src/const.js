@@ -25,6 +25,7 @@ const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  ERROR: 'ERROR'
 };
 
 const FilterType = {
@@ -42,10 +43,6 @@ const Method = {
   INIT: 'INIT'
 };
 
-const NoDataType = {
-  OFFERS: 'OFFERS',
-  DESTINATIONS: 'DESTINATIONS',
-};
 
 const TimeLimit = {
   LOWER_LIMIT: 350,
@@ -62,6 +59,5 @@ export {POINT_TYPES,
   UpdateType,
   FilterType,
   Method,
-  NoDataType,
   TimeLimit};
 
