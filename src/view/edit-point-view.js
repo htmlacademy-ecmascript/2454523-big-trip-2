@@ -64,13 +64,15 @@ function createDescriptionOfDestinationTemplate (point,destinations) {
                   <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                   <p class="event__destination-description">${description}</p>
 
-                  <div class="event__photos-container">
-                    <div class="event__photos-tape">
-                   ${photoOfDestination}
-                    </div>
-                  </div>
-                </section>
-              </section>`;
+                  ${pictures.length ? `
+        <div class="event__photos-container">
+          <div class="event__photos-tape">
+            ${photoOfDestination}
+          </div>
+        </div>
+      ` : ''}
+    </section>
+  `;
 }
 
 function createEventTypeTemplate (point) {
@@ -203,8 +205,8 @@ export default class EditPointView extends AbstractStatefulView {
     this.#offers = offers;
     this.#destinations = destinations;
     this. #handleForSubmit = onFormSubmit;
-    this._restoreHandlers();
     this.#handleDeleteClick = onDeleteClick;
+    this._restoreHandlers();
   }
 
   get template () {
@@ -232,11 +234,30 @@ export default class EditPointView extends AbstractStatefulView {
     this.element.querySelector('.event__type-list').addEventListener('change', this.#typeChangeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
+
+    //вот так работает
     this.element.addEventListener('change', (evt) => {
       if (evt.target.classList.contains('event__offer-checkbox')) {
         this.#offerChangeHandler(evt);
       }
     });
+
+    this.element.addEventListener('click', (evt) => {
+      const offerSelector = evt.target.closest('.event__offer-selector');
+
+      if (offerSelector) {
+        const checkbox = offerSelector.querySelector('.event__offer-checkbox');
+
+        if (checkbox) {
+          checkbox.checked = !checkbox.checked; // Переключаем состояние чекбокса.
+          checkbox.dispatchEvent(new Event('change', { bubbles: true })); // Вызываем событие change
+        }
+      }
+      if (evt.target.classList.contains('event__offer-checkbox')) {
+        this.#offerChangeHandler(evt);
+      }
+    });
+
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
     this.#setStartDatepicker();
     this.#setEndDatepicker();
@@ -250,7 +271,6 @@ export default class EditPointView extends AbstractStatefulView {
   };
 
   #offerChangeHandler = (evt) => {
-
     evt.preventDefault();
     const selectedOfferId = evt.target.id;
     const isChecked = evt.target.checked;
@@ -265,7 +285,7 @@ export default class EditPointView extends AbstractStatefulView {
       newOffers = this._state.offers;
     }
 
-    this._setState({
+    this.updateElement({
       offers: newOffers,
     });
 

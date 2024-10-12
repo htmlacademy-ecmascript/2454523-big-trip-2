@@ -61,13 +61,24 @@ export default class TripEventPresenter {
     this.#renderBoard();
   }
 
+  // createPoint () {
+  //   this.#isCreatingFormOpen = true;
+  //   this.#currentSortType = SortType.DAY;
+  //   this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+  //   this.#newPointPresenter.init(this.#offersModel.getOffers(), this.#destinationsModel.getDestinations());
+  // }
+
   createPoint () {
     this.#isCreatingFormOpen = true;
     this.#currentSortType = SortType.DAY;
-    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    if(this.#pointsModel.getPoints().length !== 0){
+      this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    }
+    if (this.#noPointComponent) {
+      remove(this.#noPointComponent);
+    }
     this.#newPointPresenter.init(this.#offersModel.getOffers(), this.#destinationsModel.getDestinations());
   }
-
 
   #handleModeChange = () => {
     this.#newPointPresenter.destroy();
@@ -101,7 +112,9 @@ export default class TripEventPresenter {
         try {
           await this.#pointsModel.deletePoint(updateType, update);
         } catch (err) {
-          this.#pointPresenters.get(update.id).setAborting();
+          if (this.#pointPresenters.get(update.id)) {
+            this.#pointPresenters.get(update.id).setAborting();
+          }
         }
         break;
     }
@@ -167,6 +180,10 @@ export default class TripEventPresenter {
     this.#pointPresenters.set(point.id, pointPresenter);
   }
 
+  #renderPoints(points, offers, destinations){
+    points.forEach((point) => this.#renderPoint(point, offers, destinations));
+  }
+
   #renderLoading() {
     render(this.#loadingComponent,this.#tripEventComponent.element, RenderPosition.AFTERBEGIN);
   }
@@ -184,6 +201,7 @@ export default class TripEventPresenter {
   }
 
   #clearBoard ({resetSortType = false} = {}) {
+    this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
 
@@ -213,7 +231,6 @@ export default class TripEventPresenter {
       return;
     }
 
-
     if (this.points.length === 0 || this.#offersModel.getOffers().length === 0 || this.#destinationsModel.getDestinations().length === 0) {
       this.#renderNoPoints();
       return;
@@ -221,9 +238,8 @@ export default class TripEventPresenter {
 
     this.#renderSort();
     render(this.#tripEventListComponent,this.#tripEventComponent.element);
-    for (let i = 0; i < this.points.length; i++) {
-      this.#renderPoint(this.points[i], this.#offersModel.getOffers(), this.#destinationsModel.getDestinations());
-    }
+
+    this.#renderPoints(this.points,this.#offersModel.getOffers(), this.#destinationsModel.getDestinations());
   }
 
 }
