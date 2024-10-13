@@ -43,7 +43,12 @@ export default class TripEventPresenter {
     this.#newPointPresenter = new NewPointPresenter({
       pointListContainer: this.#tripEventListComponent.element,
       onDataChange: this.#handleViewAction,
-      onDestroy: onNewPointDestroy
+      onDestroy: onNewPointDestroy,
+      onFormClose: () => {
+        if (this.points.length === 0) {
+          this.#renderNoPoints();
+        }
+      }
     });
 
 
@@ -73,6 +78,7 @@ export default class TripEventPresenter {
     this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
+
 
   #handleViewAction = async(actionType, updateType, update) => {
     this.#UiBlocker.block();

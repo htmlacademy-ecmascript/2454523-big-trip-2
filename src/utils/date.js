@@ -5,11 +5,7 @@ function formatTripDatesForHeader(dateFrom, dateTo) {
   const fromDate = dayjs(dateFrom);
   const toDate = dayjs(dateTo);
 
-  if (fromDate.format('MMM') === toDate.format('MMM')) {
-    return `${fromDate.format('DD')} — ${toDate.format('DD')} ${fromDate.format('MMM')}`;
-  } else {
-    return `${fromDate.format('DD MMM')} — ${toDate.format('DD MMM')}`;
-  }
+  return `${fromDate.format('DD MMM')} — ${toDate.format('DD MMM')}`;
 }
 
 function humanizeDate(date, format) {
