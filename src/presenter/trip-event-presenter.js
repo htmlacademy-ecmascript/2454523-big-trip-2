@@ -61,24 +61,13 @@ export default class TripEventPresenter {
     this.#renderBoard();
   }
 
-  // createPoint () {
-  //   this.#isCreatingFormOpen = true;
-  //   this.#currentSortType = SortType.DAY;
-  //   this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-  //   this.#newPointPresenter.init(this.#offersModel.getOffers(), this.#destinationsModel.getDestinations());
-  // }
-
   createPoint () {
     this.#isCreatingFormOpen = true;
     this.#currentSortType = SortType.DAY;
-    if(this.#pointsModel.getPoints().length !== 0){
-      this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    }
-    if (this.#noPointComponent) {
-      remove(this.#noPointComponent);
-    }
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init(this.#offersModel.getOffers(), this.#destinationsModel.getDestinations());
   }
+
 
   #handleModeChange = () => {
     this.#newPointPresenter.destroy();
@@ -218,6 +207,32 @@ export default class TripEventPresenter {
 
   }
 
+  //   #renderBoard () {
+  //     render(this.#tripEventComponent, this.#tripEventsContainer);
+
+  //     if (this.#isLoading) {
+  //       this.#renderLoading();
+  //       return;
+  //     }
+
+  //     if (this.points.length === 0 && !this.#isCreatingFormOpen) {
+  //       this.#renderNoPoints();
+  //       return;
+  //     }
+
+  //     if (this.points.length === 0 || this.#offersModel.getOffers().length === 0 || this.#destinationsModel.getDestinations().length === 0) {
+  //       this.#renderNoPoints();
+  //       return;
+  //     }
+
+  //     this.#renderSort();
+  //     render(this.#tripEventListComponent,this.#tripEventComponent.element);
+
+  //     this.#renderPoints(this.points,this.#offersModel.getOffers(), this.#destinationsModel.getDestinations());
+  //   }
+
+  // }
+
   #renderBoard () {
     render(this.#tripEventComponent, this.#tripEventsContainer);
 
@@ -226,8 +241,9 @@ export default class TripEventPresenter {
       return;
     }
 
-    if (this.points.length === 0 && !this.#isCreatingFormOpen) {
-      this.#renderNoPoints();
+    if (this.points.length === 0 && this.#isCreatingFormOpen) {
+      remove(this.#noPointComponent);
+      render(this.#tripEventListComponent,this.#tripEventComponent.element);
       return;
     }
 
