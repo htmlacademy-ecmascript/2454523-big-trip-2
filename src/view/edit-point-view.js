@@ -235,7 +235,6 @@ export default class EditPointView extends AbstractStatefulView {
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
 
-    //вот так работает
     this.element.addEventListener('change', (evt) => {
       if (evt.target.classList.contains('event__offer-checkbox')) {
         this.#offerChangeHandler(evt);
@@ -249,8 +248,8 @@ export default class EditPointView extends AbstractStatefulView {
         const checkbox = offerSelector.querySelector('.event__offer-checkbox');
 
         if (checkbox) {
-          checkbox.checked = !checkbox.checked; // Переключаем состояние чекбокса.
-          checkbox.dispatchEvent(new Event('change', { bubbles: true })); // Вызываем событие change
+          checkbox.checked = !checkbox.checked;
+          checkbox.dispatchEvent(new Event('change', { bubbles: true }));
         }
       }
       if (evt.target.classList.contains('event__offer-checkbox')) {
