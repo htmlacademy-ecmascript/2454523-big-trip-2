@@ -110,7 +110,6 @@ export default class PointPresenter {
         isDeleting: false,
       });
     };
-
     this.#pointEditComponent.shake(resetFormState);
   }
 
@@ -122,6 +121,13 @@ export default class PointPresenter {
     }
   };
 
+  #handleEnterKey = (evt) => {
+    if (evt.key === 'Enter') {
+      evt.preventDefault();
+      this.#pointEditComponent.reset(this.#point);
+      this.#replaceEditFormToPoint();
+    }
+  };
 
   #replacePointToEditForm = () => {
     replace (this.#pointEditComponent, this.#pointComponent);
@@ -133,6 +139,7 @@ export default class PointPresenter {
     replace(this.#pointComponent, this.#pointEditComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#pointEditComponent.element.querySelector('.event__rollup-btn').removeEventListener('click',this.#replaceEditFormToPoint);
+    this.#pointEditComponent.element.querySelector('.event__rollup-btn').removeEventListener('keydown', this.#handleEnterKey);
     this.#mode = Mode.DEFAULT;
   };
 
@@ -152,6 +159,8 @@ export default class PointPresenter {
     this.#replacePointToEditForm();
     document.addEventListener('keydown', this.#escKeyDownHandler);
     this.#pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click',this.#replaceEditFormToPoint);
+    this.#pointEditComponent.element.querySelector('.event__rollup-btn').focus();
+    this.#pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('keydown', this.#handleEnterKey);
   };
 
   #handleFavoriteClick = () => {

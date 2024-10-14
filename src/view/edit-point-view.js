@@ -177,7 +177,7 @@ ${createFieldEventDateTemplate(point)}
 ${createFieldEventPriceTemplate(point)}
         <button class="event__save-btn  btn  btn--blue" type="submit" ${isPriceNotCorrect || isDisabled || isDateToNotCorrect ? 'disabled' : ''}>${isSaving ? 'Saving...' : 'Save'}</button>
         <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>${isDeleting ? 'Deleting...' : 'Delete'}</button>
-        <button class="event__rollup-btn" type="button" ${isDisabled ? 'disabled' : ''}>
+        <button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
         </button>
       </header>
@@ -234,6 +234,12 @@ export default class EditPointView extends AbstractStatefulView {
     this.element.querySelector('.event__type-list').addEventListener('change', this.#typeChangeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
+    this.element.querySelector('.event__reset-btn').addEventListener('keydown', (evt) => {
+      if (evt.key === 'Enter') {
+        evt.preventDefault();
+        this.#formDeleteClickHandler();
+      }
+    });
 
     this.element.addEventListener('change', (evt) => {
       if (evt.target.classList.contains('event__offer-checkbox')) {
