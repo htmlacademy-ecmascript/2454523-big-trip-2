@@ -26,6 +26,7 @@ export default class PointPresenter {
   }
 
   init(point, offers, destinations) {
+
     this.#point = point;
     this.#offers = offers;
     this.#destinations = destinations;
@@ -37,6 +38,7 @@ export default class PointPresenter {
       point: this.#point,
       offers: this.#offers,
       destinations: this.#destinations,
+      onCloseClick: this.#replaceEditFormToPoint,
       onFormSubmit: this.#handleFormSubmit,
       onDeleteClick: this.#handleDeleteClick
     });
@@ -159,7 +161,6 @@ export default class PointPresenter {
     this.#replacePointToEditForm();
     document.addEventListener('keydown', this.#escKeyDownHandler);
     this.#pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click',this.#replaceEditFormToPoint);
-    this.#pointEditComponent.element.querySelector('.event__rollup-btn').focus();
     this.#pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('keydown', this.#handleEnterKey);
   };
 
@@ -181,6 +182,7 @@ export default class PointPresenter {
       point
     );
   };
+
 }
 
 

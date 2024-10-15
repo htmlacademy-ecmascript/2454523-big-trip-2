@@ -194,16 +194,19 @@ ${createFieldEventPriceTemplate(point)}
 export default class EditPointView extends AbstractStatefulView {
   #offers = [];
   #destinations = [];
+  #handleCloseEditClick = null;
   #handleForSubmit = null;
   #handleDeleteClick = null;
   #startDatepicker = null;
   #endDatepicker = null;
 
-  constructor ({point, offers, destinations, onFormSubmit, onDeleteClick}) {
+
+  constructor ({point, offers, destinations, onCloseClick, onFormSubmit, onDeleteClick}) {
     super();
     this._setState(EditPointView.parsePointToState(point));
     this.#offers = offers;
     this.#destinations = destinations;
+    this.#handleCloseEditClick = onCloseClick;
     this. #handleForSubmit = onFormSubmit;
     this.#handleDeleteClick = onDeleteClick;
     this._restoreHandlers();
@@ -233,6 +236,9 @@ export default class EditPointView extends AbstractStatefulView {
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__type-list').addEventListener('change', this.#typeChangeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
+
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
     this.element.querySelector('.event__reset-btn').addEventListener('keydown', (evt) => {
       if (evt.key === 'Enter') {
@@ -268,6 +274,11 @@ export default class EditPointView extends AbstractStatefulView {
     this.#setEndDatepicker();
   }
 
+
+  #editClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleCloseEditClick();
+  };
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
