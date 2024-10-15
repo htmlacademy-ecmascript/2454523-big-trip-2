@@ -256,11 +256,11 @@ export default class CreatePointView extends AbstractStatefulView {
       const offerSelector = evt.target.closest('.event__offer-selector');
 
       if (offerSelector) {
-        const checkbox = offerSelector.querySelector('.event__offer-checkbox');
+        const checkboxElement = offerSelector.querySelector('.event__offer-checkbox');
 
-        if (checkbox) {
-          checkbox.checked = !checkbox.checked;
-          checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+        if (checkboxElement) {
+          checkboxElement.checked = !checkboxElement.checked;
+          checkboxElement.dispatchEvent(new Event('change', { bubbles: true }));
         }
       }
       if (evt.target.classList.contains('event__offer-checkbox')) {

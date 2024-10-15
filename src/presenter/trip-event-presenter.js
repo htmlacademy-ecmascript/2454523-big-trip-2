@@ -213,32 +213,6 @@ export default class TripEventPresenter {
 
   }
 
-  //   #renderBoard () {
-  //     render(this.#tripEventComponent, this.#tripEventsContainer);
-
-  //     if (this.#isLoading) {
-  //       this.#renderLoading();
-  //       return;
-  //     }
-
-  //     if (this.points.length === 0 && !this.#isCreatingFormOpen) {
-  //       this.#renderNoPoints();
-  //       return;
-  //     }
-
-  //     if (this.points.length === 0 || this.#offersModel.getOffers().length === 0 || this.#destinationsModel.getDestinations().length === 0) {
-  //       this.#renderNoPoints();
-  //       return;
-  //     }
-
-  //     this.#renderSort();
-  //     render(this.#tripEventListComponent,this.#tripEventComponent.element);
-
-  //     this.#renderPoints(this.points,this.#offersModel.getOffers(), this.#destinationsModel.getDestinations());
-  //   }
-
-  // }
-
   #renderBoard () {
     render(this.#tripEventComponent, this.#tripEventsContainer);
 
