@@ -13,8 +13,8 @@ export default class PointPresenter {
   #offers = [];
   #destinations = [];
   #tripEventListComponent = null;
-  #pointEditComponent = null;
   #pointComponent = null;
+  #pointEditComponent = null;
   #handleDataChange = null;
   #handleModeChange = null;
   #mode = Mode.DEFAULT;
