@@ -20,6 +20,13 @@ export default class TripInfoPresenter {
   }
 
   init() {
+    if (this.#pointsModel.getPoints().length === 0 || this.#offersModel.getOffers().length === 0 || this.#destinationsModel.getDestinations().length === 0) {
+      if (this.#tripInfoComponent) {
+        remove(this.#tripInfoComponent);
+        this.#tripInfoComponent = null;
+      }
+      return;
+    }
     const prevTripInfoComponent = this.#tripInfoComponent;
 
     this.#tripInfoComponent = new TripInfoView({

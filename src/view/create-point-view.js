@@ -74,13 +74,15 @@ function createDescriptionOfDestinationTemplate (point,destinations) {
                   <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                   <p class="event__destination-description">${description}</p>
 
+                  ${pictures.length ? `
                   <div class="event__photos-container">
                     <div class="event__photos-tape">
                    ${photoOfDestination}
                     </div>
                   </div>
+                  ` : ''}
                 </section>
-              </section>`;
+             `;
 }
 
 function createEventTypeTemplate (point) {
@@ -185,8 +187,8 @@ ${createFieldGroupDestinationTemplate(point, destinations)}
 ${createFieldEventDateTemplate(point)}
 ${createFieldEventPriceTemplate(point)}
         <button class="event__save-btn  btn  btn--blue" type="submit" ${isPriceNotCorrect || isDisabled || isDateToNotCorrect ? 'disabled' : ''}>${isSaving ? 'Saving...' : 'Save'}</button>
-        <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>Cancel</button>
-        <button class="event__rollup-btn" type="button" ${isDisabled ? 'disabled' : ''}>
+        <button class="event__reset-btn" type="reset">Cancel</button>
+        <button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
         </button>
       </header>
@@ -243,11 +245,29 @@ export default class CreatePointView extends AbstractStatefulView {
     this.element.querySelector('.event__type-list').addEventListener('change', this.#typeChangeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
+
     this.element.addEventListener('change', (evt) => {
       if (evt.target.classList.contains('event__offer-checkbox')) {
         this.#offerChangeHandler(evt);
       }
     });
+
+    this.element.addEventListener('click', (evt) => {
+      const offerSelector = evt.target.closest('.event__offer-selector');
+
+      if (offerSelector) {
+        const checkboxElement = offerSelector.querySelector('.event__offer-checkbox');
+
+        if (checkboxElement) {
+          checkboxElement.checked = !checkboxElement.checked;
+          checkboxElement.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      }
+      if (evt.target.classList.contains('event__offer-checkbox')) {
+        this.#offerChangeHandler(evt);
+      }
+    });
+
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
     this.#setStartDatepicker();
     this.#setEndDatepicker();
@@ -276,7 +296,7 @@ export default class CreatePointView extends AbstractStatefulView {
       newOffers = this._state.offers;
     }
 
-    this._setState({
+    this.updateElement({
       offers: newOffers,
     });
 

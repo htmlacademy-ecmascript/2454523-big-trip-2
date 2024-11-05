@@ -13,8 +13,8 @@ export default class PointPresenter {
   #offers = [];
   #destinations = [];
   #tripEventListComponent = null;
-  #pointEditComponent = null;
   #pointComponent = null;
+  #pointEditComponent = null;
   #handleDataChange = null;
   #handleModeChange = null;
   #mode = Mode.DEFAULT;
@@ -26,6 +26,7 @@ export default class PointPresenter {
   }
 
   init(point, offers, destinations) {
+
     this.#point = point;
     this.#offers = offers;
     this.#destinations = destinations;
@@ -37,6 +38,7 @@ export default class PointPresenter {
       point: this.#point,
       offers: this.#offers,
       destinations: this.#destinations,
+      onCloseClick: this.#replaceEditFormToPoint,
       onFormSubmit: this.#handleFormSubmit,
       onDeleteClick: this.#handleDeleteClick
     });
@@ -110,7 +112,6 @@ export default class PointPresenter {
         isDeleting: false,
       });
     };
-
     this.#pointEditComponent.shake(resetFormState);
   }
 
@@ -122,6 +123,13 @@ export default class PointPresenter {
     }
   };
 
+  #handleEnterKey = (evt) => {
+    if (evt.key === 'Enter') {
+      evt.preventDefault();
+      this.#pointEditComponent.reset(this.#point);
+      this.#replaceEditFormToPoint();
+    }
+  };
 
   #replacePointToEditForm = () => {
     replace (this.#pointEditComponent, this.#pointComponent);
@@ -133,6 +141,7 @@ export default class PointPresenter {
     replace(this.#pointComponent, this.#pointEditComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#pointEditComponent.element.querySelector('.event__rollup-btn').removeEventListener('click',this.#replaceEditFormToPoint);
+    this.#pointEditComponent.element.querySelector('.event__rollup-btn').removeEventListener('keydown', this.#handleEnterKey);
     this.#mode = Mode.DEFAULT;
   };
 
@@ -152,6 +161,7 @@ export default class PointPresenter {
     this.#replacePointToEditForm();
     document.addEventListener('keydown', this.#escKeyDownHandler);
     this.#pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click',this.#replaceEditFormToPoint);
+    this.#pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('keydown', this.#handleEnterKey);
   };
 
   #handleFavoriteClick = () => {
@@ -172,6 +182,7 @@ export default class PointPresenter {
       point
     );
   };
+
 }
 
 

@@ -5,11 +5,7 @@ function formatTripDatesForHeader(dateFrom, dateTo) {
   const fromDate = dayjs(dateFrom);
   const toDate = dayjs(dateTo);
 
-  if (fromDate.format('MMM') === toDate.format('MMM')) {
-    return `${fromDate.format('DD')} — ${toDate.format('DD')} ${fromDate.format('MMM')}`;
-  } else {
-    return `${fromDate.format('DD MMM')} — ${toDate.format('DD MMM')}`;
-  }
+  return `${fromDate.format('DD MMM')} — ${toDate.format('DD MMM')}`;
 }
 
 function humanizeDate(date, format) {
@@ -35,15 +31,14 @@ function calculateFormattedDuration(point) {
   let formattedDuration = '';
 
   if (days > 0) {
-    formattedDuration = `${days}D ${hours.toString().padStart(2, '0')}H ${minutes.toString().padStart(2, '0')}M`;
+    formattedDuration = `${days.toString().padStart(2, '0')}d ${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m`;
   } else if (hours > 0) {
-    formattedDuration = `${hours.toString().padStart(2, '0')}H ${minutes.toString().padStart(2, '0')}M`;
+    formattedDuration = `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m`;
   } else {
-    formattedDuration = `${minutes}M`;
+    formattedDuration = `${minutes.toString().padStart(2, '0')}m`;
   }
 
   return formattedDuration;
 }
-
 
 export {humanizeDate, calculateFormattedDuration, calculateDurationInMilliseconds, formatTripDatesForHeader};

@@ -1,4 +1,3 @@
-/* eslint-disable semi */
 import FilterPresenter from './presenter/filter-presenter.js';
 import TripEventPresenter from './presenter/trip-event-presenter.js';
 import TripInfoPresenter from './presenter/trip-info-presenter.js';
@@ -48,7 +47,7 @@ const tripInfoPresenter = new TripInfoPresenter({
   pointsModel,
   offersModel,
   destinationsModel
-})
+});
 
 const filterPresenter = new FilterPresenter({
   filterContainer: tripControlsFiltersElement,

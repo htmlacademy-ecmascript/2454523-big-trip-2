@@ -10,7 +10,6 @@ export default class PointsModel extends Observable {
   #points = [];
   #offers = [];
   #destinations = [];
-  #isServerError = false;
 
   constructor({pointsApiService, offersModel, destinationsModel}) {
     super();
@@ -46,21 +45,17 @@ export default class PointsModel extends Observable {
         this.#destinations.init()
       ]);
 
-
-      this.#offers = this.#offers.getOffers();
-
-      this.#destinations = this.#destinations.getDestinations();
-
       this._notify(UpdateType.INIT);
-
     } catch (err) {
-      this.#isServerError = this.#pointsApiService.isServerError();
-      if (this.#isServerError) {
+      const isAnyServerError =
+        this.#pointsApiService.isServerError() ||
+        this.#offers.isServerError() ||
+        this.#destinations.isServerError();
+
+      if (isAnyServerError) {
         this._notify(UpdateType.ERROR);
       } else {
         this.#points = [];
-        this.#offers = [];
-        this.#destinations = [];
         this._notify(UpdateType.INIT);
       }
     }
@@ -119,6 +114,7 @@ export default class PointsModel extends Observable {
       this._notify(updateType);
     } catch (err) {
       throw new Error('Can\'t delete point');
+
     }
   }
 

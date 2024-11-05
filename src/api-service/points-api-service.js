@@ -7,10 +7,10 @@ export default class PointsApiService extends ApiService {
   get points () {
     return this._load({url: 'points'})
       .then(ApiService.parseResponse)
-      // eslint-disable-next-line no-unused-vars
       .catch((err) => {
         this.#isServerError = true;
-        throw new Error('Server unavailable');
+        throw new Error(`Server unavailable: ${err.message}`);
+
       });
   }
 

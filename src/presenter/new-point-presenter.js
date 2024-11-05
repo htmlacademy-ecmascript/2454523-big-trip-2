@@ -6,15 +6,16 @@ export default class NewPointPresenter {
   #pointListContainer = null;
   #handleDataChange = null;
   #handleDestroy = null;
-  #isCreatingFormOpen = false;
+  #onFormClose = null;
 
   #createPointComponent = null;
 
-  constructor ({pointListContainer, onDataChange, onDestroy}) {
+  constructor ({pointListContainer, onDataChange, onDestroy, onFormClose}) {
 
     this.#pointListContainer = pointListContainer;
     this.#handleDataChange = onDataChange;
     this.#handleDestroy = onDestroy;
+    this.#onFormClose = onFormClose;
   }
 
   init (offers, destinations) {
@@ -33,7 +34,6 @@ export default class NewPointPresenter {
   }
 
   destroy () {
-    this.#isCreatingFormOpen = false;
     if(this.#createPointComponent === null) {
       return;
     }
@@ -41,6 +41,7 @@ export default class NewPointPresenter {
     remove(this.#createPointComponent);
     this.#createPointComponent = null;
     document.removeEventListener('keydown', this.#escKeyDownHandler);
+    this.#onFormClose();
   }
 
 

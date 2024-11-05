@@ -1,8 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
 function createNoPointTemplate () {
-  // eslint-disable-next-line quotes
-  return `<p class="trip-events__msg">Loading...</p>`;
+  return '<p class="trip-events__msg">Loading...</p>';
 }
 
 export default class LoadingView extends AbstractView {

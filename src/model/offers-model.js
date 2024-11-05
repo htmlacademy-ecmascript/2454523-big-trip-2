@@ -14,12 +14,20 @@ export default class OffersModel extends Observable {
     return this.#offers;
   }
 
+  isServerError() {
+    return this.#offersApiService.isOffersServerError();
+  }
+
   async init() {
     try {
       this.#offers = await this.#offersApiService.offers;
 
     } catch(err) {
-      this.#offers = [];
+      if(this.isServerError()) {
+        throw new Error('Failed to load offers due to server issues.');
+      } else {
+        this.#offers = [];
+      }
     }
   }
 }

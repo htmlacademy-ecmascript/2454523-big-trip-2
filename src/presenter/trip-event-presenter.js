@@ -43,7 +43,12 @@ export default class TripEventPresenter {
     this.#newPointPresenter = new NewPointPresenter({
       pointListContainer: this.#tripEventListComponent.element,
       onDataChange: this.#handleViewAction,
-      onDestroy: onNewPointDestroy
+      onDestroy: onNewPointDestroy,
+      onFormClose: () => {
+        if (this.points.length === 0) {
+          this.#renderNoPoints();
+        }
+      }
     });
 
 
@@ -74,6 +79,7 @@ export default class TripEventPresenter {
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
 
+
   #handleViewAction = async(actionType, updateType, update) => {
     this.#UiBlocker.block();
 
@@ -101,7 +107,9 @@ export default class TripEventPresenter {
         try {
           await this.#pointsModel.deletePoint(updateType, update);
         } catch (err) {
-          this.#pointPresenters.get(update.id).setAborting();
+          if (this.#pointPresenters.get(update.id)) {
+            this.#pointPresenters.get(update.id).setAborting();
+          }
         }
         break;
     }
@@ -167,6 +175,10 @@ export default class TripEventPresenter {
     this.#pointPresenters.set(point.id, pointPresenter);
   }
 
+  #renderPoints(points, offers, destinations){
+    points.forEach((point) => this.#renderPoint(point, offers, destinations));
+  }
+
   #renderLoading() {
     render(this.#loadingComponent,this.#tripEventComponent.element, RenderPosition.AFTERBEGIN);
   }
@@ -184,6 +196,7 @@ export default class TripEventPresenter {
   }
 
   #clearBoard ({resetSortType = false} = {}) {
+    this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
 
@@ -208,11 +221,11 @@ export default class TripEventPresenter {
       return;
     }
 
-    if (this.points.length === 0 && !this.#isCreatingFormOpen) {
-      this.#renderNoPoints();
+    if (this.points.length === 0 && this.#isCreatingFormOpen) {
+      remove(this.#noPointComponent);
+      render(this.#tripEventListComponent,this.#tripEventComponent.element);
       return;
     }
-
 
     if (this.points.length === 0 || this.#offersModel.getOffers().length === 0 || this.#destinationsModel.getDestinations().length === 0) {
       this.#renderNoPoints();
@@ -221,9 +234,8 @@ export default class TripEventPresenter {
 
     this.#renderSort();
     render(this.#tripEventListComponent,this.#tripEventComponent.element);
-    for (let i = 0; i < this.points.length; i++) {
-      this.#renderPoint(this.points[i], this.#offersModel.getOffers(), this.#destinationsModel.getDestinations());
-    }
+
+    this.#renderPoints(this.points,this.#offersModel.getOffers(), this.#destinationsModel.getDestinations());
   }
 
 }
