@@ -28,6 +28,7 @@ export default class TripEventPresenter {
   #currentSortType = SortType.DAY;
   #isLoading = true;
   #isCreatingFormOpen = false;
+  #isLoadFailed = false;
   #UiBlocker = new UiBlocker({
     lowerLimit: TimeLimit.LOWER_LIMIT,
     upperLimit: TimeLimit.UPPER_LIMIT
@@ -133,6 +134,7 @@ export default class TripEventPresenter {
         break;
       case UpdateType.INIT:
         this.#isLoading = false;
+        this.#isLoadFailed = false;
         remove(this.#loadingComponent);
         remove(this.#noDataComponent);
         remove(this.#noPointComponent);
@@ -140,6 +142,7 @@ export default class TripEventPresenter {
         break;
       case UpdateType.ERROR:
         this.#isLoading = false;
+        this.#isLoadFailed = true;
         remove(this.#loadingComponent);
         remove(this.#noDataComponent);
         remove(this.#noPointComponent);
@@ -184,6 +187,9 @@ export default class TripEventPresenter {
   }
 
   #renderNoPoints () {
+    if (this.#isLoadFailed) {
+      return;
+    }
     this.#noPointComponent = new NoPointView({
       filterType: this.#filterModel.filter
     });
